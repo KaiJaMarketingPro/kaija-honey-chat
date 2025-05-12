@@ -44,8 +44,8 @@
       margin-top: 10px;
       padding: 10px 20px;
       font-size: 14px;
-      border: none;
       background-color: #ffd700;
+      border: none;
       border-radius: 6px;
       cursor: pointer;
     }
@@ -55,4 +55,58 @@
       cursor: not-allowed;
     }
 
-    #resp
+    #response {
+      margin-top: 20px;
+      background: #e0f7fa;
+      padding: 10px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div id="chatbox">
+    <h2>KaiJa Honey GPT 🐝</h2>
+    <textarea id="userInput" placeholder="Frag mich etwas zu deiner Preisstrategie..."></textarea>
+    <button id="sendBtn" onclick="sendMessage()">Senden</button>
+    <div id="response"></div>
+  </div>
+
+  <script>
+    const textarea = document.getElementById("userInput");
+    const button = document.getElementById("sendBtn");
+    const responseDiv = document.getElementById("response");
+
+    textarea.addEventListener("keydown", function(event) {
+      if (event.key === "Enter" && !event.shiftKey) {
+        event.preventDefault();
+        sendMessage();
+      }
+    });
+
+    async function sendMessage() {
+      const input = textarea.value.trim();
+      if (!input) return;
+
+      button.disabled = true;
+      responseDiv.textContent = "Antwort wird geladen ...";
+
+      try {
+        const res = await fetch("https://kaija-gpt-proxy.vercel.app/api/kaija-chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userInput: input })
+        });
+
+        if (!res.ok) throw new Error("Antwort konnte nicht geladen werden.");
+        const data = await res.json();
+        responseDiv.innerHTML = "<strong>Antwort:</strong><br>" + data.reply;
+      } catch (err) {
+        responseDiv.textContent = "Fehler: " + err.message;
+      } finally {
+        button.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
