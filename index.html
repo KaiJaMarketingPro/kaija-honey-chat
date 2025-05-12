@@ -92,7 +92,7 @@
       responseDiv.textContent = "Antwort wird geladen ...";
 
       try {
-        const res = await fetch("https://kaija-gpt-proxy.vercel.app/api/kaija-chat", {
+        const res = await fetch("https://kaija-honey-chat.vercel.app/api/kaija-chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userInput: input })
