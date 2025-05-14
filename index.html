@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lifecycle Check – Märki & KaiJa GPT</title>
+  <title>Lifecycle Check – KaiJa & Märki GPT</title>
   <style>
     body {
       font-family: 'Arial', sans-serif;
@@ -83,4 +83,22 @@
 <body>
 
 <div class="chat-container" role="region" aria-label="Lifecycle Chatbereich">
-  <div class="messages" id="chatLog" tabindex="0" aria-live="polite"
+  <div class="messages" id="chatLog" tabindex="0" aria-live="polite"></div>
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Antwort hier eingeben..." aria-label="Antwortfeld" />
+    <button id="send-button">Senden</button>
+  </div>
+</div>
+
+<!-- Ergebnisanzeige -->
+<div id="lifecycle-result">
+  <h3 id="result-headline"></h3>
+  <p id="result-summary"></p>
+  <a href="https://calendly.com/kaija-strategy-call" target="_blank" class="btn">🚀 Jetzt Strategy Call buchen</a>
+</div>
+
+<!-- Proxy-ready Script -->
+<script src="kaija-chat.js"></script>
+
+</body>
+</html>
