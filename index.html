@@ -57,6 +57,27 @@
     button:hover {
       background: #0056b3;
     }
+    #lifecycle-result {
+      display: none;
+      background: #f4f8ff;
+      border-left: 4px solid #007bff;
+      padding: 16px;
+      margin: 20px auto;
+      max-width: 700px;
+      border-radius: 6px;
+    }
+    #lifecycle-result a.btn {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 4px;
+    }
+    #lifecycle-result a.btn:hover {
+      background: #0056b3;
+    }
   </style>
 </head>
 <body>
@@ -66,67 +87,20 @@
     <!-- GPT-Dialog wird hier angezeigt -->
   </div>
   <div class="input-area">
-    <input type="text" id="userInput" placeholder="Lifecycle Check starten..." aria-label="Deine Eingabe hier" />
-    <button id="send-button" onclick="sendMessage()">Senden</button>
+    <input type="text" id="userInput" placeholder="Deine Antwort hier..." aria-label="Antwortfeld" />
+    <button id="send-button">Senden</button>
   </div>
 </div>
 
-<script>
-  const chatLog = document.getElementById('chatLog');
-  const userInput = document.getElementById('userInput');
-  const sendButton = document.getElementById('send-button');
+<!-- Bewertungsbox -->
+<div id="lifecycle-result">
+  <h3 id="result-headline"></h3>
+  <p id="result-summary"></p>
+  <a href="https://calendly.com/kaija-strategy-call" target="_blank" class="btn">🚀 Jetzt Strategy Call buchen</a>
+</div>
 
-  function appendMessage(content, sender) {
-    const msg = document.createElement("div");
-    msg.className = "message " + sender;
-    msg.innerText = content;
-    chatLog.appendChild(msg);
-    chatLog.scrollTop = chatLog.scrollHeight;
-  }
-
-  function sendMessage(triggeredText = null) {
-    const message = triggeredText || userInput.value.trim();
-    if (!message) return;
-
-    appendMessage(message, 'user');
-    userInput.value = '';
-    userInput.disabled = true;
-    sendButton.disabled = true;
-
-    appendMessage("🧠 Wird verarbeitet...", 'assistant');
-
-    setTimeout(() => {
-      if (message.toLowerCase() === "lifecycle check starten") {
-        appendMessage(
-`Willkommen zum 360° Lifecycle-Check für IT-Reseller – powered by KaiJa & Märki GPT.
-
-Ziel: Du findest in wenigen Minuten heraus, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell ist.
-
-Bereit? Dann starten wir.
-
-Schritt 1 – Automatisierung
-Frage 1: Welche Prozesse hast du bereits automatisiert?
-(z. B. Bestellabwicklung, Kundensupport, Lifecycle-Management, Rechnungsstellung)`, 'assistant');
-      } else {
-        appendMessage("Danke für deine Antwort! Ich analysiere das...", "assistant");
-
-        setTimeout(() => {
-          appendMessage("Schritt 1, Frage 2: Welche Tools oder Systeme nutzt du aktuell für diese Automatisierung?", "assistant");
-        }, 1500);
-      }
-      userInput.disabled = false;
-      sendButton.disabled = false;
-      userInput.focus();
-    }, 800);
-  }
-
-  // Auto-Trigger Lifecycle-Start
-  window.onload = () => {
-    setTimeout(() => {
-      sendMessage("Lifecycle Check starten");
-    }, 400);
-  };
-</script>
+<!-- Skript -->
+<script src="kaija-chat.js"></script>
 
 </body>
 </html>
