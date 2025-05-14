@@ -100,7 +100,7 @@
     <p>Starte jetzt deinen strategischen Audit. Märki ist bereit.</p>
 
     <label for="userInput">Deine Eingabe:</label>
-    <textarea id="userInput" placeholder="Oder beginne direkt mit: 'Willkommen zum 360° Lifecycle-Check ...'"></textarea>
+    <textarea id="userInput" placeholder="Oder beginne direkt mit: 'Lifecycle Check starten'"></textarea>
 
     <button id="sendBtn" onclick="sendMessage()">Senden</button>
 
@@ -119,11 +119,13 @@
       }
     });
 
+    // Initial prompt bei Seiten-Load automatisch senden
     window.onload = () => {
       const initialPrompt = `Willkommen zum 360° Lifecycle-Check für IT-Reseller – powered by KaiJa & Märki GPT.
 Ziel: Du findest in wenigen Minuten heraus, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell ist.
 
 Bereit? Dann starten wir.`;
+
       textarea.value = initialPrompt;
       sendMessage();
     };
@@ -152,13 +154,22 @@ Bereit? Dann starten wir.`;
           throw new Error("Keine gültige Antwort von GPT erhalten.");
         }
 
-        responseDiv.innerHTML = "<strong>Antwort von Märki:</strong><br>" + data.reply;
+        responseDiv.innerHTML = "<strong>Antwort von Märki:</strong><br>" + formatGPTResponse(data.reply);
       } catch (err) {
         responseDiv.textContent = "Fehler: " + err.message;
       } finally {
         button.disabled = false;
         textarea.value = "";
       }
+    }
+
+    function formatGPTResponse(text) {
+      return text
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\n\n/g, '<br><br>')
+        .replace(/\n/g, '<br>')
+        .replace(/•/g, '🔹')
+        .replace(/(\d\.)/g, '<br><strong>$1</strong>');
     }
   </script>
 </body>
