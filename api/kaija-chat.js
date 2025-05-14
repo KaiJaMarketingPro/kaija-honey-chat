@@ -6,8 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultHeadline = document.getElementById("result-headline");
   const resultSummary = document.getElementById("result-summary");
 
-  const API_ENDPOINT = "https://kaija-openai.openai.azure.com/openai/deployments/maerki-gpt/chat/completions?api-version=2024-04-15";
-  const API_KEY = "sk-EXAMPLEKEY"; // ⛔ In Produktion via Proxy ersetzen
+  const API_ENDPOINT = "/api/chat"; // ✅ Proxy-Zugriff via Node.js Backend
 
   let currentQuestion = 0;
   let score = 0;
@@ -80,18 +79,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function fetchGPTReply(nextPrompt) {
     const messages = [
-      { role: "system", content: "Du bist Märki GPT. Antworte CEO-tauglich, analytisch, klar." },
+      {
+        role: "system",
+        content: "Du bist Märki GPT. Führe einen strukturierten Lifecycle Check durch. Du bekommst 5 Multiple-Choice-Fragen (a, b, c). Du stellst keine Rückfragen. Bestätige Antworten präzise, analytisch, professionell. Gib keine Meta-Kommentare. Antworte klar, CEO-tauglich."
+      },
       ...chatHistory,
       { role: "assistant", content: nextPrompt }
     ];
 
     fetch(API_ENDPOINT, {
       method: "POST",
-      headers: {
-        "api-key": API_KEY,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({ messages, temperature: 0.5 })
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ messages })
     })
     .then(res => res.json())
     .then(data => {
@@ -105,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     .catch(err => {
       chatLog.querySelector(".message.assistant:last-child")?.remove();
-      appendMessage("❌ GPT-Fehler oder Zeitüberschreitung.", "assistant");
+      appendMessage("❌ Proxy-/Serverfehler oder GPT-Zeitüberschreitung.", "assistant");
       console.error(err);
       userInput.disabled = false;
       sendButton.disabled = false;
@@ -118,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (score >= 25) {
       result = "🟢 Kategorie A: Ready to Scale";
-      summary = "Du bist strategisch stark – Fokus jetzt auf Funnel & Pricing-Automatisierung (KaiJa + Honey).";
+      summary = "Du bist strategisch stark – jetzt Fokus auf Funnel & Pricing-Automatisierung (KaiJa + Honey).";
     } else if (score >= 17) {
       result = "🟡 Kategorie B: Auf Kurs";
       summary = "Du bist auf gutem Weg – Training & Re-Sale-Funnel sind dein nächster Hebel.";
