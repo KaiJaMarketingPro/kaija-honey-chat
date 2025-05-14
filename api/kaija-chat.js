@@ -6,14 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const resultHeadline = document.getElementById("result-headline");
   const resultSummary = document.getElementById("result-summary");
 
-  // ⛔ Für produktiven Einsatz API-KEY & ENDPOINT NIE im Frontend!
-  const API_ENDPOINT = "https://YOUR-RESOURCE.openai.azure.com/openai/deployments/YOUR-DEPLOYMENT/chat/completions?api-version=2024-04-15";
-  const API_KEY = "sk-EXAMPLEKEY"; // ⚠ Nur für Testzwecke – in Produktion via Proxy/Backend ersetzen
+  const API_ENDPOINT = "https://kaija-openai.openai.azure.com/openai/deployments/maerki-gpt/chat/completions?api-version=2024-04-15";
+  const API_KEY = "sk-EXAMPLEKEY"; // ⛔ In Produktion via Proxy ersetzen
 
   let currentQuestion = 0;
   let score = 0;
   const chatHistory = [];
-
   const allowedAnswers = ["a", "b", "c"];
 
   const questions = [
@@ -56,13 +54,12 @@ document.addEventListener("DOMContentLoaded", () => {
     userInput.disabled = true;
     sendButton.disabled = true;
 
-    // Bewertung
     if (currentQuestion > 0 && currentQuestion <= questions.length) {
       const lastQ = questions[currentQuestion - 1];
       if (allowedAnswers.includes(userAnswer)) {
         score += lastQ.points[userAnswer];
       } else {
-        appendMessage("⚠️ Bitte antworte mit a, b oder c.", "assistant");
+        appendMessage("⚠️ Bitte nur mit a, b oder c antworten.", "assistant");
         userInput.disabled = false;
         sendButton.disabled = false;
         userInput.focus();
@@ -70,27 +67,23 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    showSpinner();
+    appendMessage("⏳ GPT denkt nach ...", "assistant");
 
     if (currentQuestion < questions.length) {
       const prompt = questions[currentQuestion].text;
       currentQuestion++;
       fetchGPTReply(prompt);
     } else {
-      hideSpinner();
       showResult();
     }
   }
 
   function fetchGPTReply(nextPrompt) {
     const messages = [
-      { role: "system", content: "Du bist Märki GPT. Klar, analytisch, CEO-ready. Antworte präzise." },
+      { role: "system", content: "Du bist Märki GPT. Antworte CEO-tauglich, analytisch, klar." },
       ...chatHistory,
       { role: "assistant", content: nextPrompt }
     ];
-
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 10000);
 
     fetch(API_ENDPOINT, {
       method: "POST",
@@ -98,15 +91,11 @@ document.addEventListener("DOMContentLoaded", () => {
         "api-key": API_KEY,
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        messages: messages,
-        temperature: 0.5
-      }),
-      signal: controller.signal
+      body: JSON.stringify({ messages, temperature: 0.5 })
     })
     .then(res => res.json())
     .then(data => {
-      hideSpinner();
+      chatLog.querySelector(".message.assistant:last-child")?.remove();
       const reply = data.choices?.[0]?.message?.content || "❌ GPT hat nicht geantwortet.";
       chatHistory.push({ role: "assistant", content: reply });
       appendMessage(reply, "assistant");
@@ -115,13 +104,12 @@ document.addEventListener("DOMContentLoaded", () => {
       userInput.focus();
     })
     .catch(err => {
-      hideSpinner();
-      appendMessage("❌ Verbindung fehlgeschlagen oder GPT hat nicht geantwortet.", "assistant");
-      console.error("GPT Fehler:", err);
+      chatLog.querySelector(".message.assistant:last-child")?.remove();
+      appendMessage("❌ GPT-Fehler oder Zeitüberschreitung.", "assistant");
+      console.error(err);
       userInput.disabled = false;
       sendButton.disabled = false;
-    })
-    .finally(() => clearTimeout(timeout));
+    });
   }
 
   function showResult() {
@@ -130,46 +118,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (score >= 25) {
       result = "🟢 Kategorie A: Ready to Scale";
-      summary = "Du bist strategisch stark – Fokus jetzt auf Funnel & Pricing-Automatisierung mit KaiJa & Honey GPT.";
+      summary = "Du bist strategisch stark – Fokus jetzt auf Funnel & Pricing-Automatisierung (KaiJa + Honey).";
     } else if (score >= 17) {
       result = "🟡 Kategorie B: Auf Kurs";
-      summary = "Du bist stabil unterwegs, aber es gibt Luft nach oben – starte mit Training & Re-Sale-Funnel.";
+      summary = "Du bist auf gutem Weg – Training & Re-Sale-Funnel sind dein nächster Hebel.";
     } else {
       result = "🔴 Kategorie C: Viel Potenzial";
-      summary = "Dein Lifecycle ist stark manuell – starte jetzt mit dem Mini-KaiJa-System + Strategy-Call.";
+      summary = "Starte jetzt mit dem Mini-KaiJa-System + kostenlosem Strategy-Call.";
     }
 
-    appendMessage("🎯 Dein Ergebnis:\n" + result + "\n\n" + summary, "assistant");
-    if (resultBox) {
-      resultHeadline.innerText = result;
-      resultSummary.innerText = summary;
-      resultBox.style.display = "block";
-    }
-  }
-
-  function showSpinner() {
-    appendMessage("⏳ GPT denkt nach ...", "assistant");
-  }
-
-  function hideSpinner() {
-    chatLog.querySelector(".message.assistant:last-child")?.remove();
+    appendMessage("🎯 Ergebnis:\n" + result + "\n\n" + summary, "assistant");
+    resultHeadline.innerText = result;
+    resultSummary.innerText = summary;
+    resultBox.style.display = "block";
   }
 
   sendButton.addEventListener("click", () => handleUserInput(userInput.value.trim()));
 
-  // Intro
   setTimeout(() => {
-    const intro = `Willkommen zum 360° Lifecycle-Check für IT-Reseller – powered by KaiJa & Märki GPT.
-
-In 3 Minuten findest du heraus, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell wirklich ist.
-
-👉 Ziel: Ehrliches Selbstbild + direkte Handlungsempfehlung – 100 % Swiss Made.
-
-Bereit? Dann los – Frage für Frage.`;
+    const intro = `Willkommen zum 360° Lifecycle-Check – powered by KaiJa & Märki GPT.\n\nIn 3 Minuten erfährst du, wie automatisiert, skalierbar & margenstark dein Business ist.\n\n👉 Ziel: Ehrliches Selbstbild + direkte Handlungsempfehlung – Swiss Made.`;
     appendMessage(intro, "assistant");
     chatHistory.push({ role: "assistant", content: intro });
     const prompt = questions[0].text;
     currentQuestion = 1;
     fetchGPTReply(prompt);
-  }, 800);
+  }, 600);
 });
