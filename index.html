@@ -1,171 +1,115 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Märki GPT – 360° Lifecycle Check</title>
+  <title>Lifecycle Check – Märki & KaiJa GPT</title>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
-      background: #f9f9f9;
+      font-family: 'Arial', sans-serif;
       margin: 0;
-      padding: 2rem;
-      display: flex;
-      justify-content: center;
+      padding: 0;
+      background: #f9f9f9;
     }
-
-    #chatbox {
-      width: 100%;
-      max-width: 720px;
-      background: white;
-      padding: 24px;
-      border-radius: 16px;
-      box-shadow: 0 0 18px rgba(0,0,0,0.08);
-    }
-
-    h1 {
-      margin-top: 0;
-      font-size: 1.6rem;
-      color: #212121;
-    }
-
-    p {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      color: #555;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      margin-top: 1.5rem;
-    }
-
-    textarea {
-      width: 100%;
-      height: 120px;
-      padding: 12px;
-      font-size: 16px;
+    .chat-container {
+      max-width: 700px;
+      margin: 40px auto;
+      background: #fff;
       border-radius: 10px;
-      border: 1px solid #ccc;
-      resize: vertical;
-      margin-top: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow: hidden;
     }
-
-    button {
-      margin-top: 12px;
-      padding: 12px 24px;
+    .messages {
+      padding: 20px;
+      height: 500px;
+      overflow-y: auto;
+      border-bottom: 1px solid #ddd;
+    }
+    .message {
+      margin-bottom: 15px;
+    }
+    .user {
+      text-align: right;
+      color: #007bff;
+      font-weight: bold;
+    }
+    .assistant {
+      color: #333;
+    }
+    .input-area {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+    input[type="text"] {
+      flex: 1;
+      padding: 15px;
+      border: none;
       font-size: 16px;
-      font-weight: 600;
-      background-color: #f7931e;
+    }
+    button {
+      padding: 15px 25px;
+      background: #007bff;
       color: white;
       border: none;
-      border-radius: 8px;
       cursor: pointer;
     }
-
-    button:disabled {
-      background-color: #ddd;
-      cursor: not-allowed;
-    }
-
-    #response {
-      margin-top: 20px;
-      background: #e6f4ea;
-      padding: 16px;
-      border-radius: 12px;
-      font-size: 15px;
-      white-space: pre-wrap;
-      color: #1a1a1a;
-    }
-
-    @media (max-width: 600px) {
-      body {
-        padding: 1rem;
-      }
-
-      #chatbox {
-        padding: 16px;
-      }
-
-      textarea {
-        height: 100px;
-      }
+    button:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div id="chatbox">
-    <h1>Märki GPT – 360° Lifecycle Check</h1>
-    <p>Starte jetzt deinen strategischen Audit. Märki ist bereit.</p>
 
-    <label for="userInput">Deine Eingabe:</label>
-    <textarea id="userInput" placeholder="Oder beginne direkt mit: 'Lifecycle Check starten'"></textarea>
-
-    <button id="sendBtn" onclick="sendMessage()">Senden</button>
-
-    <div id="response" aria-live="polite"></div>
+<div class="chat-container">
+  <div class="messages" id="chatLog">
+    <!-- Chatverlauf wird hier angezeigt -->
   </div>
+  <div class="input-area">
+    <input type="text" id="userInput" placeholder="Lifecycle Check starten...">
+    <button onclick="sendMessage()">Senden</button>
+  </div>
+</div>
 
-  <script>
-    const textarea = document.getElementById("userInput");
-    const button = document.getElementById("sendBtn");
-    const responseDiv = document.getElementById("response");
+<script>
+  const chatLog = document.getElementById('chatLog');
+  const userInput = document.getElementById('userInput');
 
-    textarea.addEventListener("keydown", function(event) {
-      if (event.key === "Enter" && !event.shiftKey) {
-        event.preventDefault();
-        sendMessage();
-      }
-    });
+  function appendMessage(content, sender) {
+    const div = document.createElement('div');
+    div.className = 'message ' + sender;
+    div.innerText = content;
+    chatLog.appendChild(div);
+    chatLog.scrollTop = chatLog.scrollHeight;
+  }
 
-    window.onload = () => {
-      const initialPrompt = "Lifecycle Check starten";
-      textarea.value = initialPrompt;
-      sendMessage();
-    };
+  function sendMessage() {
+    const message = userInput.value.trim();
+    if (message === '') return;
+    appendMessage(message, 'user');
 
-    async function sendMessage() {
-      const input = textarea.value.trim();
-      if (!input) return;
+    // Simulierter Einstieg in Lifecycle Journey
+    if (message.toLowerCase() === 'lifecycle check starten') {
+      setTimeout(() => {
+        appendMessage(
+`Willkommen zum 360° Lifecycle-Check für IT-Reseller – powered by KaiJa & Märki GPT.
+Ziel: Du findest in wenigen Minuten heraus, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell ist.
 
-      button.disabled = true;
-      responseDiv.textContent = "Antwort wird geladen...";
+Bereit? Dann starten wir.
 
-      try {
-        const res = await fetch("/api/kaija-chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ userInput: input })
-        });
-
-        if (!res.ok) {
-          throw new Error(`Serverfehler: ${res.status}`);
-        }
-
-        const data = await res.json();
-
-        if (!data.reply) {
-          throw new Error("Keine gültige Antwort von GPT erhalten.");
-        }
-
-        responseDiv.innerHTML = "<strong>Antwort von Märki:</strong><br>" + formatGPTResponse(data.reply);
-      } catch (err) {
-        responseDiv.textContent = "Fehler: " + err.message;
-      } finally {
-        button.disabled = false;
-        textarea.value = "";
-      }
+**Schritt 1 – Automatisierung**
+Frage 1: Welche Prozesse hast du bereits automatisiert?
+(z. B. Bestellabwicklung, Kundensupport, Lifecycle-Management, Rechnungsstellung)`, 'assistant');
+      }, 500);
+    } else {
+      // Placeholder für weitere GPT-Kommunikation
+      setTimeout(() => {
+        appendMessage("Danke für deine Eingabe! Ich verarbeite das gerade...", 'assistant');
+      }, 500);
     }
 
-    function formatGPTResponse(text) {
-      return text
-        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\n\n/g, '<br><br>')
-        .replace(/\n/g, '<br>')
-        .replace(/•/g, '🔹')
-        .replace(/(\d\.)/g, '<br><strong>$1</strong>');
-    }
-  </script>
+    userInput.value = '';
+  }
+</script>
+
 </body>
 </html>
