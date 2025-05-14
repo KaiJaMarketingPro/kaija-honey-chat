@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Lifecycle Check – Märki & KaiJa GPT</title>
   <style>
     body {
@@ -61,12 +61,12 @@
 </head>
 <body>
 
-<div class="chat-container">
-  <div class="messages" id="chatLog">
-    <!-- Chatverlauf wird hier angezeigt -->
+<div class="chat-container" role="region" aria-label="Lifecycle Chatbereich">
+  <div class="messages" id="chatLog" tabindex="0" aria-live="polite">
+    <!-- GPT-Dialog wird hier angezeigt -->
   </div>
   <div class="input-area">
-    <input type="text" id="userInput" placeholder="Lifecycle Check starten...">
+    <input type="text" id="userInput" placeholder="Lifecycle Check starten..." aria-label="Deine Eingabe hier" />
     <button id="send-button" onclick="sendMessage()">Senden</button>
   </div>
 </div>
@@ -77,20 +77,26 @@
   const sendButton = document.getElementById('send-button');
 
   function appendMessage(content, sender) {
-    const div = document.createElement('div');
-    div.className = 'message ' + sender;
-    div.innerText = content;
-    chatLog.appendChild(div);
+    const msg = document.createElement("div");
+    msg.className = "message " + sender;
+    msg.innerText = content;
+    chatLog.appendChild(msg);
     chatLog.scrollTop = chatLog.scrollHeight;
   }
 
   function sendMessage(triggeredText = null) {
     const message = triggeredText || userInput.value.trim();
-    if (message === '') return;
-    appendMessage(message, 'user');
+    if (!message) return;
 
-    if (message.toLowerCase() === 'lifecycle check starten') {
-      setTimeout(() => {
+    appendMessage(message, 'user');
+    userInput.value = '';
+    userInput.disabled = true;
+    sendButton.disabled = true;
+
+    appendMessage("🧠 Wird verarbeitet...", 'assistant');
+
+    setTimeout(() => {
+      if (message.toLowerCase() === "lifecycle check starten") {
         appendMessage(
 `Willkommen zum 360° Lifecycle-Check für IT-Reseller – powered by KaiJa & Märki GPT.
 
@@ -101,23 +107,24 @@ Bereit? Dann starten wir.
 Schritt 1 – Automatisierung
 Frage 1: Welche Prozesse hast du bereits automatisiert?
 (z. B. Bestellabwicklung, Kundensupport, Lifecycle-Management, Rechnungsstellung)`, 'assistant');
-      }, 500);
-    } else {
-      setTimeout(() => {
-        appendMessage("Danke für deine Eingabe! Ich verarbeite das gerade...", 'assistant');
-        // Folgefrage könnte hier ergänzt werden
-      }, 500);
-    }
+      } else {
+        appendMessage("Danke für deine Antwort! Ich analysiere das...", "assistant");
 
-    userInput.value = '';
+        setTimeout(() => {
+          appendMessage("Schritt 1, Frage 2: Welche Tools oder Systeme nutzt du aktuell für diese Automatisierung?", "assistant");
+        }, 1500);
+      }
+      userInput.disabled = false;
+      sendButton.disabled = false;
+      userInput.focus();
+    }, 800);
   }
 
-  // Automatischer Start nach Laden der Seite
-  window.onload = function () {
+  // Auto-Trigger Lifecycle-Start
+  window.onload = () => {
     setTimeout(() => {
-      userInput.value = "Lifecycle Check starten";
       sendMessage("Lifecycle Check starten");
-    }, 400); // leicht verzögert, damit DOM ready ist
+    }, 400);
   };
 </script>
 
