@@ -24,6 +24,7 @@
       height: 500px;
       overflow-y: auto;
       border-bottom: 1px solid #ddd;
+      white-space: pre-wrap;
     }
     .message {
       margin-bottom: 15px;
@@ -66,13 +67,14 @@
   </div>
   <div class="input-area">
     <input type="text" id="userInput" placeholder="Lifecycle Check starten...">
-    <button onclick="sendMessage()">Senden</button>
+    <button id="send-button" onclick="sendMessage()">Senden</button>
   </div>
 </div>
 
 <script>
   const chatLog = document.getElementById('chatLog');
   const userInput = document.getElementById('userInput');
+  const sendButton = document.getElementById('send-button');
 
   function appendMessage(content, sender) {
     const div = document.createElement('div');
@@ -82,33 +84,41 @@
     chatLog.scrollTop = chatLog.scrollHeight;
   }
 
-  function sendMessage() {
-    const message = userInput.value.trim();
+  function sendMessage(triggeredText = null) {
+    const message = triggeredText || userInput.value.trim();
     if (message === '') return;
     appendMessage(message, 'user');
 
-    // Simulierter Einstieg in Lifecycle Journey
     if (message.toLowerCase() === 'lifecycle check starten') {
       setTimeout(() => {
         appendMessage(
 `Willkommen zum 360° Lifecycle-Check für IT-Reseller – powered by KaiJa & Märki GPT.
+
 Ziel: Du findest in wenigen Minuten heraus, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell ist.
 
 Bereit? Dann starten wir.
 
-**Schritt 1 – Automatisierung**
+Schritt 1 – Automatisierung
 Frage 1: Welche Prozesse hast du bereits automatisiert?
 (z. B. Bestellabwicklung, Kundensupport, Lifecycle-Management, Rechnungsstellung)`, 'assistant');
       }, 500);
     } else {
-      // Placeholder für weitere GPT-Kommunikation
       setTimeout(() => {
         appendMessage("Danke für deine Eingabe! Ich verarbeite das gerade...", 'assistant');
+        // Folgefrage könnte hier ergänzt werden
       }, 500);
     }
 
     userInput.value = '';
   }
+
+  // Automatischer Start nach Laden der Seite
+  window.onload = function () {
+    setTimeout(() => {
+      userInput.value = "Lifecycle Check starten";
+      sendMessage("Lifecycle Check starten");
+    }, 400); // leicht verzögert, damit DOM ready ist
+  };
 </script>
 
 </body>
