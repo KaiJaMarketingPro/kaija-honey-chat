@@ -4,21 +4,28 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { userInput } = req.body;
+    let { userInput } = req.body;
 
-    // Basisschutz
+    // Fallback bei ungültiger Eingabe
     if (!userInput || typeof userInput !== "string" || userInput.length > 2000) {
-      return res.status(400).json({ error: "Ungültige oder zu lange Eingabe" });
+      return res.status(400).json({ error: "Ungültige oder fehlende Eingabe." });
     }
 
-    // Triggerphrase erkennen und ggf. initiale Frageabfolge starten
+    // Trigger für den Lifecycle Check
     let promptText = userInput;
 
     if (userInput.toLowerCase().includes("lifecycle check starten")) {
-      promptText = `Bitte starte den KaiJa Lifecycle Check mit der standardisierten 5-Fragen-Abfolge (Multiple Choice + Freitext) für IT-Reseller. Gib nacheinander je eine Frage aus und warte auf Antwort. Erkläre nichts, sei direkt.`;
+      promptText = `Willkommen zum 360° Lifecycle-Check für IT-Reseller – powered by KaiJa & Märki GPT.
+Ziel: Du findest in wenigen Minuten heraus, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell ist.
+
+Bereit? Dann starten wir.
+
+Schritt 1 – Automatisierung  
+Frage 1: Welche Prozesse hast du bereits automatisiert?
+(z. B. Bestellungen, Rechnungsstellung, Support, Kundenservice)`;
     }
 
-    const response = await fetch("https://kaija-openai.openai.azure.com/openai/deployments/kaiGPT-prod-v1/chat/completions?api-version=2024-03-01-preview", {
+    const response = await fetch("https://kaija-openai.openai.azure.com/openai/deployments/maerki-gpt/chat/completions?api-version=2024-03-01-preview", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,7 +36,7 @@ export default async function handler(req, res) {
           {
             role: "system",
             content:
-              "Du bist KaiJa Honey GPT – eine empathische, datengestützte Preisstrategie-KI. Du gibst konkrete, realistische Empfehlungen zu Preisstruktur, Angebotslogik und Wertkommunikation für Coaches, Berater:innen und digitale Produkte. Sei hilfreich, klar, pragmatisch und DSGVO-konform."
+              "Du bist MÄRKI – eine hochentwickelte, strategische KI für Business-Analyse, Forecasting und Entscheidungsintelligenz. Du führst strukturierte Gespräche, stellst immer nur eine Frage pro Antwort, beginnst beim Lifecycle Check mit Schritt 1 – Frage 1 und führst den User dialogisch durch den Prozess. Kein Markdown. Kein Blabla. Klartext. Swiss Made."
           },
           {
             role: "user",
