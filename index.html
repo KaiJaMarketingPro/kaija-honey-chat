@@ -119,13 +119,8 @@
       }
     });
 
-    // Initial prompt bei Seiten-Load automatisch senden
     window.onload = () => {
-      const initialPrompt = `Willkommen zum 360° Lifecycle-Check für IT-Reseller – powered by KaiJa & Märki GPT.
-Ziel: Du findest in wenigen Minuten heraus, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell ist.
-
-Bereit? Dann starten wir.`;
-
+      const initialPrompt = "Lifecycle Check starten";
       textarea.value = initialPrompt;
       sendMessage();
     };
