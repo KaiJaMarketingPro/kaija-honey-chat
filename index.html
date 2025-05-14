@@ -3,49 +3,62 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KaiJa Honey GPT 🐝</title>
+  <title>Märki GPT – 360° Lifecycle Check</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Inter', sans-serif;
       background: #f9f9f9;
       margin: 0;
-      padding: 0;
+      padding: 2rem;
       display: flex;
       justify-content: center;
-      align-items: center;
-      min-height: 100vh;
     }
 
     #chatbox {
       width: 100%;
-      max-width: 700px;
+      max-width: 720px;
       background: white;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 24px;
+      border-radius: 16px;
+      box-shadow: 0 0 18px rgba(0,0,0,0.08);
     }
 
-    h2 {
-      text-align: center;
+    h1 {
       margin-top: 0;
+      font-size: 1.6rem;
+      color: #212121;
+    }
+
+    p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #555;
+    }
+
+    label {
+      font-weight: 600;
+      display: block;
+      margin-top: 1.5rem;
     }
 
     textarea {
       width: 100%;
-      height: 100px;
-      padding: 10px;
+      height: 120px;
+      padding: 12px;
       font-size: 16px;
-      border-radius: 8px;
+      border-radius: 10px;
       border: 1px solid #ccc;
       resize: vertical;
+      margin-top: 8px;
     }
 
     button {
-      margin-top: 10px;
+      margin-top: 12px;
       padding: 12px 24px;
       font-size: 16px;
-      font-weight: bold;
-      background-color: #ffd700;
+      font-weight: 600;
+      background-color: #f7931e;
+      color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
@@ -58,19 +71,39 @@
 
     #response {
       margin-top: 20px;
-      background: #e0f7fa;
-      padding: 12px;
-      border-radius: 8px;
+      background: #e6f4ea;
+      padding: 16px;
+      border-radius: 12px;
       font-size: 15px;
       white-space: pre-wrap;
+      color: #1a1a1a;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      #chatbox {
+        padding: 16px;
+      }
+
+      textarea {
+        height: 100px;
+      }
     }
   </style>
 </head>
 <body>
   <div id="chatbox">
-    <h2>KaiJa Honey GPT 🐝</h2>
-    <textarea id="userInput" placeholder="Stelle mir deine Preisfrage..."></textarea>
+    <h1>Märki GPT – 360° Lifecycle Check</h1>
+    <p>Starte jetzt deinen strategischen Audit. Märki ist bereit.</p>
+
+    <label for="userInput">Deine Eingabe:</label>
+    <textarea id="userInput" placeholder="Oder beginne direkt mit: 'Willkommen zum 360° Lifecycle-Check ...'"></textarea>
+
     <button id="sendBtn" onclick="sendMessage()">Senden</button>
+
     <div id="response" aria-live="polite"></div>
   </div>
 
@@ -86,6 +119,15 @@
       }
     });
 
+    window.onload = () => {
+      const initialPrompt = `Willkommen zum 360° Lifecycle-Check für IT-Reseller – powered by KaiJa & Märki GPT.
+Ziel: Du findest in wenigen Minuten heraus, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell ist.
+
+Bereit? Dann starten wir.`;
+      textarea.value = initialPrompt;
+      sendMessage();
+    };
+
     async function sendMessage() {
       const input = textarea.value.trim();
       if (!input) return;
@@ -94,7 +136,7 @@
       responseDiv.textContent = "Antwort wird geladen...";
 
       try {
-        const res = await fetch("https://kaija-honey-chat.vercel.app/api/kaija-chat", {
+        const res = await fetch("/api/kaija-chat", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ userInput: input })
@@ -110,11 +152,12 @@
           throw new Error("Keine gültige Antwort von GPT erhalten.");
         }
 
-        responseDiv.innerHTML = "<strong>Antwort:</strong><br>" + data.reply;
+        responseDiv.innerHTML = "<strong>Antwort von Märki:</strong><br>" + data.reply;
       } catch (err) {
         responseDiv.textContent = "Fehler: " + err.message;
       } finally {
         button.disabled = false;
+        textarea.value = "";
       }
     }
   </script>
