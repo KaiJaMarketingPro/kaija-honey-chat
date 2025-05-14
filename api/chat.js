@@ -1,15 +1,24 @@
-// /api/chat.js – Azure GPT Proxy für Vercel
-export default async function handler(req, res) {
-  const endpoint = "https://kaija-openai.openai.azure.com/openai/deployments/maerki-gpt/chat/completions?api-version=2024-04-15";
-  const apiKey = process.env.AZURE_API_KEY;
+// /api/chat.js – Azure GPT Proxy für Märki GPT via Vercel Serverless
 
+export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Only POST requests allowed" });
   }
 
-  try {
-    const { messages } = req.body;
+  const apiKey = process.env.AZURE_API_KEY;
 
+  if (!apiKey) {
+    return res.status(500).json({ error: "API Key missing in environment variables" });
+  }
+
+  const endpoint = "https://kaija-openai.openai.azure.com/openai/deployments/maerki-gpt/chat/completions?api-version=2024-04-15";
+  const { messages } = req.body;
+
+  if (!messages || !Array.isArray(messages)) {
+    return res.status(400).json({ error: "Invalid input: 'messages' must be an array." });
+  }
+
+  try {
     const response = await fetch(endpoint, {
       method: "POST",
       headers: {
@@ -26,10 +35,16 @@ export default async function handler(req, res) {
       })
     });
 
-    const result = await response.json();
-    res.status(200).json(result);
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("❌ Azure GPT error:", data);
+      return res.status(response.status).json(data);
+    }
+
+    res.status(200).json(data);
   } catch (err) {
-    console.error("❌ Fehler im Proxy:", err);
-    res.status(500).json({ error: "Proxy Error", details: err.message });
+    console.error("❌ Proxy error:", err);
+    res.status(500).json({ error: "Proxy failed", details: err.message });
   }
 }
