@@ -17,5 +17,14 @@
         }
       ]
     }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/gpt",
+      "destination": "/index.html",
+      "permanent": true
+    }
   ]
 }
