@@ -5,7 +5,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "frame-ancestors 'self' https://www.kaija-marketing.pro"
+          "value": "frame-ancestors 'self' https://www.kaija-marketing.pro https://kaija-marketing.pro"
         },
         {
           "key": "Referrer-Policy",
