@@ -5,9 +5,22 @@
       "headers": [
         {
           "key": "X-Frame-Options",
-          "value": "ALLOWALL"
+          "value": "ALLOW-FROM https://www.kaija-marketing.pro"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "frame-ancestors 'self' https://www.kaija-marketing.pro"
         }
       ]
+    }
+  ],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/gpt",
+      "destination": "/index.html",
+      "permanent": true
     }
   ]
 }
