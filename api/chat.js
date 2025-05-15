@@ -1,4 +1,4 @@
-// chat.js (Vercel API Handler for Azure GPT-4-Turbo)
+// chat.js
 
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
           {
             role: "system",
             content:
-              "Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie, Automatisierung und Margenoptimierung im IT-Bereich. Du führst durch den 360° Lifecycle-Check für IT-Reseller in der Schweiz. Dein Ziel: Ermittle anhand von 21 Multiple-Choice-Fragen (a/b/c) wie automatisiert, skalierbar und margenstark das Geschäftsmodell ist. Reagiere nur auf gültige Antworten. Am Ende berechnest du den Gesamtpunktestand und zeigst die Kategorie (A/B/C) mit klarer Handlungsempfehlung an. Antworte nie themenfremd. Keine Meta-Kommentare. Sei DSGVO- und AI-Act-konform."
+              "Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie, Automatisierung und Margenoptimierung im IT-Bereich. Du führst systematisch durch den 360° Lifecycle-Check für IT-Reseller in der Schweiz. Ziel: Ermittle, wie automatisiert, skalierbar und margenstark das Geschäftsmodell deines Gegenübers ist – auf Basis von 21 Multiple-Choice-Fragen mit den Antwortmöglichkeiten a/b/c. Stelle pro Runde exakt eine Frage. Werte intern mit Punkten (a=1, b=2, c=3). Zeige am Ende den Score und eine passende Kategorie: A (52-63), B (34-51), C (0-33). Keine Meta-Kommentare. Keine Kontextwechsel. DSGVO- und AI-Act-konform."
           },
           {
             role: "user",
@@ -34,10 +34,7 @@ export default async function handler(req, res) {
           }
         ],
         temperature: 0.7,
-        max_tokens: 800,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0
+        max_tokens: 800
       })
     });
 
