@@ -26,6 +26,7 @@
         background: #f0f0f0;
         padding: 1em;
         border-radius: 8px;
+        min-height: 80px;
       }
       #error {
         color: red;
@@ -57,7 +58,8 @@
 
       <footer>
         Diese Anwendung nutzt Azure OpenAI (gehostet in der Schweiz). <br />
-        Es werden keine personenbezogenen Daten gespeichert.<br />
+        Es werden keine personenbezogenen Daten gespeichert.
+        <br />
         <a href="/datenschutz" target="_blank">Mehr erfahren</a>
       </footer>
     </div>
@@ -82,8 +84,7 @@
         let antwort = await sendToMaerkiGPT("Lifecycle Check starten");
 
         if (antwort.startsWith('❌')) {
-          // Retry Feedback anzeigen, falls Retry ausgelöst wird
-          outputEl.innerText = '🔁 Zweiter Versuch wird gestartet...';
+          outputEl.innerText = '🔁 GPT wird erneut kontaktiert...';
           antwort = await sendToMaerkiGPT("Lifecycle Check starten");
         }
 
@@ -95,7 +96,7 @@
         } else {
           outputEl.innerText = antwort;
         }
-      }
+      };
     </script>
   </body>
 </html>
