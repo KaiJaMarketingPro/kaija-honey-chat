@@ -12,6 +12,8 @@ export default async function handler(req, res) {
 
   const userMessage = req.body.messages?.[0]?.content || "Lifecycle Check starten";
 
+  console.log("▶️ Eingehende User-Nachricht:", userMessage); // 🔍 Debug
+
   try {
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -23,7 +25,7 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "system",
-            content: "Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie, Automatisierung und Margenoptimierung im IT-Bereich. Du führst systematisch durch den 360° Lifecycle-Check für IT-Reseller in der Schweiz. Ziel: Ermittle, wie automatisiert, skalierbar und margenstark das Geschäftsmodell deines Gegenübers ist – auf Basis von 21 Multiple-Choice-Fragen. Stelle nacheinander genau eine Frage pro Runde. Antworte nie ausserhalb dieses Rahmens. Kein Smalltalk. Kein Kontextwechsel. DSGVO- & AI-Act-konform."
+            content: "Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie..."
           },
           {
             role: "user",
@@ -32,16 +34,16 @@ export default async function handler(req, res) {
         ],
         temperature: 0.7,
         max_tokens: 800,
-        top_p: 1,
-        frequency_penalty: 0,
-        presence_penalty: 0
+        top_p: 1
       })
     });
 
     const data = await response.json();
+    console.log("✅ GPT-Antwort erhalten:", data); // 🔍 Debug
+
     res.status(response.status).json(data);
   } catch (error) {
-    console.error("GPT Proxy Error:", error);
-    res.status(500).json({ error: "Fehler bei der Kommunikation mit Märki GPT." });
+    console.error("❌ Fehler bei GPT-Fetch:", error);
+    res.status(500).json({ error: "GPT-Fetch fehlgeschlagen." });
   }
 }
