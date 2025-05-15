@@ -13,18 +13,9 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "camera=(), microphone=(), geolocation=()"
+          "value": "clipboard-write=(), microphone=()"
         }
       ]
-    }
-  ],
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "redirects": [
-    {
-      "source": "/gpt",
-      "destination": "/index.html",
-      "permanent": true
     }
   ]
 }
