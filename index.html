@@ -2,11 +2,11 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Lifecycle Check – KaiJa & Märki GPT</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>360° Lifecycle Check – Märki & KaiJa GPT</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
       background: #f9f9f9;
@@ -16,7 +16,7 @@
       margin: 40px auto;
       background: #fff;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
       overflow: hidden;
     }
     .messages {
@@ -24,10 +24,10 @@
       height: 500px;
       overflow-y: auto;
       border-bottom: 1px solid #ddd;
-      white-space: pre-wrap;
     }
     .message {
       margin-bottom: 15px;
+      white-space: pre-wrap;
     }
     .user {
       text-align: right;
@@ -57,48 +57,65 @@
     button:hover {
       background: #0056b3;
     }
-    #lifecycle-result {
-      display: none;
-      background: #f4f8ff;
-      border-left: 4px solid #007bff;
-      padding: 16px;
-      margin: 20px auto;
-      max-width: 700px;
-      border-radius: 6px;
-    }
-    #lifecycle-result a.btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 20px;
-      background: #007bff;
-      color: white;
-      text-decoration: none;
-      border-radius: 4px;
-    }
-    #lifecycle-result a.btn:hover {
-      background: #0056b3;
-    }
   </style>
 </head>
-<body>
+<body onload="startLifecycleCheck()">
 
-<div class="chat-container" role="region" aria-label="Lifecycle Chatbereich">
-  <div class="messages" id="chatLog" tabindex="0" aria-live="polite"></div>
-  <div class="input-area">
-    <input type="text" id="userInput" placeholder="Antwort hier eingeben..." aria-label="Antwortfeld" />
-    <button id="send-button">Senden</button>
+  <div class="chat-container">
+    <div class="messages" id="chatLog"></div>
+    <div class="input-area">
+      <input type="text" id="userInput" placeholder="Lifecycle Check starten...">
+      <button id="sendButton" onclick="sendMessage()">Senden</button>
+    </div>
   </div>
-</div>
 
-<!-- Ergebnisanzeige -->
-<div id="lifecycle-result">
-  <h3 id="result-headline"></h3>
-  <p id="result-summary"></p>
-  <a href="https://calendly.com/kaija-strategy-call" target="_blank" class="btn">🚀 Jetzt Strategy Call buchen</a>
-</div>
+  <script>
+    const chatLog = document.getElementById('chatLog');
+    const userInput = document.getElementById('userInput');
+    const sendButton = document.getElementById('sendButton');
 
-<!-- Proxy-ready Script -->
-<script src="kaija-chat.js"></script>
+    async function sendMessage() {
+      const message = userInput.value.trim();
+      if (!message) return;
 
+      appendMessage(message, 'user');
+      userInput.value = '';
+
+      try {
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            messages: [{ role: "user", content: message }]
+          })
+        });
+
+        const data = await response.json();
+        const reply = data.choices?.[0]?.message?.content || "Es gab ein Problem mit der Antwort.";
+        appendMessage(reply, 'assistant');
+
+      } catch (error) {
+        appendMessage("Fehler beim Abrufen der GPT-Antwort.", 'assistant');
+        console.error("Fehler bei fetch():", error);
+      }
+    }
+
+    function appendMessage(content, sender) {
+      const div = document.createElement('div');
+      div.className = 'message ' + sender;
+      div.innerText = content;
+      chatLog.appendChild(div);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function startLifecycleCheck() {
+      setTimeout(() => {
+        userInput.value = "Lifecycle Check starten";
+        sendButton.click();
+      }, 600); // Verzögerung für sichereres Autoload
+    }
+  </script>
 </body>
 </html>
