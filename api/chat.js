@@ -1,3 +1,5 @@
+// chat.js (Vercel API Handler for Azure GPT-4-Turbo)
+
 export default async function handler(req, res) {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Only POST requests allowed" });
@@ -12,8 +14,6 @@ export default async function handler(req, res) {
 
   const userMessage = req.body.messages?.[0]?.content || "Lifecycle Check starten";
 
-  console.log("▶️ Eingehende User-Nachricht:", userMessage); // 🔍 Debug
-
   try {
     const response = await fetch(apiUrl, {
       method: "POST",
@@ -25,7 +25,8 @@ export default async function handler(req, res) {
         messages: [
           {
             role: "system",
-            content: "Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie..."
+            content:
+              "Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie, Automatisierung und Margenoptimierung im IT-Bereich. Du führst durch den 360° Lifecycle-Check für IT-Reseller in der Schweiz. Dein Ziel: Ermittle anhand von 21 Multiple-Choice-Fragen (a/b/c) wie automatisiert, skalierbar und margenstark das Geschäftsmodell ist. Reagiere nur auf gültige Antworten. Am Ende berechnest du den Gesamtpunktestand und zeigst die Kategorie (A/B/C) mit klarer Handlungsempfehlung an. Antworte nie themenfremd. Keine Meta-Kommentare. Sei DSGVO- und AI-Act-konform."
           },
           {
             role: "user",
@@ -34,16 +35,16 @@ export default async function handler(req, res) {
         ],
         temperature: 0.7,
         max_tokens: 800,
-        top_p: 1
+        top_p: 1,
+        frequency_penalty: 0,
+        presence_penalty: 0
       })
     });
 
     const data = await response.json();
-    console.log("✅ GPT-Antwort erhalten:", data); // 🔍 Debug
-
     res.status(response.status).json(data);
   } catch (error) {
-    console.error("❌ Fehler bei GPT-Fetch:", error);
-    res.status(500).json({ error: "GPT-Fetch fehlgeschlagen." });
+    console.error("GPT Proxy Error:", error);
+    res.status(500).json({ error: "Fehler bei Azure GPT-Anfrage." });
   }
 }
