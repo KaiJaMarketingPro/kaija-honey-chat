@@ -1,57 +1,33 @@
-// kaija-chat.js
+// 📁 kaija-chat.js
+// Frontend-Modul zur Kommunikation mit dem Azure-GPT via Proxy
 
-document.addEventListener("DOMContentLoaded", function () {
-  const chatLog = document.getElementById("chatLog");
-  const userInput = document.getElementById("userInput");
-  const sendButton = document.getElementById("sendButton");
+export async function sendToMaerkiGPT(userMessage) {
+  try {
+    const response = await fetch('/api/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: userMessage }],
+      }),
+    });
 
-  sendButton.addEventListener("click", handleUserInput);
-
-  async function handleUserInput() {
-    const message = userInput.value.trim();
-    if (!message) return;
-
-    appendMessage(message, "user");
-    userInput.value = "";
-    appendMessage("⏳ Märki analysiert deine Eingabe...", "assistant");
-
-    try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          messages: [{ role: "user", content: message }]
-        })
-      });
-
-      const data = await response.json();
-      const reply = data?.choices?.[0]?.message?.content;
-
-      if (reply) {
-        appendMessage(reply, "assistant");
-      } else {
-        appendMessage("⚠️ Märki hat nicht geantwortet. Bitte später erneut versuchen.", "assistant");
+    if (!response.ok) {
+      if (response.status === 401 || response.status === 403) {
+        alert('⚠️ Deine Session ist abgelaufen. Bitte lade die Seite neu.');
+        location.reload();
+        return;
       }
-
-    } catch (error) {
-      appendMessage("❌ Technischer Fehler. Bitte versuche es erneut.", "assistant");
-      console.error("GPT Fehler:", error);
+      throw new Error(`API Fehler: ${response.status}`);
     }
-  }
 
-  function appendMessage(content, sender) {
-    const div = document.createElement("div");
-    div.className = "message " + sender;
-    div.innerText = content;
-    chatLog.appendChild(div);
-    chatLog.scrollTop = chatLog.scrollHeight;
-  }
+    const data = await response.json();
+    const reply = data.choices?.[0]?.message?.content;
 
-  // Autostart nur einmal bei Laden der Seite
-  setTimeout(() => {
-    userInput.value = "Lifecycle Check starten";
-    sendButton.click();
-  }, 600);
-});
+    return reply || '❌ Keine Antwort vom GPT erhalten.';
+  } catch (error) {
+    console.error('❌ Fehler beim Senden an Märki GPT:', error);
+    return '❌ Fehler beim Verarbeiten der Anfrage. Bitte versuche es erneut.';
+  }
+}
