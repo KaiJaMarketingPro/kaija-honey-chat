@@ -1,6 +1,7 @@
 // 📁 kaija-chat.js
-// Frontend-Modul zur Kommunikation mit dem Azure-GPT via Proxy + Event-Integration
+// Frontend-Modul zur Kommunikation mit dem Azure-GPT via Proxy + Button-Trigger
 
+// Funktion zum Senden an die Azure-Proxy-API (/api/chat)
 export async function sendToMaerkiGPT(userMessage) {
   try {
     const response = await fetch('/api/chat', {
@@ -32,11 +33,16 @@ export async function sendToMaerkiGPT(userMessage) {
   }
 }
 
-// 🧠 Lifecycle Check Starter direkt im Fenster registrieren:
+// Lifecycle Check Trigger global verfügbar machen
 window.startCheck = async function () {
   const loadingEl = document.getElementById('loading');
   const errorEl = document.getElementById('error');
   const outputEl = document.getElementById('chatOutput');
+
+  if (!loadingEl || !errorEl || !outputEl) {
+    console.error('❌ HTML-Elemente nicht gefunden. Bitte prüfe index.html IDs.');
+    return;
+  }
 
   loadingEl.style.display = 'block';
   errorEl.style.display = 'none';
@@ -48,6 +54,7 @@ window.startCheck = async function () {
 
   if (antwort.startsWith('❌')) {
     errorEl.style.display = 'block';
+    outputEl.innerText = antwort;
   } else {
     outputEl.innerText = antwort;
   }
