@@ -57,8 +57,7 @@
 
       <footer>
         Diese Anwendung nutzt Azure OpenAI (gehostet in der Schweiz). <br />
-        Es werden keine personenbezogenen Daten gespeichert.
-        <br />
+        Es werden keine personenbezogenen Daten gespeichert.<br />
         <a href="/datenschutz" target="_blank">Mehr erfahren</a>
       </footer>
     </div>
@@ -66,19 +65,35 @@
     <script type="module">
       import { sendToMaerkiGPT } from './kaija-chat.js';
 
-      async function startCheck() {
-        document.getElementById('loading').style.display = 'block';
-        document.getElementById('error').style.display = 'none';
-        document.getElementById('chatOutput').innerText = '';
+      window.startCheck = async function () {
+        const loadingEl = document.getElementById('loading');
+        const errorEl = document.getElementById('error');
+        const outputEl = document.getElementById('chatOutput');
 
-        const antwort = await sendToMaerkiGPT("Lifecycle Check starten");
+        if (!loadingEl || !errorEl || !outputEl) {
+          console.error('❌ HTML-Elemente nicht gefunden. Bitte prüfe index.html IDs.');
+          return;
+        }
 
-        document.getElementById('loading').style.display = 'none';
+        loadingEl.style.display = 'block';
+        errorEl.style.display = 'none';
+        outputEl.innerText = '';
+
+        let antwort = await sendToMaerkiGPT("Lifecycle Check starten");
 
         if (antwort.startsWith('❌')) {
-          document.getElementById('error').style.display = 'block';
+          // Retry Feedback anzeigen, falls Retry ausgelöst wird
+          outputEl.innerText = '🔁 Zweiter Versuch wird gestartet...';
+          antwort = await sendToMaerkiGPT("Lifecycle Check starten");
+        }
+
+        loadingEl.style.display = 'none';
+
+        if (antwort.startsWith('❌')) {
+          errorEl.style.display = 'block';
+          outputEl.innerText = antwort;
         } else {
-          document.getElementById('chatOutput').innerText = antwort;
+          outputEl.innerText = antwort;
         }
       }
     </script>
