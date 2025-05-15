@@ -1,73 +1,86 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>360° Lifecycle Check – Märki GPT</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f9f9f9;
-    }
-    .chat-container {
-      max-width: 700px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      overflow: hidden;
-    }
-    .messages {
-      padding: 20px;
-      height: 500px;
-      overflow-y: auto;
-      border-bottom: 1px solid #ddd;
-    }
-    .message {
-      margin-bottom: 15px;
-      white-space: pre-wrap;
-    }
-    .user {
-      text-align: right;
-      color: #007bff;
-      font-weight: bold;
-    }
-    .assistant {
-      color: #333;
-    }
-    .input-area {
-      display: flex;
-      border-top: 1px solid #ddd;
-    }
-    input[type="text"] {
-      flex: 1;
-      padding: 15px;
-      border: none;
-      font-size: 16px;
-    }
-    button {
-      padding: 15px 25px;
-      background: #007bff;
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-  </style>
-</head>
-<body>
-  <div class="chat-container">
-    <div class="messages" id="chatLog"></div>
-    <div class="input-area">
-      <input type="text" id="userInput" placeholder="Lifecycle Check starten...">
-      <button id="sendButton">Senden</button>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Märki Lifecycle Check</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 0;
+        padding: 0;
+        background: #f7f8fa;
+        color: #333;
+      }
+      .container {
+        max-width: 800px;
+        margin: 2em auto;
+        padding: 2em;
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      }
+      #chatOutput {
+        margin-top: 2em;
+        white-space: pre-wrap;
+        background: #f0f0f0;
+        padding: 1em;
+        border-radius: 8px;
+      }
+      #error {
+        color: red;
+        margin-top: 1em;
+        display: none;
+      }
+      #loading {
+        color: #666;
+        margin-top: 1em;
+        display: none;
+      }
+      footer {
+        font-size: 0.8em;
+        margin-top: 3em;
+        color: #999;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>🔍 360° Lifecycle Check für IT-Reseller</h1>
+      <p>Teste, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell ist.</p>
+      <button onclick="startCheck()">Lifecycle Check starten</button>
+
+      <div id="loading">⏳ GPT antwortet...</div>
+      <div id="error">❌ Es gab ein Problem mit der Verbindung zum GPT.</div>
+      <div id="chatOutput"></div>
+
+      <footer>
+        Diese Anwendung nutzt Azure OpenAI (gehostet in der Schweiz). <br />
+        Es werden keine personenbezogenen Daten gespeichert.
+        <br />
+        <a href="/datenschutz" target="_blank">Mehr erfahren</a>
+      </footer>
     </div>
-  </div>
-  <script src="kaija-chat.js"></script>
-</body>
+
+    <script type="module">
+      import { sendToMaerkiGPT } from './kaija-chat.js';
+
+      async function startCheck() {
+        document.getElementById('loading').style.display = 'block';
+        document.getElementById('error').style.display = 'none';
+        document.getElementById('chatOutput').innerText = '';
+
+        const antwort = await sendToMaerkiGPT("Lifecycle Check starten");
+
+        document.getElementById('loading').style.display = 'none';
+
+        if (antwort.startsWith('❌')) {
+          document.getElementById('error').style.display = 'block';
+        } else {
+          document.getElementById('chatOutput').innerText = antwort;
+        }
+      }
+    </script>
+  </body>
 </html>
