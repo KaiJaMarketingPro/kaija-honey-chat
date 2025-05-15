@@ -1,8 +1,7 @@
 // 📁 kaija-chat.js
-// Frontend-Modul zur Kommunikation mit dem Azure-GPT via Proxy + Button-Trigger
+// GPT-Kommunikation via Proxy mit Retry, Lade- & Fehleranzeige
 
-// Funktion zum Senden an die Azure-Proxy-API (/api/chat)
-export async function sendToMaerkiGPT(userMessage) {
+export async function sendToMaerkiGPT(userMessage, retries = 1) {
   try {
     const response = await fetch('/api/chat', {
       method: 'POST',
@@ -20,6 +19,12 @@ export async function sendToMaerkiGPT(userMessage) {
         location.reload();
         return;
       }
+
+      if ([500, 502, 503, 504].includes(response.status) && retries > 0) {
+        console.warn(`🔁 Retry wegen GPT-Fehler (${response.status})...`);
+        return await sendToMaerkiGPT(userMessage, retries - 1);
+      }
+
       throw new Error(`API Fehler: ${response.status}`);
     }
 
@@ -28,12 +33,17 @@ export async function sendToMaerkiGPT(userMessage) {
 
     return reply || '❌ Keine Antwort vom GPT erhalten.';
   } catch (error) {
+    if (retries > 0) {
+      console.warn('🔁 Retry wegen Netzwerkfehler...', error);
+      return await sendToMaerkiGPT(userMessage, retries - 1);
+    }
+
     console.error('❌ Fehler beim Senden an Märki GPT:', error);
     return '❌ Fehler beim Verarbeiten der Anfrage. Bitte versuche es erneut.';
   }
 }
 
-// Lifecycle Check Trigger global verfügbar machen
+// Globaler Trigger für HTML-Button
 window.startCheck = async function () {
   const loadingEl = document.getElementById('loading');
   const errorEl = document.getElementById('error');
