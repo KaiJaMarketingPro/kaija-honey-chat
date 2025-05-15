@@ -1,3 +1,5 @@
+// kaija-chat.js
+
 document.addEventListener("DOMContentLoaded", function () {
   const chatLog = document.getElementById("chatLog");
   const userInput = document.getElementById("userInput");
@@ -9,11 +11,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const message = userInput.value.trim();
     if (!message) return;
 
-    console.log("🟦 User Input:", message);
     appendMessage(message, "user");
     userInput.value = "";
-
-    // Sofortige Ladeanzeige
     appendMessage("⏳ Märki analysiert deine Eingabe...", "assistant");
 
     try {
@@ -28,21 +27,17 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       const data = await response.json();
-      console.log("🟩 GPT Response (Raw):", data);
-
       const reply = data?.choices?.[0]?.message?.content;
 
       if (reply) {
-        console.log("🟢 GPT antwortet:", reply);
         appendMessage(reply, "assistant");
       } else {
-        console.warn("⚠️ GPT hat keine Antwort geliefert.");
-        appendMessage("⚠️ Märki GPT hat nicht geantwortet. Bitte versuche es erneut.", "assistant");
+        appendMessage("⚠️ Märki hat nicht geantwortet. Bitte später erneut versuchen.", "assistant");
       }
 
     } catch (error) {
-      console.error("❌ Fehler beim GPT-Aufruf:", error);
-      appendMessage("❌ Technischer Fehler. Bitte versuche es später erneut.", "assistant");
+      appendMessage("❌ Technischer Fehler. Bitte versuche es erneut.", "assistant");
+      console.error("GPT Fehler:", error);
     }
   }
 
@@ -54,9 +49,8 @@ document.addEventListener("DOMContentLoaded", function () {
     chatLog.scrollTop = chatLog.scrollHeight;
   }
 
-  // Autostart
+  // Autostart nur einmal bei Laden der Seite
   setTimeout(() => {
-    console.log("▶️ Lifecycle Check Trigger gestartet");
     userInput.value = "Lifecycle Check starten";
     sendButton.click();
   }, 600);
