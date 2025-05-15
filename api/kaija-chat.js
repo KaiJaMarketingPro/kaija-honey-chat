@@ -13,6 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
     appendMessage(message, "user");
     userInput.value = "";
 
+    // Sofortige Ladeanzeige
+    appendMessage("⏳ Märki analysiert deine Eingabe...", "assistant");
+
     try {
       const response = await fetch("/api/chat", {
         method: "POST",
@@ -33,13 +36,13 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("🟢 GPT antwortet:", reply);
         appendMessage(reply, "assistant");
       } else {
-        console.warn("⚠️ GPT hat keine verwertbare Antwort zurückgegeben.");
-        appendMessage("⚠️ Märki GPT hat leider nicht geantwortet. Bitte versuche es erneut oder überprüfe die API.", "assistant");
+        console.warn("⚠️ GPT hat keine Antwort geliefert.");
+        appendMessage("⚠️ Märki GPT hat nicht geantwortet. Bitte versuche es erneut.", "assistant");
       }
 
     } catch (error) {
-      console.error("❌ Fehler beim Abruf der GPT-Antwort:", error);
-      appendMessage("❌ Technischer Fehler beim Aufruf von Märki GPT. Bitte später erneut versuchen.", "assistant");
+      console.error("❌ Fehler beim GPT-Aufruf:", error);
+      appendMessage("❌ Technischer Fehler. Bitte versuche es später erneut.", "assistant");
     }
   }
 
@@ -51,9 +54,9 @@ document.addEventListener("DOMContentLoaded", function () {
     chatLog.scrollTop = chatLog.scrollHeight;
   }
 
-  // Automatischer Start mit „Lifecycle Check starten“
+  // Autostart
   setTimeout(() => {
-    console.log("▶️ Autostart Trigger: Lifecycle Check starten");
+    console.log("▶️ Lifecycle Check Trigger gestartet");
     userInput.value = "Lifecycle Check starten";
     sendButton.click();
   }, 600);
