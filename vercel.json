@@ -26,6 +26,5 @@
       "destination": "/index.html",
       "permanent": true
     }
-  ],
-  "redeployTrigger": "csp-update"
+  ]
 }
