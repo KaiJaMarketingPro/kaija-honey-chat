@@ -1,47 +1,40 @@
-// chat.js
+// 📁 /pages/api/chat.js
+// Serverless-Proxy zu Azure OpenAI (Deployment: maerki-gpt)
 
 export default async function handler(req, res) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Only POST requests allowed" });
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt.' });
   }
 
-  const apiKey = process.env.AZURE_API_KEY;
-  const apiUrl = process.env.AZURE_API_URL;
+  const { messages } = req.body;
 
-  if (!apiKey || !apiUrl) {
-    return res.status(500).json({ error: "Missing API credentials." });
-  }
-
-  const userMessage = req.body.messages?.[0]?.content || "Lifecycle Check starten";
+  const endpoint = `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${process.env.AZURE_OPENAI_DEPLOYMENT}/chat/completions?api-version=${process.env.AZURE_OPENAI_VERSION}`;
 
   try {
-    const response = await fetch(apiUrl, {
-      method: "POST",
+    const azureRes = await fetch(endpoint, {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
-        "api-key": apiKey
+        'Content-Type': 'application/json',
+        'api-key': process.env.AZURE_OPENAI_KEY,
       },
       body: JSON.stringify({
-        messages: [
-          {
-            role: "system",
-            content:
-              "Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie, Automatisierung und Margenoptimierung im IT-Bereich. Du führst systematisch durch den 360° Lifecycle-Check für IT-Reseller in der Schweiz. Ziel: Ermittle, wie automatisiert, skalierbar und margenstark das Geschäftsmodell deines Gegenübers ist – auf Basis von 21 Multiple-Choice-Fragen mit den Antwortmöglichkeiten a/b/c. Stelle pro Runde exakt eine Frage. Werte intern mit Punkten (a=1, b=2, c=3). Zeige am Ende den Score und eine passende Kategorie: A (52-63), B (34-51), C (0-33). Keine Meta-Kommentare. Keine Kontextwechsel. DSGVO- und AI-Act-konform."
-          },
-          {
-            role: "user",
-            content: userMessage
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 800
-      })
+        messages,
+        temperature: 0.3,
+        max_tokens: 1200,
+      }),
     });
 
-    const data = await response.json();
-    res.status(response.status).json(data);
-  } catch (error) {
-    console.error("GPT Proxy Error:", error);
-    res.status(500).json({ error: "Fehler bei Azure GPT-Anfrage." });
+    if (!azureRes.ok) {
+      console.error(`Azure GPT-Fehler: ${azureRes.status}`);
+      return res
+        .status(azureRes.status)
+        .json({ error: `Azure GPT Fehler: ${azureRes.status}` });
+    }
+
+    const result = await azureRes.json();
+    res.status(200).json(result);
+  } catch (err) {
+    console.error('❌ Serverfehler beim Proxy-Request:', err);
+    res.status(500).json({ error: 'Proxy-Fehler beim Aufruf der Azure API.' });
   }
 }
