@@ -68,4 +68,4 @@ window.startCheck = async function () {
   } else {
     outputEl.innerText = antwort;
   }
-};
+}
