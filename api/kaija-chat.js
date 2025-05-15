@@ -7,8 +7,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function handleUserInput() {
     const message = userInput.value.trim();
-    if (message === "") return;
+    if (!message) return;
 
+    console.log("🟦 User Input:", message);
     appendMessage(message, "user");
     userInput.value = "";
 
@@ -24,11 +25,21 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       const data = await response.json();
-      const reply = data.choices?.[0]?.message?.content || "⚠️ Märki hat nicht reagiert.";
-      appendMessage(reply, "assistant");
+      console.log("🟩 GPT Response (Raw):", data);
+
+      const reply = data?.choices?.[0]?.message?.content;
+
+      if (reply) {
+        console.log("🟢 GPT antwortet:", reply);
+        appendMessage(reply, "assistant");
+      } else {
+        console.warn("⚠️ GPT hat keine verwertbare Antwort zurückgegeben.");
+        appendMessage("⚠️ Märki GPT hat leider nicht geantwortet. Bitte versuche es erneut oder überprüfe die API.", "assistant");
+      }
+
     } catch (error) {
-      console.error("❌ Fehler beim Abrufen der GPT-Antwort:", error);
-      appendMessage("❌ Verbindung zu Märki GPT fehlgeschlagen.", "assistant");
+      console.error("❌ Fehler beim Abruf der GPT-Antwort:", error);
+      appendMessage("❌ Technischer Fehler beim Aufruf von Märki GPT. Bitte später erneut versuchen.", "assistant");
     }
   }
 
@@ -40,8 +51,9 @@ document.addEventListener("DOMContentLoaded", function () {
     chatLog.scrollTop = chatLog.scrollHeight;
   }
 
-  // Automatisch starten mit Trigger
+  // Automatischer Start mit „Lifecycle Check starten“
   setTimeout(() => {
+    console.log("▶️ Autostart Trigger: Lifecycle Check starten");
     userInput.value = "Lifecycle Check starten";
     sendButton.click();
   }, 600);
