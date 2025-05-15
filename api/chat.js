@@ -1,5 +1,5 @@
-// 📁 /pages/api/chat.js
-// Serverless-Proxy zu Azure OpenAI (Deployment: maerki-gpt)
+// 📁 /api/chat.js
+// Azure OpenAI Proxy mit Retry-Logik bei Fehlern und stabilem Timeout-Handling
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -7,34 +7,46 @@ export default async function handler(req, res) {
   }
 
   const { messages } = req.body;
-
   const endpoint = `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${process.env.AZURE_OPENAI_DEPLOYMENT}/chat/completions?api-version=${process.env.AZURE_OPENAI_VERSION}`;
 
-  try {
-    const azureRes = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': process.env.AZURE_OPENAI_KEY,
-      },
-      body: JSON.stringify({
-        messages,
-        temperature: 0.3,
-        max_tokens: 1200,
-      }),
-    });
+  const maxRetries = 1;
+  let retryCount = 0;
 
-    if (!azureRes.ok) {
-      console.error(`Azure GPT-Fehler: ${azureRes.status}`);
-      return res
-        .status(azureRes.status)
-        .json({ error: `Azure GPT Fehler: ${azureRes.status}` });
+  while (retryCount <= maxRetries) {
+    try {
+      const azureRes = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': process.env.AZURE_OPENAI_KEY,
+        },
+        body: JSON.stringify({
+          messages,
+          temperature: 0.3,
+          max_tokens: 1200,
+        }),
+      });
+
+      if (!azureRes.ok) {
+        if ([500, 502, 503, 504].includes(azureRes.status) && retryCount < maxRetries) {
+          console.warn(`🔁 Retry (#${retryCount + 1}) wegen GPT-Fehler: ${azureRes.status}`);
+          retryCount++;
+          continue;
+        }
+        return res.status(azureRes.status).json({ error: `Azure GPT Fehler: ${azureRes.status}` });
+      }
+
+      const result = await azureRes.json();
+      return res.status(200).json(result);
+
+    } catch (err) {
+      if (retryCount < maxRetries) {
+        console.warn(`🔁 Retry (#${retryCount + 1}) wegen Netzwerkfehler:`, err);
+        retryCount++;
+        continue;
+      }
+      console.error('❌ Proxy-Fehler:', err);
+      return res.status(500).json({ error: 'Serverfehler beim Aufruf der Azure API.' });
     }
-
-    const result = await azureRes.json();
-    res.status(200).json(result);
-  } catch (err) {
-    console.error('❌ Serverfehler beim Proxy-Request:', err);
-    res.status(500).json({ error: 'Proxy-Fehler beim Aufruf der Azure API.' });
   }
 }
