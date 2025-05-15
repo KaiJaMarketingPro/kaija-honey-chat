@@ -4,12 +4,16 @@
       "source": "/(.*)",
       "headers": [
         {
-          "key": "X-Frame-Options",
-          "value": "ALLOW-FROM https://www.kaija-marketing.pro"
-        },
-        {
           "key": "Content-Security-Policy",
           "value": "frame-ancestors 'self' https://www.kaija-marketing.pro"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
         }
       ]
     }
