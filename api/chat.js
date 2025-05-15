@@ -4,42 +4,34 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.AZURE_API_KEY;
-  const deployment = process.env.AZURE_DEPLOYMENT_NAME || "maerki-gpt";
-  const endpoint = `${process.env.AZURE_ENDPOINT}/openai/deployments/${deployment}/chat/completions?api-version=2024-04-15`;
+  const apiUrl = process.env.AZURE_API_URL;
 
-  const { messages } = req.body;
-
-  if (!apiKey || !messages || !Array.isArray(messages)) {
-    return res.status(400).json({ error: "Missing API key or invalid input." });
+  if (!apiKey || !apiUrl) {
+    return res.status(500).json({ error: "API config missing. Check environment variables." });
   }
 
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(apiUrl, {
       method: "POST",
       headers: {
-        "api-key": apiKey,
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "api-key": apiKey
       },
       body: JSON.stringify({
-        messages,
-        temperature: 0.5,
+        messages: req.body.messages,
+        temperature: 0.7,
         max_tokens: 800,
-        top_p: 0.95,
+        top_p: 1,
         frequency_penalty: 0,
         presence_penalty: 0
       })
     });
 
     const data = await response.json();
+    res.status(response.status).json(data);
 
-    if (!response.ok) {
-      console.error("GPT-Proxy error:", data);
-      return res.status(response.status).json(data);
-    }
-
-    res.status(200).json(data);
-  } catch (err) {
-    console.error("GPT Fetch failed:", err);
-    res.status(500).json({ error: "GPT call failed", details: err.message });
+  } catch (error) {
+    console.error("GPT Proxy Error:", error);
+    res.status(500).json({ error: "Fehler bei der Kommunikation mit Märki GPT." });
   }
 }
