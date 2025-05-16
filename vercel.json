@@ -5,7 +5,9 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; frame-ancestors 'self' https://www.kaija-marketing.pro"
+          "value": "default-src 'self'; script-src 'self'; connect-src 'self'; style-src 'self' 'unsafe-inline'; frame-ancestors 'self' https://www.kaija-marketing.pro"
+          // optional: , report-uri https://example.com/csp-violation-report
+          // oder: , report-to csp-endpoint
         },
         {
           "key": "Referrer-Policy",
