@@ -1,16 +1,38 @@
 // 📁 /api/chat.js
-// Azure OpenAI Proxy mit Retry, Timeout-Handling & Sicherheitsprüfung
+// Azure OpenAI Proxy mit Retry, Timeout & Systemprompt-Integration
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt.' });
   }
 
-  const { messages } = req.body;
+  const { messages = [] } = req.body;
 
   if (!Array.isArray(messages)) {
     return res.status(400).json({ error: 'Ungültiges Nachrichtenformat. Erwartet: Array von Messages.' });
   }
+
+  // ⬇️ Systemprompt als erstes Element hinzufügen
+  const systemPrompt = {
+    role: "system",
+    content: `Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie, Automatisierung und Margenoptimierung im IT-Bereich. Du führst systematisch durch den 360° Lifecycle-Check für IT-Reseller in der Schweiz.
+    
+Stelle insgesamt 21 Fragen, je Kategorie 7 (Automatisierung, Skalierbarkeit, Margenstärke).
+Jede Frage ist im Multiple-Choice-Format: (a) ... (b) ... (c) ...
+Antworte nur mit einer Frage pro Runde.
+Warte auf eine Eingabe „a“, „b“ oder „c“, bewerte jede Antwort intern mit Punkten:
+a = 1 Punkt, b = 2 Punkte, c = 3 Punkte.
+Am Ende:
+- Zeige Score + Kategorie (A: 52–63, B: 34–51, C: 0–33)
+- Gib eine klare Handlungsempfehlung (z. B. Automatisierung, Funnel, Beratung).
+Verlasse niemals das Lifecycle-Format. Keine Meta-Kommentare. DSGVO- und AI Act-konform.`
+  };
+
+  const payload = {
+    messages: [systemPrompt, ...messages],
+    temperature: 0.3,
+    max_tokens: 1200,
+  };
 
   const endpoint = `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${process.env.AZURE_OPENAI_DEPLOYMENT}/chat/completions?api-version=${process.env.AZURE_OPENAI_VERSION}`;
 
@@ -20,7 +42,7 @@ export default async function handler(req, res) {
   while (retryCount <= maxRetries) {
     try {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10000); // 10 Sek
+      const timeout = setTimeout(() => controller.abort(), 10000);
 
       console.log(`[${new Date().toISOString()}] 🌐 GPT-Request an Azure wird gesendet (Versuch ${retryCount + 1})`);
 
@@ -30,11 +52,7 @@ export default async function handler(req, res) {
           'Content-Type': 'application/json',
           'api-key': process.env.AZURE_OPENAI_KEY,
         },
-        body: JSON.stringify({
-          messages,
-          temperature: 0.3,
-          max_tokens: 1200,
-        }),
+        body: JSON.stringify(payload),
         signal: controller.signal,
       });
 
