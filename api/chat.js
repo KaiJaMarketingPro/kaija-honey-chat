@@ -12,6 +12,7 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Ungültiges Nachrichtenformat. Erwartet: Array von Messages.' });
   }
 
+  // ⬇️ Systemprompt für Märki GPT
   const systemPrompt = {
     role: "system",
     content: `Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie, Automatisierung und Margenoptimierung im IT-Bereich. Du führst systematisch durch den 360° Lifecycle-Check für IT-Reseller in der Schweiz.
@@ -37,7 +38,9 @@ Verlasse niemals das Lifecycle-Format. Keine Meta-Kommentare. DSGVO- und AI Act-
   const apiKey = process.env.AZURE_OPENAI_KEY;
 
   if (!endpoint || !apiKey) {
-    return res.status(500).json({ error: 'Fehlende Umgebungsvariablen. Bitte überprüfe AZURE_OPENAI_* in Vercel.' });
+    return res.status(500).json({
+      error: 'Fehlende Umgebungsvariablen. Bitte überprüfe AZURE_OPENAI_* in Vercel.',
+    });
   }
 
   const maxRetries = 1;
@@ -46,7 +49,7 @@ Verlasse niemals das Lifecycle-Format. Keine Meta-Kommentare. DSGVO- und AI Act-
   while (retryCount <= maxRetries) {
     try {
       const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 10000);
+      const timeout = setTimeout(() => controller.abort(), 10000); // 10s Timeout
 
       console.log(`[${new Date().toISOString()}] 🌐 GPT-Request an Azure wird gesendet (Versuch ${retryCount + 1})`);
 
@@ -69,7 +72,10 @@ Verlasse niemals das Lifecycle-Format. Keine Meta-Kommentare. DSGVO- und AI Act-
           continue;
         }
         const errText = await azureRes.text();
-        return res.status(azureRes.status).json({ error: `Azure GPT Fehler: ${azureRes.status}`, message: errText });
+        return res.status(azureRes.status).json({
+          error: `Azure GPT Fehler: ${azureRes.status}`,
+          message: errText,
+        });
       }
 
       const result = await azureRes.json();
@@ -82,7 +88,10 @@ Verlasse niemals das Lifecycle-Format. Keine Meta-Kommentare. DSGVO- und AI Act-
         continue;
       }
       console.error(`[${new Date().toISOString()}] ❌ GPT-Proxy-Fehler:`, err);
-      return res.status(500).json({ error: 'Serverfehler beim Aufruf der Azure API.', details: err.message });
+      return res.status(500).json({
+        error: 'Serverfehler beim Aufruf der Azure API.',
+        details: err.message,
+      });
     }
   }
 }
