@@ -1,7 +1,7 @@
-// 📁 kaija-chat.js
-// GPT-Kommunikation via Proxy mit Debug & Retry + Lifecycle Trigger
+// 📁 kaija-chat.js – FINAL Stand 16.05.25
+// Kein Modul, kein export – direkt eingebunden
 
-export async function sendToMaerkiGPT(userMessage, retries = 1) {
+async function sendToMaerkiGPT(userMessage, retries = 1) {
   console.log("📡 Starte GPT-Request mit:", userMessage);
 
   try {
@@ -35,14 +35,13 @@ export async function sendToMaerkiGPT(userMessage, retries = 1) {
   }
 }
 
-// Optional: für index.html (nicht für embed.html)
-window.startCheck = async function () {
+function startCheck() {
   const loadingEl = document.getElementById('loading');
   const errorEl = document.getElementById('error');
   const outputEl = document.getElementById('chatOutput');
 
   if (!loadingEl || !errorEl || !outputEl) {
-    console.error('❌ HTML-Elemente nicht gefunden. Bitte prüfe index.html IDs.');
+    console.error('❌ HTML-Elemente nicht gefunden.');
     return;
   }
 
@@ -53,15 +52,21 @@ window.startCheck = async function () {
   outputEl.innerText = '';
 
   console.log("🚀 Sende an GPT:", prompt);
-  const antwort = await sendToMaerkiGPT(prompt);
+  sendToMaerkiGPT(prompt).then(antwort => {
+    loadingEl.style.display = 'none';
 
-  loadingEl.style.display = 'none';
-
-  if (antwort.startsWith('❌')) {
+    if (antwort.startsWith('❌')) {
+      errorEl.style.display = 'block';
+      outputEl.innerText = antwort;
+    } else {
+      errorEl.style.display = 'none';
+      outputEl.innerText = antwort;
+      outputEl.scrollIntoView({ behavior: "smooth" });
+    }
+  }).catch(err => {
+    loadingEl.style.display = 'none';
     errorEl.style.display = 'block';
-    outputEl.innerText = antwort;
-  } else {
-    errorEl.style.display = 'none';
-    outputEl.innerText = antwort;
-  }
+    outputEl.innerText = '❌ GPT konnte nicht kontaktiert werden.';
+    console.error("❌ GPT-Fehler:", err);
+  });
 }
