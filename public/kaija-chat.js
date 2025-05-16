@@ -1,5 +1,4 @@
-// 📁 kaija-chat.js – FINAL Stand 16.05.25
-// Kein Modul, kein export – direkt eingebunden
+// kaija-chat.js – final, global eingebunden, kein export
 
 async function sendToMaerkiGPT(userMessage, retries = 1) {
   console.log("📡 Starte GPT-Request mit:", userMessage);
