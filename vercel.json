@@ -27,8 +27,5 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false,
-  "meta": {
-    "deployNote": "trigger: 16.05.25 – force redeploy for frame-ancestors"
-  }
+  "trailingSlash": false
 }
