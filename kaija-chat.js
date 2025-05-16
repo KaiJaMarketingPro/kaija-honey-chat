@@ -1,5 +1,5 @@
 // 📁 kaija-chat.js
-// GPT-Kommunikation via Proxy mit Debug & Retry
+// GPT-Kommunikation via Proxy mit Debug & Retry + Lifecycle Trigger
 
 export async function sendToMaerkiGPT(userMessage, retries = 1) {
   console.log("📡 Starte GPT-Request mit:", userMessage);
@@ -32,5 +32,36 @@ export async function sendToMaerkiGPT(userMessage, retries = 1) {
       return await sendToMaerkiGPT(userMessage, retries - 1);
     }
     return '❌ Fehler beim Kontakt mit GPT.';
+  }
+}
+
+// Optional: für index.html (nicht für embed.html)
+window.startCheck = async function () {
+  const loadingEl = document.getElementById('loading');
+  const errorEl = document.getElementById('error');
+  const outputEl = document.getElementById('chatOutput');
+
+  if (!loadingEl || !errorEl || !outputEl) {
+    console.error('❌ HTML-Elemente nicht gefunden. Bitte prüfe index.html IDs.');
+    return;
+  }
+
+  const prompt = "Lifecycle Check starten";
+
+  loadingEl.style.display = 'block';
+  errorEl.style.display = 'none';
+  outputEl.innerText = '';
+
+  console.log("🚀 Sende an GPT:", prompt);
+  const antwort = await sendToMaerkiGPT(prompt);
+
+  loadingEl.style.display = 'none';
+
+  if (antwort.startsWith('❌')) {
+    errorEl.style.display = 'block';
+    outputEl.innerText = antwort;
+  } else {
+    errorEl.style.display = 'none';
+    outputEl.innerText = antwort;
   }
 }
