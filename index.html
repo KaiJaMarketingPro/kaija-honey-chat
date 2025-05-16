@@ -50,7 +50,7 @@
     <div class="container">
       <h1>🔍 360° Lifecycle Check für IT-Reseller</h1>
       <p>Teste, wie automatisiert, skalierbar und margenstark dein Geschäftsmodell ist.</p>
-      <button onclick="startCheck()">Lifecycle Check starten</button>
+      <button id="startBtn" type="button" onclick="startCheck()">Lifecycle Check starten</button>
 
       <div id="loading">⏳ GPT antwortet...</div>
       <div id="error">❌ Es gab ein Problem mit der Verbindung zum GPT.</div>
@@ -81,12 +81,7 @@
         errorEl.style.display = 'none';
         outputEl.innerText = '';
 
-        let antwort = await sendToMaerkiGPT("Lifecycle Check starten");
-
-        if (antwort.startsWith('❌')) {
-          outputEl.innerText = '🔁 GPT wird erneut kontaktiert...';
-          antwort = await sendToMaerkiGPT("Lifecycle Check starten");
-        }
+        const antwort = await sendToMaerkiGPT("Lifecycle Check starten");
 
         loadingEl.style.display = 'none';
 
@@ -94,7 +89,9 @@
           errorEl.style.display = 'block';
           outputEl.innerText = antwort;
         } else {
+          errorEl.style.display = 'none';
           outputEl.innerText = antwort;
+          outputEl.scrollIntoView({ behavior: "smooth" });
         }
       };
     </script>
