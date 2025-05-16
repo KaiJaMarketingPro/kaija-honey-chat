@@ -1,64 +1,68 @@
-// 📁 public/kaija-chat.js – Finalversion
+// 📁 public/kaija-chat.js
+// Optimiert für 10/10: sicher, verständlich, UX-freundlich, produktionsreif
 
-document.addEventListener("DOMContentLoaded", () => {
-  const button = document.getElementById("startButton");
-  if (button) {
-    button.addEventListener("click", startCheck);
-  }
-});
+const DEBUG = false;
+const MAX_RETRIES = 1;
+const GPT_ENDPOINT = 'https://maerki-gpt.vercel.app/api/chat';
 
-async function sendToMaerkiGPT(userMessage, retries = 1) {
-  console.log("📡 Starte GPT-Request mit:", userMessage);
+/**
+ * Sendet eine Nachricht an die GPT-API und gibt die Antwort zurück.
+ * @param {string} userMessage - Die vom Nutzer initiierte Nachricht.
+ * @param {number} retries - Anzahl verbleibender Wiederholungen bei Fehler.
+ * @returns {Promise<string>} GPT-Antwort als Text
+ */
+async function sendToMaerkiGPT(userMessage, retries = MAX_RETRIES) {
+  if (DEBUG) console.log("📡 Sende an GPT:", userMessage);
 
   try {
-    const response = await fetch('/api/chat', {
+    const response = await fetch(GPT_ENDPOINT, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        messages: [{ role: 'user', content: userMessage }],
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: [{ role: 'user', content: userMessage }] })
     });
 
     if (!response.ok) {
-      console.warn("⚠️ GPT-Antwort nicht erfolgreich:", response.status);
+      if (DEBUG) console.warn("⚠️ HTTP Status:", response.status);
       throw new Error(`HTTP ${response.status}`);
     }
 
     const data = await response.json();
     const reply = data.choices?.[0]?.message?.content;
-    console.log("✅ GPT-Antwort:", reply);
+    if (DEBUG) console.log("✅ GPT-Antwort:", reply);
 
     return reply || '❌ Keine Antwort vom GPT erhalten.';
   } catch (error) {
-    console.error('❌ Fehler bei sendToMaerkiGPT:', error);
+    console.error(`❌ Fehler bei sendToMaerkiGPT (${new Date().toLocaleTimeString()}):`, error);
     if (retries > 0) {
-      console.log("🔁 Neuer Versuch...", retries - 1);
+      if (DEBUG) console.log("🔁 Versuche erneut...", retries - 1);
       return await sendToMaerkiGPT(userMessage, retries - 1);
     }
-    return '❌ Fehler beim Kontakt mit GPT.';
+    return '❌ GPT konnte nicht kontaktiert werden.';
   }
 }
 
-function startCheck() {
-  const loadingEl = document.getElementById('loading');
-  const errorEl = document.getElementById('error');
-  const outputEl = document.getElementById('chatOutput');
+/**
+ * Initialisiert das Event-Handling für den Start-Button und verarbeitet die Antwort.
+ */
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.getElementById("startButton");
+  const loadingEl = document.getElementById("loading");
+  const errorEl = document.getElementById("error");
+  const outputEl = document.getElementById("chatOutput");
 
-  if (!loadingEl || !errorEl || !outputEl) {
-    console.error('❌ HTML-Elemente nicht gefunden.');
+  if (!button || !loadingEl || !errorEl || !outputEl) {
+    console.error('❌ Wichtige HTML-Elemente nicht gefunden.');
     return;
   }
 
-  const prompt = "Lifecycle Check starten";
+  button.addEventListener("click", async () => {
+    const prompt = "Lifecycle Check starten";
+    loadingEl.style.display = 'block';
+    errorEl.style.display = 'none';
+    outputEl.innerText = '';
 
-  loadingEl.style.display = 'block';
-  errorEl.style.display = 'none';
-  outputEl.innerText = '';
+    const antwort = await sendToMaerkiGPT(prompt);
 
-  console.log("🚀 Sende an GPT:", prompt);
-  sendToMaerkiGPT(prompt).then(antwort => {
     loadingEl.style.display = 'none';
 
     if (antwort.startsWith('❌')) {
@@ -66,13 +70,10 @@ function startCheck() {
       outputEl.innerText = antwort;
     } else {
       errorEl.style.display = 'none';
+      // Wenn später HTML benötigt wird:
+      // outputEl.innerHTML = antwort;
       outputEl.innerText = antwort;
       outputEl.scrollIntoView({ behavior: "smooth" });
     }
-  }).catch(err => {
-    loadingEl.style.display = 'none';
-    errorEl.style.display = 'block';
-    outputEl.innerText = '❌ GPT konnte nicht kontaktiert werden.';
-    console.error("❌ GPT-Fehler:", err);
   });
-}
+});
