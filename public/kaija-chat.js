@@ -1,4 +1,11 @@
-// kaija-chat.js – final, global eingebunden, kein export
+// 📁 public/kaija-chat.js – Finalversion
+
+document.addEventListener("DOMContentLoaded", () => {
+  const button = document.getElementById("startButton");
+  if (button) {
+    button.addEventListener("click", startCheck);
+  }
+});
 
 async function sendToMaerkiGPT(userMessage, retries = 1) {
   console.log("📡 Starte GPT-Request mit:", userMessage);
