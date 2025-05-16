@@ -84,47 +84,6 @@
     </footer>
   </div>
 
-  <script type="module">
-    import { sendToMaerkiGPT } from './kaija-chat.js';
-
-    console.log("✅ kaija-chat.js eingebunden – embed.html läuft");
-
-    window.startCheck = async function () {
-      const loadingEl = document.getElementById('loading');
-      const errorEl = document.getElementById('error');
-      const outputEl = document.getElementById('chatOutput');
-
-      if (!loadingEl || !errorEl || !outputEl) {
-        console.error('❌ HTML-Elemente nicht gefunden. embed.html IDs prüfen.');
-        return;
-      }
-
-      const prompt = "Lifecycle Check starten";
-
-      loadingEl.style.display = 'block';
-      errorEl.style.display = 'none';
-      outputEl.innerText = '';
-
-      console.log("🚀 Sende an GPT:", prompt);
-      try {
-        const antwort = await sendToMaerkiGPT(prompt);
-        loadingEl.style.display = 'none';
-
-        if (antwort.startsWith('❌')) {
-          errorEl.style.display = 'block';
-          outputEl.innerText = antwort;
-        } else {
-          errorEl.style.display = 'none';
-          outputEl.innerText = antwort;
-          outputEl.scrollIntoView({ behavior: "smooth" });
-        }
-      } catch (err) {
-        loadingEl.style.display = 'none';
-        errorEl.style.display = 'block';
-        outputEl.innerText = '❌ GPT konnte nicht kontaktiert werden.';
-        console.error("❌ GPT-Fehler:", err);
-      }
-    };
-  </script>
+  <script src="/kaija-chat.js"></script>
 </body>
 </html>
