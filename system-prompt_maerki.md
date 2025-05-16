@@ -1,4 +1,4 @@
-## 🤖 System Prompt für Märki GPT (360° Lifecycle Check)
+## 🤖 System Prompt für Märki GPT (360° Lifecycle Check) 
 
 ### Einsatz:
 Azure OpenAI GPT-4-Turbo Deployment (Vercel Proxy via chat.js)
