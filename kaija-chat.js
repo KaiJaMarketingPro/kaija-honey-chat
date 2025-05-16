@@ -14,12 +14,14 @@ export async function sendToMaerkiGPT(userMessage, retries = 1) {
     });
 
     if (!response.ok) {
+      // Auth-Probleme → reload
       if (response.status === 401 || response.status === 403) {
         alert('⚠️ Deine Session ist abgelaufen. Bitte lade die Seite neu.');
         location.reload();
         return;
       }
 
+      // Retry bei temporären Fehlern
       if ([500, 502, 503, 504].includes(response.status) && retries > 0) {
         console.warn(`🔁 Retry wegen GPT-Fehler (${response.status})...`);
         return await sendToMaerkiGPT(userMessage, retries - 1);
@@ -31,6 +33,7 @@ export async function sendToMaerkiGPT(userMessage, retries = 1) {
     const data = await response.json();
     const reply = data.choices?.[0]?.message?.content;
 
+    console.log("✅ GPT-Antwort erhalten:", reply);
     return reply || '❌ Keine Antwort vom GPT erhalten.';
   } catch (error) {
     if (retries > 0) {
@@ -43,7 +46,7 @@ export async function sendToMaerkiGPT(userMessage, retries = 1) {
   }
 }
 
-// Globaler Trigger für HTML-Button
+// Globaler Trigger – für HTML-Button oder Autostart im iFrame
 window.startCheck = async function () {
   const loadingEl = document.getElementById('loading');
   const errorEl = document.getElementById('error');
@@ -54,11 +57,14 @@ window.startCheck = async function () {
     return;
   }
 
+  const prompt = "Lifecycle Check starten";
+
   loadingEl.style.display = 'block';
   errorEl.style.display = 'none';
   outputEl.innerText = '';
 
-  const antwort = await sendToMaerkiGPT("Lifecycle Check starten");
+  console.log("🚀 Sende an GPT:", prompt);
+  const antwort = await sendToMaerkiGPT(prompt);
 
   loadingEl.style.display = 'none';
 
@@ -66,6 +72,7 @@ window.startCheck = async function () {
     errorEl.style.display = 'block';
     outputEl.innerText = antwort;
   } else {
+    errorEl.style.display = 'none';
     outputEl.innerText = antwort;
   }
 }
