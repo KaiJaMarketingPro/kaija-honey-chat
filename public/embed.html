@@ -71,7 +71,8 @@
       <strong>margenstark</strong> dein IT-Business ist – ganz ohne Registrierung, Tracking oder Cookie-Banner.
     </p>
 
-    <button onclick="startCheck()">Lifecycle Check starten</button>
+    <!-- ✅ Kein onclick mehr, nur id -->
+    <button id="startButton">Lifecycle Check starten</button>
 
     <div id="loading">⏳ GPT antwortet...</div>
     <div id="error">❌ Fehler beim Kontakt mit GPT.</div>
@@ -84,6 +85,7 @@
     </footer>
   </div>
 
-  <script src="/kaija-chat.js?v=2"></script>
+  <!-- ✅ Mit Cache-Buster -->
+  <script src="/kaija-chat.js?v=5"></script>
 </body>
 </html>
