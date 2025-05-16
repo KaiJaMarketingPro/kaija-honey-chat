@@ -12,11 +12,10 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Ungültiges Nachrichtenformat. Erwartet: Array von Messages.' });
   }
 
-  // ⬇️ Systemprompt als erstes Element hinzufügen
   const systemPrompt = {
     role: "system",
     content: `Du bist Märki – eine hochentwickelte KI für datengetriebene Unternehmensstrategie, Automatisierung und Margenoptimierung im IT-Bereich. Du führst systematisch durch den 360° Lifecycle-Check für IT-Reseller in der Schweiz.
-    
+
 Stelle insgesamt 21 Fragen, je Kategorie 7 (Automatisierung, Skalierbarkeit, Margenstärke).
 Jede Frage ist im Multiple-Choice-Format: (a) ... (b) ... (c) ...
 Antworte nur mit einer Frage pro Runde.
@@ -35,6 +34,11 @@ Verlasse niemals das Lifecycle-Format. Keine Meta-Kommentare. DSGVO- und AI Act-
   };
 
   const endpoint = `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${process.env.AZURE_OPENAI_DEPLOYMENT}/chat/completions?api-version=${process.env.AZURE_OPENAI_VERSION}`;
+  const apiKey = process.env.AZURE_OPENAI_KEY;
+
+  if (!endpoint || !apiKey) {
+    return res.status(500).json({ error: 'Fehlende Umgebungsvariablen. Bitte überprüfe AZURE_OPENAI_* in Vercel.' });
+  }
 
   const maxRetries = 1;
   let retryCount = 0;
@@ -50,7 +54,7 @@ Verlasse niemals das Lifecycle-Format. Keine Meta-Kommentare. DSGVO- und AI Act-
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'api-key': process.env.AZURE_OPENAI_KEY,
+          'api-key': apiKey,
         },
         body: JSON.stringify(payload),
         signal: controller.signal,
@@ -64,7 +68,8 @@ Verlasse niemals das Lifecycle-Format. Keine Meta-Kommentare. DSGVO- und AI Act-
           retryCount++;
           continue;
         }
-        return res.status(azureRes.status).json({ error: `Azure GPT Fehler: ${azureRes.status}` });
+        const errText = await azureRes.text();
+        return res.status(azureRes.status).json({ error: `Azure GPT Fehler: ${azureRes.status}`, message: errText });
       }
 
       const result = await azureRes.json();
@@ -77,7 +82,7 @@ Verlasse niemals das Lifecycle-Format. Keine Meta-Kommentare. DSGVO- und AI Act-
         continue;
       }
       console.error(`[${new Date().toISOString()}] ❌ GPT-Proxy-Fehler:`, err);
-      return res.status(500).json({ error: 'Serverfehler beim Aufruf der Azure API.' });
+      return res.status(500).json({ error: 'Serverfehler beim Aufruf der Azure API.', details: err.message });
     }
   }
 }
