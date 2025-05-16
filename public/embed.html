@@ -1,7 +1,65 @@
-<iframe
-  src="https://maerki-gpt.vercel.app"
-  title="360° Lifecycle Check – powered by Märki GPT"
-  style="width: 100%; height: 100vh; min-height: 840px; border: none; background: #ffffff;"
-  loading="lazy"
-  sandbox="allow-scripts allow-same-origin"
-></iframe>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Märki GPT – Lifecycle Check</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 2em;
+      font-family: sans-serif;
+      background: #f7f8fa;
+      color: #333;
+    }
+    #chatOutput {
+      white-space: pre-wrap;
+      background: #f0f0f0;
+      padding: 1em;
+      border-radius: 8px;
+      min-height: 80px;
+    }
+    #loading {
+      margin-top: 1em;
+      color: #777;
+      display: none;
+    }
+    #error {
+      margin-top: 1em;
+      color: red;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="loading">⏳ GPT antwortet...</div>
+  <div id="error">❌ Fehler beim Kontakt mit GPT.</div>
+  <div id="chatOutput"></div>
+
+  <script type="module">
+    import { sendToMaerkiGPT } from './kaija-chat.js';
+
+    window.addEventListener('DOMContentLoaded', async () => {
+      const loadingEl = document.getElementById('loading');
+      const errorEl = document.getElementById('error');
+      const outputEl = document.getElementById('chatOutput');
+
+      loadingEl.style.display = 'block';
+      errorEl.style.display = 'none';
+      outputEl.innerText = '';
+
+      const antwort = await sendToMaerkiGPT("Lifecycle Check starten");
+
+      loadingEl.style.display = 'none';
+
+      if (antwort.startsWith('❌')) {
+        errorEl.style.display = 'block';
+        outputEl.innerText = antwort;
+      } else {
+        outputEl.innerText = antwort;
+        outputEl.scrollIntoView({ behavior: "smooth" });
+      }
+    });
+  </script>
+</body>
+</html>
