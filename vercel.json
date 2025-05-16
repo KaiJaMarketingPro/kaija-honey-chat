@@ -13,7 +13,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "clipboard-write=(), microphone=()"
+          "value": "clipboard-write=(), microphone=(), camera=()"
         },
         {
           "key": "X-Content-Type-Options",
@@ -26,13 +26,10 @@
       ]
     }
   ],
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "redirects": [
+  "rewrites": [
     {
-      "source": "/gpt",
-      "destination": "/index.html",
-      "permanent": true
+      "source": "/embed.html",
+      "destination": "/embed.html"
     }
   ]
 }
