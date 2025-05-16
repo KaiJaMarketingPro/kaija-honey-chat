@@ -71,7 +71,6 @@
       <strong>margenstark</strong> dein IT-Business ist – ganz ohne Registrierung, Tracking oder Cookie-Banner.
     </p>
 
-    <!-- ✅ Kein onclick mehr, nur id -->
     <button id="startButton">Lifecycle Check starten</button>
 
     <div id="loading">⏳ GPT antwortet...</div>
@@ -85,7 +84,18 @@
     </footer>
   </div>
 
-  <!-- ✅ Mit Cache-Buster -->
+  <!-- 🧠 GPT Logik -->
   <script src="/kaija-chat.js?v=5"></script>
+
+  <!-- 📏 Auto-Height für iFrame (Wix) -->
+  <script>
+    function resizeObserverCallback() {
+      const height = document.body.scrollHeight;
+      parent.postMessage({ type: 'resize', height }, '*');
+    }
+
+    const resizeObserver = new ResizeObserver(resizeObserverCallback);
+    resizeObserver.observe(document.body);
+  </script>
 </body>
 </html>
