@@ -39,7 +39,11 @@
   <script type="module">
     import { sendToMaerkiGPT } from './kaija-chat.js';
 
+    console.log("✅ kaija-chat.js eingebunden – embed.html aktiv");
+
     window.addEventListener('DOMContentLoaded', async () => {
+      console.log("🧠 Autostart Lifecycle Check wird ausgeführt...");
+
       const loadingEl = document.getElementById('loading');
       const errorEl = document.getElementById('error');
       const outputEl = document.getElementById('chatOutput');
@@ -48,16 +52,22 @@
       errorEl.style.display = 'none';
       outputEl.innerText = '';
 
-      const antwort = await sendToMaerkiGPT("Lifecycle Check starten");
+      try {
+        const antwort = await sendToMaerkiGPT("Lifecycle Check starten");
+        loadingEl.style.display = 'none';
 
-      loadingEl.style.display = 'none';
-
-      if (antwort.startsWith('❌')) {
+        if (antwort.startsWith('❌')) {
+          errorEl.style.display = 'block';
+          outputEl.innerText = antwort;
+        } else {
+          outputEl.innerText = antwort;
+          outputEl.scrollIntoView({ behavior: "smooth" });
+        }
+      } catch (err) {
+        console.error("❌ Fehler beim Lifecycle-Start:", err);
+        loadingEl.style.display = 'none';
         errorEl.style.display = 'block';
-        outputEl.innerText = antwort;
-      } else {
-        outputEl.innerText = antwort;
-        outputEl.scrollIntoView({ behavior: "smooth" });
+        outputEl.innerText = '❌ GPT konnte nicht kontaktiert werden.';
       }
     });
   </script>
