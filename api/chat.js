@@ -1,5 +1,5 @@
 // 📁 /api/chat.js
-// Azure OpenAI Proxy mit Retry, Timeout & Systemprompt-Integration
+// Azure OpenAI Proxy mit Retry, Timeout & Systemprompt-Integration 
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
