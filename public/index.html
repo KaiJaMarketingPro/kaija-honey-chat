@@ -81,6 +81,7 @@
         errorEl.style.display = 'none';
         outputEl.innerText = '';
 
+        console.log("🚀 Lifecycle Check gestartet.");
         const antwort = await sendToMaerkiGPT("Lifecycle Check starten");
 
         loadingEl.style.display = 'none';
