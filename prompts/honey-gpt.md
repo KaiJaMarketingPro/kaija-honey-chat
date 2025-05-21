@@ -1,4 +1,4 @@
-# 🍯 honey-gpt.md
+# 🍯 honey-gpt.md – v1.1 (21.05.25)
 
 ## Honey Pricing Pro – Dein empathischer KI-AGENT für Preisstrategie & Angebotsklarheit
 
