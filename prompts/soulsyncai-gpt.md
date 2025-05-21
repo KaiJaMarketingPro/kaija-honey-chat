@@ -1,4 +1,4 @@
-# 🧠 soulsyncai-gpt.md
+# 🧠 soulsyncai-gpt.md – v1.1 (21.05.25)
 
 ## SoulSync AI – Dein KI-Coach für bewusste Transformation & Business-Energie
 
