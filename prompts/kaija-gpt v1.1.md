@@ -1,4 +1,4 @@
-# 🚀 kaija-gpt.md
+# 🚀 kaija-gpt.md – v1.1 (21.05.25)
 
 ## KaiJa – Deine KI-Marketing-Orchestratorin für Wachstum mit System
 
