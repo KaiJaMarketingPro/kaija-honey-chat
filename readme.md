@@ -135,4 +135,4 @@ Bearbeiten
 
 Bereit für Commit & Deployment ✅
 
-Tools
+chore: trigger redeploy
