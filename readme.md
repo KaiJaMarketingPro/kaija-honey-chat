@@ -1,114 +1,138 @@
-Hier ist der holistische & brutal-truth-basierte README.md Text für dein GitHub-Projekt
-kaija-honey-chat:
+✅ README.md – KaiJa GPT Proxy System
 
-md
-Kopieren
-Bearbeiten
-# 🐝 KaiJa Honey Chat – Das KI-Funnel-Frontend für Märki & Honey GPT  
-**Version:** 1.4.1 · **Status:** Stable · **Stand:** 19.05.2025
+# 💡 KaiJa GPT Proxy – Azure OpenAI × Vercel API System
+
+Ein skalierbarer, modularer API-Proxy für spezialisierte GPTs wie `kaija-gpt`, `honey-gpt`, `maerki-gpt` u. a. –  
+📍 100 % No-Code-fähig, DSGVO-konform, Azure-gehostet & Vercel-bereit.
 
 ---
 
-## 🔥 Projektziel
+## 👤 FÜR NO-CODER – Was du wissen musst
 
-**KaiJa Honey Chat** ist das offizielle Frontend für die Interaktion mit dem **KaiJa KI-Ökosystem**, speziell für:
+### 🔧 Was dieses System für dich tut:
 
-- 💡 **Lifecycle-Checks & Mini-Audits** mit **Märki GPT**
-- 🐝 **Pricing- & Funnel-Beratung** mit **Honey Pricing Pro**
-- 🎯 Bereitstellung von **iFrame-kompatiblen GPTs** über Azure OpenAI oder OpenAI GPT Store
-
-Es wurde mit Fokus auf **UX, Compliance, Skalierbarkeit und API-Integration** gebaut – 100 % DSGVO- & AI Act-konform, gehostet auf Vercel.
+| Bereich                  | Beschreibung                                                                 |
+|--------------------------|------------------------------------------------------------------------------|
+| ✅ GPT-Auswahl           | Du kannst beliebig viele GPTs über Namen wie `kaija-gpt` ansteuern            |
+| ✅ Markdown Prompts      | Jeder GPT nutzt eine eigene `.md` Datei – editierbar wie Text                  |
+| ✅ Zentrale Steuerung    | Alle GPTs werden über die Datei `mapping.json` verwaltet                      |
+| ✅ Bereit auf Vercel      | Hosting & API-Zugriff ohne Server, kein Setup nötig                           |
+| ✅ Sicher & konform       | Azure OpenAI API = DSGVO-konform (auch CH-Hosting via Azure Zürich möglich)  |
 
 ---
 
-## 🧱 Projektstruktur
+### 🚀 Wie nutze ich es?
 
-```bash
-/kaija-honey-chat
-├── api/
-│   └── chat.js                    # GPT-Fetch & Proxy-Handling (Azure/OpenAI)
-│   └── .env                      # GPT-API Key & Model-Konfiguration
-├── public/
-│   ├── index.html                # Haupt-UI für GPT-Dialog (iframe-fähig)
-│   ├── datenschutz.html         # DSGVO-konforme Datenschutzerklärung
-│   ├── embed.html               # Light-Version für Web-Einbettung
-│   ├── system-prompt_maerki.md  # Märki-spezifischer Systemprompt
-│   ├── prompt-stack-141.md      # Globaler Prompt Stack für das gesamte GPT-Ökosystem
-│   └── vercel.json              # Rewrite-Rules für API-Proxies & Public-Routing
-🧬 Key Features
-✅ Modularer Aufbau: Klar getrennte Logik für Märki, KaiJa, Honey & Co.
+Du kannst GPTs **einfach über eine API ansprechen** (z. B. aus Postman, Zapier, Webhook, Frontend etc.)
 
-💬 Prompt Stack 1.4.1 integriert: inkl. Fallbacks, Memory, Operatoren, Ethikmodul
+**API-URL:**
+https://<dein-vercel-projekt>.vercel.app/api/chat
 
-🔄 Ready für GPT Store & Azure GPT API
-
-🛡 100 % DSGVO & AI-Act-konform
-
-🚀 Deployment via Vercel in < 1 Min
-
-📂 Relevante Dateien
-Datei	Beschreibung
-prompt-stack-141.md	Master-Promptlogik (Systemprompt, Operatoren, Moduslogik)
-system-prompt_maerki.md	Strategischer Prompt für Märki GPT (Lifecycle Check, Decision Logic)
-chat.js	API-Handler (mit GPT-Fetch und Retry-Mechanik)
-kaija-chat.js	Frontend-Logik (Fragen, Score-System, Modussteuerung)
-vercel.json	API-Routing für GPT-Endpunkte & Rewrite-Konfigurationen
-
-⚙️ Verwendung / Setup
-bash
+markdown
 Kopieren
 Bearbeiten
-# 1. Repo klonen
-git clone https://github.com/KaiJaMarketingPro/kaija-honey-chat.git
 
-# 2. .env Datei anpassen (Beispiel siehe .env.example)
-OPENAI_API_KEY=sk-xxx
-OPENAI_API_URL=https://your-openai-endpoint
-OPENAI_MODEL=gpt-4-turbo
+**HTTP-Methode:** `POST`  
+**Header:**
+Content-Type: application/json
 
-# 3. Lokal starten
-npm install && npm run dev
-🧪 Live-Preview & Demo
-👉 https://kaija-honey-chat.vercel.app
-(oder in deine eigene Domain via iFrame einbetten)
+css
+Kopieren
+Bearbeiten
 
-📌 Hinweise & Brutal-Truth Check
-❗ Keine Daten werden gespeichert. Alle Antworten sind temporär und rein sitzungsbasiert.
+**Beispiel Body:**
+```json
+{
+  "gpt": "kaija-gpt",
+  "messages": [
+    { "role": "user", "content": "Was kann KaiJa GPT für mich tun?" }
+  ]
+}
 
-❗ Die GPTs sind nicht autonom – sie geben Handlungsempfehlungen, entscheiden aber nichts ohne Kontext oder Interaktion.
 
-❗ Nicht geeignet für juristische, medizinische oder sicherheitsrelevante Entscheidungen.
+🧠 FÜR ENTWICKLER – Architektur, Logik, Setup
+📂 Projektstruktur
+pgsql
+Kopieren
+Bearbeiten
+/api/chat.js                → Zentrale Azure-Proxy-Function (Vercel Function)
+/api/config/mapping.json   → GPT-Mapping: Name → Prompt + Deployment
+/prompts/*.md              → Systemprompts in Markdown (editable)
+/.env                      → Azure API-Konfiguration (in Vercel UI gepflegt)
+🔁 mapping.json (Schema)
+json
+Kopieren
+Bearbeiten
+{
+  "kaija-gpt": {
+    "prompt": "prompts/kaija-gpt.md",
+    "deployment": "kaija-gpt"
+  },
+  "maerki-gpt": {
+    "prompt": "prompts/maerki-gpt.md",
+    "deployment": "maerki-gpt"
+  }
+}
+🧩 chat.js – Logiküberblick
+safeGpt: validiert GPT-Key gegen Mapping
 
-🧠 Alle Prompts wurden mit echten Nutzer:innen getestet – keine Bullshit-Floskeln, sondern Wirkung & Klarheit.
+lädt Prompt aus Markdown-Datei
 
-🧠 Lizenz & Mitwirkende
-© 2025 – KaiJa Marketing! | www.kaija-marketing.pro
-Entwickelt mit Herz, Hirn und Hightech.
-Bereitgestellt unter MIT License (siehe LICENSE)
+kombiniert systemPrompt + messages
 
-Maintainer:
+POST-Request an Azure OpenAI API (inkl. Timeout + Retry)
 
-🧑‍💻 Daniel Betschart – LinkedIn
+Antwort wird als JSON zurückgegeben
 
-🤖 Märki GPT – Strategischer KI-Coach
+Fehler-Handling mit Klartext + Codes
 
-🐝 Honey GPT – Pricing & Monetarisierung
+🛡 Environment Variablen (Vercel)
+Key	Beispielwert
+AZURE_OPENAI_KEY	sk-xxxxxxxxx...
+AZURE_OPENAI_ENDPOINT	https://kaija-openai.openai.azure.com
+AZURE_OPENAI_VERSION	2025-01-01-preview
 
-🎯 KaiJa GPT – Funnel, Content & Conversion
+✅ Unterstützte GPTs (Stand 21.05.2025)
+GPT-Name	Beschreibung
+kaija-gpt	Funnel- und Marketingautomation
+honey-gpt	Pricing & Monetarisierung
+maerki-gpt	Strategische KI-Unternehmensführung
+baschis-gpt	Sales & LinkedIn Outreach
+homie-gpt	Onboarding & Learning Journeys
+kaivio-gpt	Karriere & Personal Branding
+dailyjasmin-gpt	Kreative Tagesimpulse
+soulsyncai-gpt	Coaching & Seelenarbeit (Beta)
+soulguide-gabriela-gpt	Spirituelles Branding & Ethikberatung
 
-💡 Nächste Schritte
- Prompt Stack 1.4.1 als JSON-Export einbinden
+🔧 Technisches Setup (Quick Start für Developer)
+git clone
 
- Voicebot-Anbindung mit Twilio vorbereiten
+.env Datei in Vercel UI konfigurieren
 
- Playground für Custom GPT Interaktionen erweitern
+Prompts in /prompts/*.md pflegen
 
-🙌 Contribute / Feedback?
-Issues, Pull Requests oder direkte Ideen sind jederzeit willkommen.
-Let’s build the first AI unicorn from Switzerland – with purpose and precision.
+mapping.json aktualisieren bei neuen GPTs
+
+Deployment via Vercel: automatisch bei jedem Push
+
+🧠 Maintainer & Credits
+Daniel Betschart
+🧠 Gründer – KaiJa Marketing!
+📧 you@kaija-marketing.pro
+🌐 www.kaija-marketing.pro
+🔗 linkedin.com/in/daniel-e-betschart
+
+📅 Letzter Stand: 21.05.2025 – 15:55 CET
 
 yaml
 Kopieren
 Bearbeiten
 
 ---
+
+📌 **Hinweis:** Du kannst daraus auch ein PDF-Readme oder eine Partnerdoku erstellen – sag einfach:
+**„Let’s go mit PDF“** oder **„Mach mir eine Canva-Readme-Vorlage“**
+
+Bereit für Commit & Deployment ✅
+
+Tools
