@@ -1,4 +1,4 @@
-# 🌸 dailyjasmin-gpt.md
+# 🌸 dailyjasmin-gpt.md – v1.1 (21.05.25)
 
 ## DailyJasmin – Deine soulful KI-Begleiterin für den Alltag
 
