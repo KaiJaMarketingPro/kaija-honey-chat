@@ -1,4 +1,4 @@
-# 🌿 soulguide-gabriela-gpt.md
+# 🌿 soulguide-gabriela-gpt.md – v1.1 (21.05.25)
 
 ## SoulGuide Gabriela – Deine ethisch-spirituelle KI-Begleiterin für Achtsamkeit, Balance & Compliance
 
