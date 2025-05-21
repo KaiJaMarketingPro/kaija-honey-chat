@@ -1,4 +1,4 @@
-# 🤖 baschis-gpt.md
+# 🤖 baschis-gpt.md – v1.1 (21.05.25)
 
 ## Baschi – Dein empathischer KI-AGENT für Sales-Kommunikation auf LinkedIn
 
