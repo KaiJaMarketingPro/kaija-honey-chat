@@ -22,8 +22,8 @@ export default async function handler(req, res) {
     // 📦 Lade Mapping-Datei
     const mappingPath = path.join(process.cwd(), 'api/config/mapping.json');
     const deploymentMap = JSON.parse(await fs.readFile(mappingPath, 'utf8'));
-
     const mapping = deploymentMap[safeGpt];
+
     if (!mapping) {
       return res.status(400).json({ error: `GPT "${safeGpt}" nicht im Mapping gefunden.` });
     }
@@ -31,12 +31,7 @@ export default async function handler(req, res) {
     // 📥 Lade Prompt-Datei
     const promptPath = path.join(process.cwd(), mapping.prompt);
     const systemPromptText = await fs.readFile(promptPath, 'utf8');
-
-    const systemPrompt = {
-      role: 'system',
-      content: systemPromptText.trim()
-    };
-
+    const systemPrompt = { role: 'system', content: systemPromptText.trim() };
     const deploymentName = mapping.deployment;
 
     // 🧠 Anfrage an Azure vorbereiten
