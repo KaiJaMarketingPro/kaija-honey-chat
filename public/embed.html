@@ -27,6 +27,13 @@
       font-size: 1.1em;
       line-height: 1.6;
     }
+    select {
+      font-size: 1em;
+      padding: 0.5em;
+      margin: 1em 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
     #chatOutput {
       margin-top: 2em;
       white-space: pre-wrap;
@@ -65,11 +72,25 @@
 </head>
 <body>
   <div class="container">
-    <h2>🔍 360° Lifecycle Check – powered by Märki GPT</h2>
+    <h2>🔍 360° Lifecycle Check – powered by KaiJa GPTs</h2>
     <p>
-      In nur wenigen Minuten analysiert Märki GPT, wie <strong>automatisiert, skalierbar</strong> und
-      <strong>margenstark</strong> dein IT-Business ist – ganz ohne Registrierung, Tracking oder Cookie-Banner.
+      In wenigen Minuten analysiert dein ausgewählter GPT, wie <strong>automatisiert, skalierbar</strong> und
+      <strong>margenstark</strong> dein IT-Business ist – ohne Registrierung oder Cookies.
     </p>
+
+    <!-- 🧠 GPT-Auswahl -->
+    <label for="gptSelect"><strong>Wähle deinen GPT:</strong></label>
+    <select id="gptSelect">
+      <option value="maerki-gpt">🧠 Märki – Strategie & Lifecycle</option>
+      <option value="kaija-gpt">📣 KaiJa – Marketing & Funnel</option>
+      <option value="honey-gpt">💸 Honey – Pricing & Angebote</option>
+      <option value="baschis-gpt">🤝 Baschi – LinkedIn Sales</option>
+      <option value="homie-gpt">🎓 Homie – Schulung & Onboarding</option>
+      <option value="kaivio-gpt">💼 KaiVio – Karriere & Bewerbung</option>
+      <option value="soulguide-gabriela-gpt">🌿 Gabriela – Ethik & Achtsamkeit</option>
+      <option value="soulsyncai-gpt">🌀 SoulSync – Human Design Coaching</option>
+      <option value="dailyjasmin-gpt">🌸 DailyJasmin – Alltag & Selfcare</option>
+    </select>
 
     <button id="startButton">Lifecycle Check starten</button>
 
@@ -84,8 +105,44 @@
     </footer>
   </div>
 
-  <!-- 🧠 GPT Logik -->
-  <script src="/kaija-chat.js?v=5"></script>
+  <!-- 🧠 GPT-Logik -->
+  <script>
+    document.getElementById("startButton").addEventListener("click", async () => {
+      const output = document.getElementById("chatOutput");
+      const error = document.getElementById("error");
+      const loading = document.getElementById("loading");
+      const gpt = document.getElementById("gptSelect").value;
+
+      error.style.display = "none";
+      loading.style.display = "block";
+      output.innerText = "";
+
+      try {
+        const response = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            gpt,
+            messages: [{ role: "user", content: "Lifecycle Check starten" }]
+          })
+        });
+
+        const data = await response.json();
+        loading.style.display = "none";
+
+        if (response.ok) {
+          output.innerText = data.choices?.[0]?.message?.content || "⚠️ Keine Antwort erhalten.";
+        } else {
+          error.innerText = data.message || "GPT konnte nicht erreicht werden.";
+          error.style.display = "block";
+        }
+      } catch (err) {
+        loading.style.display = "none";
+        error.innerText = "❌ Netzwerkfehler oder ungültige Serverantwort.";
+        error.style.display = "block";
+      }
+    });
+  </script>
 
   <!-- 📏 Auto-Height für iFrame (Wix) -->
   <script>
