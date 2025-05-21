@@ -1,11 +1,38 @@
 {
-  "baschis-gpt": "prompts/baschis-gpt.md",
-  "dailyjasmin-gpt": "prompts/dailyjasmin-gpt.md",
-  "homie-gpt": "prompts/homie-gpt.md",
-  "honey-gpt": "prompts/honey-gpt.md",
-  "kaija-gpt": "prompts/kaija-gpt.md",
-  "kaivio-gpt": "prompts/kaivio-gpt.md",
-  "maerki-gpt": "prompts/maerki-gpt.md",
-  "soulguide-gabriela-gpt": "prompts/soulguide-gabriela-gpt.md",
-  "soulsyncai-gpt": "prompts/soulsyncai-gpt.md"
+  "baschis-gpt": {
+    "prompt": "prompts/baschis-gpt.md",
+    "deployment": "baschis-gpt"
+  },
+  "dailyjasmin-gpt": {
+    "prompt": "prompts/dailyjasmin-gpt.md",
+    "deployment": "dailyjasmin-gpt"
+  },
+  "homie-gpt": {
+    "prompt": "prompts/homie-gpt.md",
+    "deployment": "homie-gpt"
+  },
+  "honey-gpt": {
+    "prompt": "prompts/honey-gpt.md",
+    "deployment": "honey-gpt"
+  },
+  "kaija-gpt": {
+    "prompt": "prompts/kaija-gpt.md",
+    "deployment": "kaija-gpt"
+  },
+  "kaivio-gpt": {
+    "prompt": "prompts/kaivio-gpt.md",
+    "deployment": "kaivio-gpt"
+  },
+  "maerki-gpt": {
+    "prompt": "prompts/maerki-gpt.md",
+    "deployment": "maerki-gpt"
+  },
+  "soulguide-gabriela-gpt": {
+    "prompt": "prompts/soulguide-gabriela-gpt.md",
+    "deployment": "soulguide-gabriela-gpt"
+  },
+  "soulsyncai-gpt": {
+    "prompt": "prompts/soulsyncai-gpt.md",
+    "deployment": "soulsyncai-gpt"
+  }
 }
