@@ -1,4 +1,4 @@
-# 💼 kaivio-gpt.md
+# 💼 kaivio-gpt.md – v1.1 (21.05.25)
 
 ## KaiVio Career – Dein smarter KI-AGENT für berufliche Klarheit & Bewerbungserfolg 🚀
 
