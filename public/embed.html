@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>360° Lifecycle Check – Märki GPT</title>
+  <title>KaiJa KI-Ökosystem – powered by GPTs</title>
   <style>
     body {
       font-family: sans-serif;
       margin: 0;
       padding: 2em;
       background: #f7f8fa;
-      color: #333; 
+      color: #333;
     }
     .container {
       max-width: 960px;
@@ -22,6 +22,7 @@
     }
     h2 {
       font-size: 1.8em;
+      margin-bottom: 0.3em;
     }
     p {
       font-size: 1.1em;
@@ -68,31 +69,35 @@
       color: #777;
       text-align: center;
     }
+    .label {
+      font-weight: bold;
+      margin-top: 1em;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>🔍 360° Lifecycle Check – powered by KaiJa GPTs</h2>
+    <h2>🧠 KaiJa KI-Ökosystem – dein Einstieg in smarte Automatisierung</h2>
     <p>
-      In wenigen Minuten analysiert dein ausgewählter GPT, wie <strong>automatisiert, skalierbar</strong> und
-      <strong>margenstark</strong> dein IT-Business ist – ohne Registrierung oder Cookies.
+      In nur wenigen Minuten analysieren spezialisierte GPTs dein Business – <strong>automatisiert, skalierbar</strong> und <strong>margenstark</strong>.<br />
+      ✅ Der Lifecycle Check ist kostenlos. Alle weiteren GPTs kannst du <strong>7 Tage kostenlos testen</strong>.
     </p>
 
     <!-- 🧠 GPT-Auswahl -->
-    <label for="gptSelect"><strong>Wähle deinen GPT:</strong></label>
+    <label class="label" for="gptSelect">Wähle deinen GPT:</label>
     <select id="gptSelect">
-      <option value="maerki-gpt">🧠 Märki – Strategie & Lifecycle</option>
-      <option value="kaija-gpt">📣 KaiJa – Marketing & Funnel</option>
-      <option value="honey-gpt">💸 Honey – Pricing & Angebote</option>
-      <option value="baschis-gpt">🤝 Baschi – LinkedIn Sales</option>
-      <option value="homie-gpt">🎓 Homie – Schulung & Onboarding</option>
-      <option value="kaivio-gpt">💼 KaiVio – Karriere & Bewerbung</option>
-      <option value="soulguide-gabriela-gpt">🌿 Gabriela – Ethik & Achtsamkeit</option>
-      <option value="soulsyncai-gpt">🌀 SoulSync – Human Design Coaching</option>
-      <option value="dailyjasmin-gpt">🌸 DailyJasmin – Alltag & Selfcare</option>
+      <option value="maerki-gpt">🧠 Märki – Strategie & Lifecycle (kostenlos)</option>
+      <option value="kaija-gpt">📣 KaiJa – Marketing & Funnel (7 Tage kostenlos)</option>
+      <option value="honey-gpt">💸 Honey – Pricing & Angebote (7 Tage kostenlos)</option>
+      <option value="baschis-gpt">🤝 Baschi – LinkedIn Sales (7 Tage kostenlos)</option>
+      <option value="homie-gpt">🎓 Homie – Schulung & Onboarding (7 Tage kostenlos)</option>
+      <option value="kaivio-gpt">💼 KaiVio – Karriere & Bewerbung (7 Tage kostenlos)</option>
+      <option value="soulguide-gabriela-gpt">🌿 Gabriela – Ethik & Achtsamkeit (7 Tage kostenlos)</option>
+      <option value="soulsyncai-gpt">🌀 SoulSync – Human Design Coaching (7 Tage kostenlos)</option>
+      <option value="dailyjasmin-gpt">🌸 DailyJasmin – Alltag & Selfcare (7 Tage kostenlos)</option>
     </select>
 
-    <button id="startButton">Lifecycle Check starten</button>
+    <button id="startButton">GPT starten</button>
 
     <div id="loading">⏳ GPT antwortet...</div>
     <div id="error">❌ Fehler beim Kontakt mit GPT.</div>
@@ -100,7 +105,7 @@
 
     <footer>
       Diese Anwendung nutzt Azure OpenAI (gehostet in der Schweiz).<br />
-      Es werden keine personenbezogenen Daten gespeichert.<br />
+      Es werden keine personenbezogenen Daten gespeichert oder ausgewertet.<br />
       <a href="/datenschutz" target="_blank">Mehr zur Datenschutzerklärung</a>
     </footer>
   </div>
@@ -123,7 +128,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             gpt,
-            messages: [{ role: "user", content: "Lifecycle Check starten" }]
+            messages: [{ role: "user", content: "Starte jetzt" }]
           })
         });
 
