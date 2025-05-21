@@ -1,8 +1,10 @@
-✅ README.md – KaiJa GPT Proxy System
-
+✅ Finaler Prompt: README.md – KaiJa GPT Proxy System
+markdown
+Kopieren
+Bearbeiten
 # 💡 KaiJa GPT Proxy – Azure OpenAI × Vercel API System
 
-Ein skalierbarer, modularer API-Proxy für spezialisierte GPTs wie `kaija-gpt`, `honey-gpt`, `maerki-gpt` u. a. –  
+Ein skalierbarer, modularer API-Proxy für spezialisierte GPTs wie `kaija-gpt`, `honey-gpt`, `maerki-gpt` u. a.  
 📍 100 % No-Code-fähig, DSGVO-konform, Azure-gehostet & Vercel-bereit.
 
 ---
@@ -13,43 +15,40 @@ Ein skalierbarer, modularer API-Proxy für spezialisierte GPTs wie `kaija-gpt`, 
 
 | Bereich                  | Beschreibung                                                                 |
 |--------------------------|------------------------------------------------------------------------------|
-| ✅ GPT-Auswahl           | Du kannst beliebig viele GPTs über Namen wie `kaija-gpt` ansteuern            |
-| ✅ Markdown Prompts      | Jeder GPT nutzt eine eigene `.md` Datei – editierbar wie Text                  |
-| ✅ Zentrale Steuerung    | Alle GPTs werden über die Datei `mapping.json` verwaltet                      |
-| ✅ Bereit auf Vercel      | Hosting & API-Zugriff ohne Server, kein Setup nötig                           |
-| ✅ Sicher & konform       | Azure OpenAI API = DSGVO-konform (auch CH-Hosting via Azure Zürich möglich)  |
+| ✅ GPT-Auswahl           | Du kannst beliebig viele GPTs über Namen wie `kaija-gpt` ansteuern           |
+| ✅ Markdown Prompts      | Jeder GPT nutzt eine eigene `.md` Datei – editierbar wie Text                 |
+| ✅ Zentrale Steuerung    | Alle GPTs werden über die Datei `mapping.json` verwaltet                     |
+| ✅ Bereit auf Vercel     | Hosting & API-Zugriff ohne Server, kein Setup nötig                          |
+| ✅ Sicher & konform      | Azure OpenAI API = DSGVO-konform (Swiss Hosting über Azure Zürich möglich)   |
 
 ---
 
-### 🚀 Wie nutze ich es?
+## 🚀 Wie nutze ich es?
 
-Du kannst GPTs **einfach über eine API ansprechen** (z. B. aus Postman, Zapier, Webhook, Frontend etc.)
+Du kannst GPTs **einfach über eine API ansprechen** (z. B. aus Postman, Zapier, Frontend etc.)
 
 **API-URL:**
 https://<dein-vercel-projekt>.vercel.app/api/chat
 
-markdown
+ruby
 Kopieren
 Bearbeiten
 
 **HTTP-Methode:** `POST`  
 **Header:**
+```http
 Content-Type: application/json
+Beispiel Body:
 
-css
+json
 Kopieren
 Bearbeiten
-
-**Beispiel Body:**
-```json
 {
   "gpt": "kaija-gpt",
   "messages": [
     { "role": "user", "content": "Was kann KaiJa GPT für mich tun?" }
   ]
 }
-
-
 🧠 FÜR ENTWICKLER – Architektur, Logik, Setup
 📂 Projektstruktur
 pgsql
@@ -58,7 +57,9 @@ Bearbeiten
 /api/chat.js                → Zentrale Azure-Proxy-Function (Vercel Function)
 /api/config/mapping.json   → GPT-Mapping: Name → Prompt + Deployment
 /prompts/*.md              → Systemprompts in Markdown (editable)
-/.env                      → Azure API-Konfiguration (in Vercel UI gepflegt)
+/public/                   → Embed UI, Datenschutzseite, JS-Trigger
+/vercel.json               → Sicherheitsheader (CSP, Referrer, HSTS)
+/.env (nur in Vercel UI)   → Azure OpenAI API Zugang
 🔁 mapping.json (Schema)
 json
 Kopieren
@@ -76,44 +77,44 @@ Bearbeiten
 🧩 chat.js – Logiküberblick
 safeGpt: validiert GPT-Key gegen Mapping
 
-lädt Prompt aus Markdown-Datei
+lädt Systemprompt aus .md
 
 kombiniert systemPrompt + messages
 
-POST-Request an Azure OpenAI API (inkl. Timeout + Retry)
+sendet POST-Request an Azure OpenAI API (mit Timeout & Retry)
 
-Antwort wird als JSON zurückgegeben
+gibt GPT-Antwort als JSON zurück
 
-Fehler-Handling mit Klartext + Codes
+robustes Fehlerhandling + Logging
 
 🛡 Environment Variablen (Vercel)
 Key	Beispielwert
-AZURE_OPENAI_KEY	sk-xxxxxxxxx...
+AZURE_OPENAI_KEY	sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 AZURE_OPENAI_ENDPOINT	https://kaija-openai.openai.azure.com
 AZURE_OPENAI_VERSION	2025-01-01-preview
 
 ✅ Unterstützte GPTs (Stand 21.05.2025)
 GPT-Name	Beschreibung
+maerki-gpt	Strategische KI-Unternehmensführung
 kaija-gpt	Funnel- und Marketingautomation
 honey-gpt	Pricing & Monetarisierung
-maerki-gpt	Strategische KI-Unternehmensführung
-baschis-gpt	Sales & LinkedIn Outreach
 homie-gpt	Onboarding & Learning Journeys
 kaivio-gpt	Karriere & Personal Branding
-dailyjasmin-gpt	Kreative Tagesimpulse
-soulsyncai-gpt	Coaching & Seelenarbeit (Beta)
+baschis-gpt	Sales & LinkedIn Outreach
 soulguide-gabriela-gpt	Spirituelles Branding & Ethikberatung
+soulsyncai-gpt	Human Design Coaching & Leadership Flow
+dailyjasmin-gpt	Selfcare & Alltagsempowerment
 
 🔧 Technisches Setup (Quick Start für Developer)
-git clone
+git clone dieses Repository
 
-.env Datei in Vercel UI konfigurieren
+.env Datei in Vercel UI setzen
 
-Prompts in /prompts/*.md pflegen
+Prompts in /prompts/*.md pflegen oder erweitern
 
 mapping.json aktualisieren bei neuen GPTs
 
-Deployment via Vercel: automatisch bei jedem Push
+Push → Vercel deployed automatisch
 
 🧠 Maintainer & Credits
 Daniel Betschart
@@ -123,16 +124,3 @@ Daniel Betschart
 🔗 linkedin.com/in/daniel-e-betschart
 
 📅 Letzter Stand: 21.05.2025 – 15:55 CET
-
-yaml
-Kopieren
-Bearbeiten
-
----
-
-📌 **Hinweis:** Du kannst daraus auch ein PDF-Readme oder eine Partnerdoku erstellen – sag einfach:
-**„Let’s go mit PDF“** oder **„Mach mir eine Canva-Readme-Vorlage“**
-
-Bereit für Commit & Deployment ✅
-
-chore: trigger redeploy
