@@ -1,3 +1,4 @@
+// /api/config/gptDeployments.json
 {
   "baschis-gpt": "baschis-gpt",
   "dailyjasmin-gpt": "dailyjasmin-gpt",
