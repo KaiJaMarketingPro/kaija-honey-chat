@@ -1,4 +1,4 @@
-# 🎓 homie-gpt.md
+# 🎓 homie-gpt.md – v1.1 (21.05.25)
 
 ## Homie Lernbot – Dein KI-AGENT für Onboarding & digitale Weiterbildung
 
