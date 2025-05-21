@@ -112,6 +112,18 @@
 
   <!-- 🧠 GPT-Logik -->
   <script>
+    const introPrompts = {
+      "maerki-gpt": "Starte den 360° Business Check bitte.",
+      "kaija-gpt": "Erstelle mir einen Funnel für mein Coaching-Angebot.",
+      "honey-gpt": "Hilf mir, drei faire Paketpreise zu entwickeln.",
+      "baschis-gpt": "Wie formuliere ich ein empathisches Follow-up auf LinkedIn?",
+      "homie-gpt": "Ich brauche ein Onboarding für neue Mitarbeitende im Marketing.",
+      "kaivio-gpt": "Was kann ich an meinem LinkedIn-Profil verbessern?",
+      "soulguide-gabriela-gpt": "Wie kann ich mein Angebot DSGVO- & ethikgerecht kommunizieren?",
+      "soulsyncai-gpt": "Ich möchte meinen Tag nach meinem Human Design Typ strukturieren.",
+      "dailyjasmin-gpt": "Was wäre heute ein guter Selfcare-Impuls?"
+    };
+
     document.getElementById("startButton").addEventListener("click", async () => {
       const output = document.getElementById("chatOutput");
       const error = document.getElementById("error");
@@ -128,7 +140,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             gpt,
-            messages: [{ role: "user", content: "Starte jetzt" }]
+            messages: [{ role: "user", content: introPrompts[gpt] || "Starte jetzt." }]
           })
         });
 
@@ -149,7 +161,7 @@
     });
   </script>
 
-  <!-- 📏 Auto-Height für iFrame (Wix) -->
+  <!-- 📏 Auto-Height für iFrame (z. B. Wix) -->
   <script>
     function resizeObserverCallback() {
       const height = document.body.scrollHeight;
