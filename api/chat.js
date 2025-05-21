@@ -16,8 +16,9 @@ export default async function handler(req, res) {
   }
 
   try {
-    // ⬇️ Lade den passenden Systemprompt aus /prompts
-    const promptPath = path.join(process.cwd(), 'prompts', `${gpt}.md`);
+    // 🔒 sicheres GPT-Filename-Handling
+    const safeGpt = gpt.replace(/[^\w-]/g, '');
+    const promptPath = path.join(process.cwd(), 'prompts', `${safeGpt}.md`);
     const systemPromptText = await fs.readFile(promptPath, 'utf8');
 
     const systemPrompt = {
@@ -48,7 +49,7 @@ export default async function handler(req, res) {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 10000); // 10s Timeout
 
-        console.log(`[${new Date().toISOString()}] 🌐 GPT-Request an Azure wird gesendet (Versuch ${retryCount + 1}) für GPT: ${gpt}`);
+        console.log(`[${new Date().toISOString()}] 🟢 GPT-Request an Azure gestartet – GPT: ${safeGpt} (Versuch ${retryCount + 1})`);
 
         const azureRes = await fetch(endpoint, {
           method: 'POST',
