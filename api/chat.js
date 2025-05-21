@@ -1,5 +1,5 @@
 // 📁 /api/chat.js
-// Azure OpenAI Proxy mit Retry, Timeout & dynamischer Prompt + Deployment-Integration
+// Azure OpenAI Proxy mit Retry, Timeout & Deployment/Prompt-Mapping
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -16,11 +16,20 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 🧠 sicheres GPT-Label
+    // 🧠 sicheres GPT-Label (nur a-z, A-Z, 0-9, -, _)
     const safeGpt = gpt.replace(/[^\w-]/g, '');
 
-    // 📥 Lade Systemprompt aus /prompts
-    const promptPath = path.join(process.cwd(), 'prompts', `${safeGpt}.md`);
+    // 📦 Lade Mapping-Datei
+    const mappingPath = path.join(process.cwd(), 'api/config/mapping.json');
+    const deploymentMap = JSON.parse(await fs.readFile(mappingPath, 'utf8'));
+
+    const mapping = deploymentMap[safeGpt];
+    if (!mapping) {
+      return res.status(400).json({ error: `GPT "${safeGpt}" nicht im Mapping gefunden.` });
+    }
+
+    // 📥 Lade Prompt-Datei
+    const promptPath = path.join(process.cwd(), mapping.prompt);
     const systemPromptText = await fs.readFile(promptPath, 'utf8');
 
     const systemPrompt = {
@@ -28,17 +37,9 @@ export default async function handler(req, res) {
       content: systemPromptText.trim()
     };
 
-    // 📦 Lade Deployment Mapping aus JSON
-    const deploymentMapPath = path.join(process.cwd(), 'api/config/gptDeployments.json');
-    const deploymentMap = JSON.parse(await fs.readFile(deploymentMapPath, 'utf8'));
-    const deploymentName = deploymentMap[safeGpt] || process.env.AZURE_OPENAI_DEPLOYMENT;
+    const deploymentName = mapping.deployment;
 
-    const payload = {
-      messages: [systemPrompt, ...messages],
-      temperature: 0.3,
-      max_tokens: 1200
-    };
-
+    // 🧠 Anfrage an Azure vorbereiten
     const endpoint = `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${deploymentName}/chat/completions?api-version=${process.env.AZURE_OPENAI_VERSION}`;
     const apiKey = process.env.AZURE_OPENAI_KEY;
 
@@ -48,14 +49,20 @@ export default async function handler(req, res) {
       });
     }
 
-    // 🔁 Retry + Timeout
+    const payload = {
+      messages: [systemPrompt, ...messages],
+      temperature: 0.3,
+      max_tokens: 1200
+    };
+
+    // 🔁 Retry mit Timeout
     const maxRetries = 1;
     let retryCount = 0;
 
     while (retryCount <= maxRetries) {
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 10000); // 10s
+        const timeout = setTimeout(() => controller.abort(), 10000);
 
         console.log(`[${new Date().toISOString()}] 🚀 Request an ${safeGpt} → Deployment: ${deploymentName}`);
 
@@ -72,13 +79,14 @@ export default async function handler(req, res) {
         clearTimeout(timeout);
 
         if (!azureRes.ok) {
+          const errText = await azureRes.text();
+
           if ([500, 502, 503, 504].includes(azureRes.status) && retryCount < maxRetries) {
             console.warn(`🔁 Retry (${retryCount + 1}) bei GPT-Fehler: ${azureRes.status}`);
             retryCount++;
             continue;
           }
 
-          const errText = await azureRes.text();
           return res.status(azureRes.status).json({
             error: `Azure GPT Fehler: ${azureRes.status}`,
             message: errText
@@ -103,7 +111,7 @@ export default async function handler(req, res) {
       }
     }
   } catch (e) {
-    console.error(`[${new Date().toISOString()}] ❌ Fehler beim Laden von Prompt oder Deployment für (${gpt}):`, e);
+    console.error(`[${new Date().toISOString()}] ❌ Fehler beim Laden von Mapping oder Prompt für (${gpt}):`, e);
     return res.status(500).json({
       error: `Fehler beim Laden des Prompts oder Deployment für "${gpt}"`,
       details: e.message
