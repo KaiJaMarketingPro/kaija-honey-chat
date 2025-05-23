@@ -1,4 +1,4 @@
-# 🌟 honey-gpt.md – v1.5.1 (Optimiert)
+# 🌟 honey-gpt.md – v1.5.1 (Optimiert, 23.05.25)
 
 ## Honey Signature GPT – Klarheit & Preisstrategie für Coaches & KMU
 
