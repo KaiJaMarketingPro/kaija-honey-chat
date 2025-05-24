@@ -1,78 +1,49 @@
-// 📁 /api/test-gpt.js – mit Logging
+// 📁 /admin/test-log.js – Log-Viewer mit Export & Steuerung
 import fs from 'fs/promises';
 import path from 'path';
 
 export default async function handler(req, res) {
-  if (req.method !== 'GET') {
-    return res.status(405).send('Only GET requests allowed.');
-  }
+  const url = new URL(req.url, 'http://localhost');
+  const format = url.searchParams.get('format') || 'html';
 
   try {
-    const { gpt, prompt } = new URL(req.url, 'http://localhost').searchParams;
-    if (!gpt || !prompt) return res.status(400).send('GPT oder Prompt fehlt.');
-
-    const mappingPath = path.join(process.cwd(), 'api/config/mapping.json');
-    const mapping = JSON.parse(await fs.readFile(mappingPath, 'utf8'));
-    const entry = mapping[gpt];
-
-    if (!entry) return res.status(404).send(`GPT ${gpt} nicht gefunden.`);
-
-    const systemPrompt = await fs.readFile(path.join(process.cwd(), entry.prompt), 'utf8');
-
-    const endpoint = `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${entry.deployment}/chat/completions?api-version=${process.env.AZURE_OPENAI_VERSION}`;
-    const start = Date.now();
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'api-key': process.env.AZURE_OPENAI_KEY
-      },
-      body: JSON.stringify({
-        messages: [
-          { role: 'system', content: systemPrompt.trim() },
-          { role: 'user', content: prompt }
-        ],
-        temperature: 0.3,
-        max_tokens: 400
-      })
-    });
-    const duration = Date.now() - start;
-    const result = await response.json();
-    const output = result.choices?.[0]?.message?.content || '[Keine Antwort]';
-
-    // 📁 Logging
-    const logEntry = {
-      gpt,
-      prompt,
-      output,
-      timestamp: new Date().toISOString(),
-      duration_ms: duration
-    };
     const logPath = path.join(process.cwd(), 'logs/test-log.json');
-    let logs = [];
-    try {
-      const existing = await fs.readFile(logPath, 'utf8');
-      logs = JSON.parse(existing);
-    } catch (e) {}
-    logs.unshift(logEntry);
-    await fs.writeFile(logPath, JSON.stringify(logs.slice(0, 100), null, 2));
+    const raw = await fs.readFile(logPath, 'utf8');
+    const logs = JSON.parse(raw);
+
+    if (format === 'csv') {
+      const csv = logs.map(entry => {
+        return `"${entry.timestamp}","${entry.gpt}","${entry.prompt.replace(/"/g, '""')}","${entry.output.replace(/"/g, '""')}",${entry.duration_ms}`;
+      }).join('\n');
+
+      res.setHeader('Content-Type', 'text/csv');
+      res.setHeader('Content-Disposition', 'attachment; filename="test-log.csv"');
+      return res.send(`timestamp,gpt,prompt,output,duration_ms\n${csv}`);
+    }
+
+    if (format === 'md') {
+      const md = logs.map(l => `### ${l.gpt} – ${l.timestamp}\n**Prompt:**\n\`${l.prompt}\`\n\n**Antwort:**\n\`\`\`\n${l.output}\n\`\`\`\n⏱ ${l.duration_ms} ms\n`).join('\n---\n');
+      res.setHeader('Content-Type', 'text/markdown');
+      return res.send(md);
+    }
 
     const html = `<!DOCTYPE html>
 <html lang="de">
-<head><meta charset="UTF-8"><title>Prompt Test: ${gpt}</title></head>
-<body style="font-family:sans-serif;padding:2em;background:#f4f4f4">
-<h2>🧪 GPT Test: ${gpt}</h2>
-<p><strong>Prompt:</strong><br><pre>${prompt}</pre></p>
-<p><strong>Antwort:</strong><br><pre style="background:#fff;padding:1em;border-radius:8px;border:1px solid #ccc">${output}</pre></p>
-<p><strong>Zeit:</strong> ${duration} ms</p>
-<p><a href="/admin/gpt-tools">⬅️ Zurück zum Tool</a></p>
+<head><meta charset="UTF-8"><title>Test-Log</title>
+<style>body{font-family:sans-serif;padding:2em;background:#f9f9f9;} pre{white-space:pre-wrap;background:#fff;padding:1em;border:1px solid #ccc;border-radius:6px;}</style>
+</head>
+<body>
+<h1>🧠 Test-Log (letzte ${logs.length})</h1>
+<p><a href="/admin/gpt-tools">⬅️ Zurück</a> | <a href="/admin/test-log?format=csv">📤 Export CSV</a> | <a href="/admin/test-log?format=md">📤 Export MD</a></p>
+<ul style="padding-left:1em">
+${logs.map(l => `<li><strong>${l.gpt}</strong> – ${l.timestamp} (${l.duration_ms} ms)<br><em>Prompt:</em> ${l.prompt}<br><pre>${l.output}</pre></li>`).join('<hr>')}
+</ul>
 </body>
 </html>`;
 
     res.setHeader('Content-Type', 'text/html');
     return res.status(200).send(html);
   } catch (err) {
-    console.error('[Test GPT] Fehler:', err);
-    return res.status(500).send('Interner Fehler bei GPT-Test');
+    return res.status(500).send('Fehler beim Laden des Logs.');
   }
 }
