@@ -1,38 +1,52 @@
 {
   "baschis-gpt": {
     "prompt": "prompts/baschis-gpt.md",
-    "deployment": "baschis-gpt"
+    "deployment": "baschis-gpt",
+    "yaml": "store/baschis-gpt.yaml"
   },
   "dailyjasmin-gpt": {
     "prompt": "prompts/dailyjasmin-gpt.md",
-    "deployment": "dailyjasmin-gpt"
+    "deployment": "dailyjasmin-gpt",
+    "yaml": "store/dailyjasmin-gpt.yaml"
   },
   "homie-gpt": {
     "prompt": "prompts/homie-gpt.md",
-    "deployment": "homie-gpt"
+    "deployment": "homie-gpt",
+    "yaml": "store/homie-gpt.yaml"
   },
   "honey-gpt": {
     "prompt": "prompts/honey-gpt.md",
-    "deployment": "honey-gpt"
+    "deployment": "honey-gpt",
+    "yaml": "store/honey-gpt.yaml"
   },
   "kaija-gpt": {
     "prompt": "prompts/kaija-gpt.md",
-    "deployment": "kaija-gpt"
+    "deployment": "kaija-gpt",
+    "yaml": "store/kaija-gpt.yaml"
   },
   "kaivio-gpt": {
     "prompt": "prompts/kaivio-gpt.md",
-    "deployment": "kaivio-gpt"
+    "deployment": "kaivio-gpt",
+    "yaml": "store/kaivio-gpt.yaml"
   },
   "maerki-gpt": {
     "prompt": "prompts/maerki-gpt.md",
-    "deployment": "maerki-gpt"
+    "deployment": "maerki-gpt",
+    "yaml": "store/maerki-gpt.yaml"
   },
   "soulguide-gabriela-gpt": {
     "prompt": "prompts/soulguide-gabriela-gpt.md",
-    "deployment": "soulguide-gabriela-gpt"
+    "deployment": "soulguide-gabriela-gpt",
+    "yaml": "store/soulguide-gabriela-gpt.yaml"
   },
   "soulsyncai-gpt": {
     "prompt": "prompts/soulsyncai-gpt.md",
-    "deployment": "soulsyncai-gpt"
+    "deployment": "soulsyncai-gpt",
+    "yaml": "store/soulsyncai-gpt.yaml"
+  },
+  "_fallback": {
+    "prompt": "prompts/fallback.md",
+    "deployment": "default-gpt",
+    "yaml": "store/fallback.yaml"
   }
 }
