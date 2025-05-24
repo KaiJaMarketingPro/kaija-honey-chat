@@ -1,4 +1,4 @@
-// 📁 /middleware.js
+// 📁 /middleware.js 
 
 export default async function middleware(req) {
   const url = new URL(req.url);
