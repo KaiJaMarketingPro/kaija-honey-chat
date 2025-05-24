@@ -4,88 +4,20 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>KaiJa KI-Ökosystem – powered by GPTs</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      margin: 0;
-      padding: 2em;
-      background: #f7f8fa;
-      color: #333;
-    }
-    .container {
-      max-width: 960px;
-      margin: 0 auto;
-      padding: 2em;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-    }
-    h2 {
-      font-size: 1.8em;
-      margin-bottom: 0.3em;
-    }
-    p {
-      font-size: 1.1em;
-      line-height: 1.6;
-    }
-    select {
-      font-size: 1em;
-      padding: 0.5em;
-      margin: 1em 0;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    #chatOutput {
-      margin-top: 2em;
-      white-space: pre-wrap;
-      background: #f0f0f0;
-      padding: 1em;
-      border-radius: 8px;
-      min-height: 80px;
-    }
-    #error {
-      color: red;
-      margin-top: 1em;
-      display: none;
-    }
-    #loading {
-      color: #666;
-      margin-top: 1em;
-      display: none;
-    }
-    button {
-      font-size: 1em;
-      padding: 0.6em 1.2em;
-      background-color: #333;
-      color: #fff;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      margin-top: 1em;
-    }
-    footer {
-      font-size: 0.9em;
-      margin-top: 3em;
-      color: #777;
-      text-align: center;
-    }
-    .label {
-      font-weight: bold;
-      margin-top: 1em;
-    }
-  </style>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <div class="container">
-    <h2>🧠 KaiJa KI-Ökosystem – dein Einstieg in smarte Automatisierung</h2>
-    <p>
-      In nur wenigen Minuten analysieren spezialisierte GPTs dein Business – <strong>automatisiert, skalierbar</strong> und <strong>margenstark</strong>.<br />
-      ✅ Der Lifecycle Check ist kostenlos. Alle weiteren GPTs kannst du <strong>7 Tage kostenlos testen</strong>.
-    </p>
+<body class="bg-gray-50 text-gray-800">
+  <main class="max-w-3xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-xl">
+    <header class="mb-6">
+      <h1 class="text-2xl font-bold mb-2">🧠 KaiJa KI-Ökosystem</h1>
+      <p class="text-gray-600">
+        Wähle deinen GPT & starte sofort deinen kostenlosen Check oder deine 7-Tage-Testphase mit maximaler Klarheit & DSGVO-Sicherheit.
+      </p>
+    </header>
 
-    <!-- 🧠 GPT-Auswahl -->
-    <label class="label" for="gptSelect">Wähle deinen GPT:</label>
-    <select id="gptSelect">
+    <!-- GPT Auswahl -->
+    <label for="gptSelect" class="block font-semibold mt-4 mb-1">Wähle deinen GPT:</label>
+    <select id="gptSelect" class="w-full p-2 border rounded-md">
       <option value="maerki-gpt">🧠 Märki – Strategie & Lifecycle (kostenlos)</option>
       <option value="kaija-gpt">📣 KaiJa – Marketing & Funnel (7 Tage kostenlos)</option>
       <option value="honey-gpt">💸 Honey – Pricing & Angebote (7 Tage kostenlos)</option>
@@ -97,20 +29,25 @@
       <option value="dailyjasmin-gpt">🌸 DailyJasmin – Alltag & Selfcare (7 Tage kostenlos)</option>
     </select>
 
-    <button id="startButton">GPT starten</button>
+    <button id="startButton" class="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md font-semibold">
+      GPT starten
+    </button>
 
-    <div id="loading">⏳ GPT antwortet...</div>
-    <div id="error">❌ Fehler beim Kontakt mit GPT.</div>
-    <div id="chatOutput"></div>
+    <!-- Status & Fehler -->
+    <div id="loading" class="text-sm text-gray-500 mt-4 hidden">⏳ GPT antwortet...</div>
+    <div id="error" class="text-sm text-red-500 mt-4 hidden">❌ Fehler beim Kontakt mit GPT.</div>
 
-    <footer>
-      Diese Anwendung nutzt Azure OpenAI (gehostet in der Schweiz).<br />
-      Es werden keine personenbezogenen Daten gespeichert oder ausgewertet.<br />
-      <a href="/datenschutz" target="_blank">Mehr zur Datenschutzerklärung</a>
+    <!-- GPT Ausgabe -->
+    <div id="chatOutput" class="mt-6 p-4 bg-gray-100 rounded-md whitespace-pre-wrap min-h-[100px]"></div>
+
+    <!-- Footer -->
+    <footer class="text-xs text-gray-500 text-center mt-10">
+      Gehostet in der Schweiz via Azure OpenAI. Keine Speicherung personenbezogener Daten.<br />
+      <a href="/datenschutz" class="underline" target="_blank">Datenschutzerklärung</a>
     </footer>
-  </div>
+  </main>
 
-  <!-- 🧠 GPT-Logik -->
+  <!-- Script GPT Logik -->
   <script>
     const introPrompts = {
       "maerki-gpt": "Starte den 360° Business Check bitte.",
@@ -161,14 +98,11 @@
     });
   </script>
 
-  <!-- 📏 Auto-Height für iFrame (z. B. Wix) -->
+  <!-- Auto-Resize für iFrame -->
   <script>
-    function resizeObserverCallback() {
-      const height = document.body.scrollHeight;
-      parent.postMessage({ type: 'resize', height }, '*');
-    }
-
-    const resizeObserver = new ResizeObserver(resizeObserverCallback);
+    const resizeObserver = new ResizeObserver(() => {
+      parent.postMessage({ type: 'resize', height: document.body.scrollHeight }, '*');
+    });
     resizeObserver.observe(document.body);
   </script>
 </body>
