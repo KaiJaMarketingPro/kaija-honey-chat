@@ -1,4 +1,10 @@
-// 📁 /api/voice-gpt.js – jetzt dynamisch für alle GPTs nutzbar
+// 📁 /api/voice-gpt.js – Voice-API mit Everlast AI Best Practices
+// 📌 Integrierte Empfehlungen:
+// 1. Sprachverständnis optimieren – gpt-4-turbo via Azure Deployment
+// 2. Nahtlose Integration – JSON-API, VAPI-kompatibel
+// 3. Benutzererfahrung priorisieren – klare Fehler- & Erfolgsantworten
+// 4. Kontinuierliches Lernen vorbereiten – Memory- oder Feedback-Logik (optional)
+
 import fs from 'fs/promises';
 import path from 'path';
 
