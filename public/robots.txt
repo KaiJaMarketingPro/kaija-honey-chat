@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Disallow sensitive admin routes
+Disallow: /admin/
+Disallow: /api/test-gpt
+Disallow: /api/validate-yaml
+Disallow: /logs/
+
+# Sitemap (optional)
+Sitemap: https://www.kaija-marketing.pro/sitemap.xml
