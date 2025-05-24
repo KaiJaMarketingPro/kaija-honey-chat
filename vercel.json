@@ -1,5 +1,29 @@
 {
+  "version": 2,
+  "regions": ["fra1"],
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "builds": [
+    { "src": "api/**/*.js", "use": "@vercel/node" },
+    { "src": "public/**/*", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/api/chat", "dest": "/api/chat.js" },
+    { "src": "/api/status", "dest": "/api/status.js" },
+    { "src": "/api/health", "dest": "/api/health.js" },
+    { "src": "/api/validate-yaml", "dest": "/api/validate-yaml.js" },
+    { "src": "/api/gpt-index", "dest": "/api/gpt-index.js" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ],
   "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        { "key": "Access-Control-Allow-Origin", "value": "*" },
+        { "key": "Cache-Control", "value": "no-store" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
@@ -26,6 +50,11 @@
       ]
     }
   ],
-  "cleanUrls": true,
-  "trailingSlash": false
+  "env": {
+    "AZURE_OPENAI_KEY": "@azure_openai_key",
+    "AZURE_OPENAI_ENDPOINT": "@azure_openai_endpoint",
+    "AZURE_OPENAI_VERSION": "2024-04-15",
+    "SLACK_WEBHOOK_URL": "@slack_webhook_url",
+    "HEALTH_WEBHOOK_URL": "@health_webhook_url"
+  }
 }
