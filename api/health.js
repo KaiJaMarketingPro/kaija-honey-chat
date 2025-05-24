@@ -1,10 +1,16 @@
 // 📁 /api/health.js
-// Health Check für KaiJa GPT-Systeme inkl. Mapping, Azure-Verfügbarkeit & Umgebungsvariablen
+// Health Check API inkl. HTML-View, Azure-Test & Webhook-Ping bei Statusänderung
 
 import fs from 'fs/promises';
 import path from 'path';
+import fetch from 'node-fetch';
+
+const WEBHOOK_URL = process.env.HEALTH_WEBHOOK_URL || null;
+let lastAzureStatus = null;
 
 export default async function handler(req, res) {
+  const acceptHtml = req.headers.accept?.includes('text/html');
+
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Nur GET-Anfragen erlaubt.' });
   }
@@ -29,7 +35,6 @@ export default async function handler(req, res) {
       status: conf.deployment ? '✅' : '❌ fehlt'
     }));
 
-    // Optional: Live-Verbindungstest an einen GPT-Endpoint (Märki als Standard)
     const testGpt = 'maerki-gpt';
     const testDeployment = gptMap[testGpt]?.deployment;
     let azureStatus = '❌ nicht getestet';
@@ -52,11 +57,44 @@ export default async function handler(req, res) {
             max_tokens: 10
           })
         });
-
         azureStatus = testResponse.ok ? '✅ erreichbar' : `❌ Fehler: ${testResponse.status}`;
       } catch (err) {
         azureStatus = `❌ Netzwerkfehler: ${err.message}`;
       }
+    }
+
+    // 📡 Webhook-Ping bei Statusänderung
+    if (WEBHOOK_URL && lastAzureStatus !== null && lastAzureStatus !== azureStatus) {
+      await fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text: `⚠️ Health Check Änderung [${timestamp}]: ${lastAzureStatus} → ${azureStatus}`
+        })
+      });
+    }
+    lastAzureStatus = azureStatus;
+
+    // HTML View
+    if (acceptHtml) {
+      const html = `<!DOCTYPE html><html lang='de'><head><meta charset='UTF-8'><title>GPT System Health</title>
+<style>body{font-family:sans-serif;background:#f4f4f4;padding:2em}table{width:100%;border-collapse:collapse}td,th{border:1px solid #ccc;padding:8px}th{background:#eee}tr:nth-child(even){background:#fafafa}</style>
+</head><body>
+<h2>🚥 GPT Health Dashboard</h2>
+<p>Stand: ${timestamp}</p>
+<h3>Azure Verbindung: ${azureStatus}</h3>
+<table><thead><tr><th>GPT</th><th>Deployment</th><th>Prompt</th><th>Status</th></tr></thead><tbody>
+${deployments.map(d => `<tr><td>${d.gpt}</td><td>${d.deployment}</td><td>${d.prompt}</td><td>${d.status}</td></tr>`).join('')}
+</tbody></table>
+<h4>Umgebungsvariablen</h4>
+<ul>
+<li>AZURE_OPENAI_KEY: ${env.AZURE_OPENAI_KEY ? '✅' : '❌'}</li>
+<li>AZURE_OPENAI_ENDPOINT: ${env.AZURE_OPENAI_ENDPOINT ? '✅' : '❌'}</li>
+<li>AZURE_OPENAI_VERSION: ${env.AZURE_OPENAI_VERSION ? '✅' : '❌'}</li>
+</ul>
+</body></html>`;
+      res.setHeader('Content-Type', 'text/html');
+      return res.status(200).send(html);
     }
 
     return res.status(200).json({
