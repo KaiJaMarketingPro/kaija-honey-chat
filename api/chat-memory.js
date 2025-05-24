@@ -1,4 +1,4 @@
-// 📁 /api/chat-memory.js – Chat mit Memory-Integration aus Logs
+// 📁 /api/chat-memory.js – Jetzt mit persistentem User-Memory
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -10,6 +10,7 @@ export default async function handler(req, res) {
   try {
     const body = await req.json();
     const { gpt = 'honey-gpt', messages = [] } = body;
+    const user = req.headers['x-user-id'] || 'default';
     if (!Array.isArray(messages) || messages.length === 0) {
       return res.status(400).json({ error: 'Messages fehlen oder sind leer.' });
     }
@@ -22,18 +23,14 @@ export default async function handler(req, res) {
 
     const systemPrompt = await fs.readFile(path.join(process.cwd(), entry.prompt), 'utf8');
 
-    // 🧠 Lade Memory-Chunks aus Logs
+    // 🧠 Lade persistenten Memory pro User
+    const memoryPath = path.join(process.cwd(), 'memory', `${user}.json`);
     let memory = [];
-    const logPath = path.join(process.cwd(), 'logs/test-log.json');
     try {
-      const logData = JSON.parse(await fs.readFile(logPath, 'utf8'));
-      const filtered = logData.filter(l => l.gpt === gpt).slice(0, 3); // letzte 3 Dialoge
-      memory = filtered.map(l => [
-        { role: 'user', content: l.prompt },
-        { role: 'assistant', content: l.output }
-      ]).flat();
-    } catch (e) {
-      console.warn('[Memory] Keine Logs geladen.');
+      const raw = await fs.readFile(memoryPath, 'utf8');
+      memory = JSON.parse(raw);
+    } catch {
+      console.warn(`[Memory] Kein Memory für '${user}' gefunden.`);
     }
 
     const endpoint = `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${entry.deployment}/chat/completions?api-version=${process.env.AZURE_OPENAI_VERSION}`;
