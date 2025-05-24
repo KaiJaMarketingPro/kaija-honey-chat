@@ -1,5 +1,5 @@
 // 📁 /api/chat.js
-// Azure OpenAI Proxy mit Retry, Timeout & Deployment/Prompt-Mapping
+// Azure OpenAI Proxy mit Retry, Timeout & Deployment/Prompt-Mapping inkl. Fallback
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -16,25 +16,22 @@ export default async function handler(req, res) {
   }
 
   try {
-    // 🧠 sicheres GPT-Label (nur a-z, A-Z, 0-9, -, _)
     const safeGpt = gpt.replace(/[^\w-]/g, '');
 
-    // 📦 Lade Mapping-Datei
     const mappingPath = path.join(process.cwd(), 'api/config/mapping.json');
     const deploymentMap = JSON.parse(await fs.readFile(mappingPath, 'utf8'));
-    const mapping = deploymentMap[safeGpt];
+    const mapping = deploymentMap[safeGpt] || deploymentMap['_fallback'];
+    const usedFallback = !deploymentMap[safeGpt];
 
-    if (!mapping) {
-      return res.status(400).json({ error: `GPT "${safeGpt}" nicht im Mapping gefunden.` });
+    if (usedFallback) {
+      console.warn(`[${new Date().toISOString()}] ⚠️ Unbekannter GPT "${safeGpt}" – Fallback aktiviert.`);
     }
 
-    // 📥 Lade Prompt-Datei
     const promptPath = path.join(process.cwd(), mapping.prompt);
     const systemPromptText = await fs.readFile(promptPath, 'utf8');
     const systemPrompt = { role: 'system', content: systemPromptText.trim() };
     const deploymentName = mapping.deployment;
 
-    // 🧠 Anfrage an Azure vorbereiten
     const endpoint = `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${deploymentName}/chat/completions?api-version=${process.env.AZURE_OPENAI_VERSION}`;
     const apiKey = process.env.AZURE_OPENAI_KEY;
 
@@ -50,7 +47,6 @@ export default async function handler(req, res) {
       max_tokens: 1200
     };
 
-    // 🔁 Retry mit Timeout
     const maxRetries = 1;
     let retryCount = 0;
 
