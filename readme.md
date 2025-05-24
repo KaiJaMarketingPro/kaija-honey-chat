@@ -1,126 +1,94 @@
-✅ Finaler Prompt: README.md – KaiJa GPT Proxy System
-markdown
-Kopieren
-Bearbeiten
-# 💡 KaiJa GPT Proxy – Azure OpenAI × Vercel API System
+# KaiJa Marketing! – Das erste KI-Unicorn-Ökosystem aus der Schweiz 🇨🇭
 
-Ein skalierbarer, modularer API-Proxy für spezialisierte GPTs wie `kaija-gpt`, `honey-gpt`, `maerki-gpt` u. a.  
-📍 100 % No-Code-fähig, DSGVO-konform, Azure-gehostet & Vercel-bereit.
+Willkommen im offiziellen GitHub-Repo für das KaiJa KI-System – ein modulares, datenschutzkonformes und strategisch durchdachtes AI-Framework für Coaches, Solopreneure und Unternehmen.
 
 ---
 
-## 👤 FÜR NO-CODER – Was du wissen musst
+## 🚀 Projektüberblick
 
-### 🔧 Was dieses System für dich tut:
+**KaiJa Marketing!** ist ein orchestriertes Ökosystem aus spezialisierten GPTs, die gemeinsam alle Phasen des Business-Lifecycles abdecken – von Positionierung über Funnel und Pricing bis hin zu Coaching & Automatisierung.
 
-| Bereich                  | Beschreibung                                                                 |
-|--------------------------|------------------------------------------------------------------------------|
-| ✅ GPT-Auswahl           | Du kannst beliebig viele GPTs über Namen wie `kaija-gpt` ansteuern           |
-| ✅ Markdown Prompts      | Jeder GPT nutzt eine eigene `.md` Datei – editierbar wie Text                 |
-| ✅ Zentrale Steuerung    | Alle GPTs werden über die Datei `mapping.json` verwaltet                     |
-| ✅ Bereit auf Vercel     | Hosting & API-Zugriff ohne Server, kein Setup nötig                          |
-| ✅ Sicher & konform      | Azure OpenAI API = DSGVO-konform (Swiss Hosting über Azure Zürich möglich)   |
+> "Mit KaiJa bauen wir ein echtes AI-System mit Herz, Hirn und Hightech – 100 % Swiss Made, 100 % DSGVO- & AI Act-konform."
+
+### 💡 Kernmodule (GPTs)
+| GPT | Rolle | Status |
+|-----|-------|--------|
+| Märki GPT | Strategischer Orchestrator | ✅ live (Azure CH) |
+| KaiJa GPT | Funnel- & Content-Automation | ✅ live (Azure CH) |
+| Honey GPT | Pricing & Monetarisierung | ✅ live (Azure CH) |
+| Homie GPT | Onboarding & Training | ✅ live (Azure CH) |
+| KaiVio GPT | Karriere- & CV-Coaching | ✅ live (Azure CH) |
+| Baschi GPT | Sales & LinkedIn | ✅ live (Azure CH) |
+| SoulGuide Gabriela GPT | Werte & Ethik | ✅ live (Azure CH) |
+| SoulSync AI | Human Design Coaching | ✅ live (Azure CH) |
+| DailyJasmin | Impulsgeberin | ✅ live (Azure CH) |
+| _Fallback GPT_ | sichere Fehlerrückmeldung | ✅ aktiviert |
 
 ---
 
-## 🚀 Wie nutze ich es?
+## 🔧 Setup & Struktur
 
-Du kannst GPTs **einfach über eine API ansprechen** (z. B. aus Postman, Zapier, Frontend etc.)
+```
+├── api/                   # GPT-Endpunkte (chat, status, health, etc.)
+├── admin/                # Admin-Tools (Login, Prompt-Editor, Logs)
+├── logs/                 # Logdaten der Test-GPTs (test-log.json)
+├── public/               # Öffentlich: sitemap.xml, robots.txt
+├── api/config/           # mapping.json, gpt-index.json
+├── api/store/            # YAML-Prompts für CustomGPT / API
+├── middleware.js         # Auth + IP-Restriktion für Admin-Zugriff
+└── vercel.json           # Vercel Deployment Config (Region: fra1)
+```
 
-**API-URL:**
-https://<dein-vercel-projekt>.vercel.app/api/chat
+---
 
-ruby
-Kopieren
-Bearbeiten
+## 🔐 Zugang Admin-Bereich
 
-**HTTP-Methode:** `POST`  
-**Header:**
-```http
-Content-Type: application/json
-Beispiel Body:
+**Login:** `/admin/login`
 
-json
-Kopieren
-Bearbeiten
-{
-  "gpt": "kaija-gpt",
-  "messages": [
-    { "role": "user", "content": "Was kann KaiJa GPT für mich tun?" }
-  ]
-}
-🧠 FÜR ENTWICKLER – Architektur, Logik, Setup
-📂 Projektstruktur
-pgsql
-Kopieren
-Bearbeiten
-/api/chat.js                → Zentrale Azure-Proxy-Function (Vercel Function)
-/api/config/mapping.json   → GPT-Mapping: Name → Prompt + Deployment
-/prompts/*.md              → Systemprompts in Markdown (editable)
-/public/                   → Embed UI, Datenschutzseite, JS-Trigger
-/vercel.json               → Sicherheitsheader (CSP, Referrer, HSTS)
-/.env (nur in Vercel UI)   → Azure OpenAI API Zugang
-🔁 mapping.json (Schema)
-json
-Kopieren
-Bearbeiten
-{
-  "kaija-gpt": {
-    "prompt": "prompts/kaija-gpt.md",
-    "deployment": "kaija-gpt"
-  },
-  "maerki-gpt": {
-    "prompt": "prompts/maerki-gpt.md",
-    "deployment": "maerki-gpt"
-  }
-}
-🧩 chat.js – Logiküberblick
-safeGpt: validiert GPT-Key gegen Mapping
+- Session-Cookie: `kaija_admin_session=valid`
+- Token: über `ADMIN_SECRET_TOKEN` geschützt (in `.env`)
+- Absicherung durch `middleware.js`
 
-lädt Systemprompt aus .md
+---
 
-kombiniert systemPrompt + messages
+## 📦 Admin Tools
 
-sendet POST-Request an Azure OpenAI API (mit Timeout & Retry)
+| Tool | Beschreibung |
+|------|--------------|
+| `gpt-tools.js` | YAML live bearbeiten, GPT testen, speichern |
+| `test-log.js` | GPT-Testverlauf anzeigen, CSV/MD exportieren |
+| `test-gpt.js` | GPT-Einzeltest (manuell oder via log=true) |
+| `gpt-preview.js` | Übersicht aller GPTs im System |
 
-gibt GPT-Antwort als JSON zurück
+---
 
-robustes Fehlerhandling + Logging
+## ⚙ Deployment
 
-🛡 Environment Variablen (Vercel)
-Key	Beispielwert
-AZURE_OPENAI_KEY	sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-AZURE_OPENAI_ENDPOINT	https://kaija-openai.openai.azure.com
-AZURE_OPENAI_VERSION	2025-01-01-preview
+- Hosting: [Vercel](https://vercel.com/) (Region: FRA1 – Frankfurt)
+- KI: [Azure OpenAI](https://azure.microsoft.com/) (Region: Switzerland North)
+- DSGVO & AI Act Ready
 
-✅ Unterstützte GPTs (Stand 21.05.2025)
-GPT-Name	Beschreibung
-maerki-gpt	Strategische KI-Unternehmensführung
-kaija-gpt	Funnel- und Marketingautomation
-honey-gpt	Pricing & Monetarisierung
-homie-gpt	Onboarding & Learning Journeys
-kaivio-gpt	Karriere & Personal Branding
-baschis-gpt	Sales & LinkedIn Outreach
-soulguide-gabriela-gpt	Spirituelles Branding & Ethikberatung
-soulsyncai-gpt	Human Design Coaching & Leadership Flow
-dailyjasmin-gpt	Selfcare & Alltagsempowerment
+---
 
-🔧 Technisches Setup (Quick Start für Developer)
-git clone dieses Repository
+## 📚 Dokumentation
 
-.env Datei in Vercel UI setzen
+- [`robots.txt`](public/robots.txt)
+- [`sitemap.xml`](public/sitemap.xml)
+- [`mapping.json`](api/config/mapping.json)
+- [`gpt-index.json`](api/config/gpt-index.json)
+- YAML-Dateien: [`/api/store/*.yaml`](api/store/)
 
-Prompts in /prompts/*.md pflegen oder erweitern
+---
 
-mapping.json aktualisieren bei neuen GPTs
+## ✅ To-Do (Stand 25.05.2025)
 
-Push → Vercel deployed automatisch
+- [x] Admin UI mit Editor & Logs
+- [x] DSGVO-Konformität & Datenschutzseite
+- [x] Logging & Test-API (`log=true` optional)
+- [x] Sitemap & robots.txt eingebaut
+- [ ] Snapshot-Funktion für YAML & Mapping als ZIP
+- [ ] README zur Projektverlinkung ausbauen (z. B. Badge, Lizenz, Autoren)
 
-🧠 Maintainer & Credits
-Daniel Betschart
-🧠 Gründer – KaiJa Marketing!
-📧 you@kaija-marketing.pro
-🌐 www.kaija-marketing.pro
-🔗 linkedin.com/in/daniel-e-betschart
+---
 
-📅 Letzter Stand: 21.05.2025 – 15:55 CET
+© 2025 Daniel Betschart / KaiJa Marketing! – Swiss Made Unicorn Intelligence 🦄
