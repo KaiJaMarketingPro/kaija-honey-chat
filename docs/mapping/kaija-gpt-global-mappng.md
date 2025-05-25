@@ -1,83 +1,83 @@
-# 🧠 KaiJa Marketing – Globales GPT-Feldmapping (v1.0)
+# 🧠 KaiJa Marketing – Globales GPT-Feldmapping (v1.1)
 
+> Version: 1.1
 > Erstellt am: 25.05.2025
-> Version: 1.0
 > Verantwortlich: Daniel Betschart
-> Speicherort: `/docs/mapping/kaija-gpt-global-mapping.md`
+> Speicherort: `/docs/mapping/kaija-gpt-global-mapping-v1.1.md`
 
 ---
 
 ## 📌 Zweck
 
-Dieses Mapping beschreibt alle strukturierten Felder für alle GPT-Produkte von KaiJa Marketing (Rechnung, Sheet, Make). Ziel ist eine konsistente, automatisierte & DSGVO-konforme Verarbeitung.
+Dieses Mapping definiert alle strukturierten Felder für KaiJa GPT-Produkte. Es dient als Grundlage für DSGVO-konformes Abomanagement, Make-Automatisierungen und GPT Store-Kompatibilität.
 
 ---
 
-## 🧾 Einheitliches GPT Mapping
+## 🧾 GPT Registry – Bundle & Trigger Mapping
 
-| GPT                  | bundle               | price\_tier | trigger\_flow      | access\_level | plan\_group | test\_phase   | region |
-| -------------------- | -------------------- | ----------- | ------------------ | ------------- | ----------- | ------------- | ------ |
-| `honey-gpt`          | coaching\_signature  | 249\_combo  | honey\_gpt\_access | premium       | honey       | 7\_days\_free | CH     |
-| `kaiija-gpt`         | funnel\_automation   | 0\_free     | kaija\_funnel      | freemium      | kaiija      | none          | CH     |
-| `maerki-gpt`         | strategy\_audit      | 0\_free     | maerki\_lifecycle  | freemium      | lifecycle   | none          | CH     |
-| `homie-gpt`          | onboarding\_ai       | 58\_month   | homie\_learning    | premium       | homie       | 7\_days\_free | CH     |
-| `kaivio-gpt`         | career\_coaching     | 58\_month   | kaivio\_cv         | premium       | kaivio      | 7\_days\_free | CH     |
-| `baschis-gpt`        | linkedin\_sales      | 58\_month   | baschi\_sales      | premium       | baschi      | 7\_days\_free | CH     |
-| `soulguide-gabriela` | ethical\_branding    | 58\_month   | gabriela\_guide    | premium       | gabriela    | 7\_days\_free | CH     |
-| `soulsyncai-gpt`     | human\_design\_sync  | 58\_month   | soulsync\_energy   | premium       | soulsync    | 7\_days\_free | CH     |
-| `dailyjasmin-gpt`    | impulse\_inspiration | 0\_free     | jasmin\_daily      | freemium      | jasmin      | none          | CH     |
-| `fallback-gpt`       | error\_handling      | 0\_system   | fallback\_logic    | system        | fallback    | none          | CH     |
-
----
-
-## 🧠 Standardfelder für Rechnungsvorlage (nur 4 nutzbar)
-
-| Feld          | Beispiel                    | Gilt für        |
-| ------------- | --------------------------- | --------------- |
-| `GPT`         | Honey GPT                   | GPT-Zuordnung   |
-| `bundle`      | coaching\_signature         | Produktbündel   |
-| `Stratdatum`  | Automatisch bei Aktivierung | DSGVO-Protokoll |
-| `Zahlungstyp` | Monatliches Abo (CHF 58)    | Abomodell       |
+| GPT                  | bundle\_primary     | price\_tier         | trigger\_flow      | access\_level | plan\_group | trial\_days | region |
+| -------------------- | ------------------- | ------------------- | ------------------ | ------------- | ----------- | ----------- | ------ |
+| `honey-gpt`          | honey\_signature    | 249\_combo\_premium | honey\_gpt\_access | premium       | honey       | 7           | CH     |
+| `kaija-gpt`          | funnel\_automation  | 0\_free             | kaija\_funnel      | freemium      | kaija       | 0           | CH     |
+| `maerki-gpt`         | strategy\_audit     | 0\_free             | maerki\_lifecycle  | freemium      | lifecycle   | 0           | CH     |
+| `homie-gpt`          | onboarding\_ai      | 58\_month\_standard | homie\_learning    | premium       | homie       | 7           | CH     |
+| `kaivio-gpt`         | career\_coaching    | 58\_month\_standard | kaivio\_cv         | premium       | kaivio      | 7           | CH     |
+| `baschis-gpt`        | linkedin\_sales     | 58\_month\_standard | baschi\_sales      | premium       | baschi      | 7           | CH     |
+| `soulguide-gabriela` | ethical\_branding   | 58\_month\_standard | gabriela\_guide    | premium       | gabriela    | 7           | CH     |
+| `soulsyncai-gpt`     | human\_design\_sync | 58\_month\_standard | soulsync\_energy   | premium       | soulsync    | 7           | CH     |
+| `dailyjasmin-gpt`    | daily\_support      | 0\_free             | jasmin\_daily      | freemium      | jasmin      | 0           | CH     |
+| `fallback-gpt`       | error\_handling     | 0\_system           | fallback\_logic    | system        | fallback    | 0           | CH     |
 
 ---
 
-## 🗂 Make Webhook → Sheet-Felder (empfohlen)
+## 🧾 Rechnungsvorlage – 4 nutzbare Felder
 
-| Feldname         | Quelle (Stripe Webhook)            | Typ       |
-| ---------------- | ---------------------------------- | --------- |
-| E-Mail           | `customer.email`                   | Text      |
-| Name             | `customer.name`                    | Text      |
-| Produkt (GPT)    | `metadata.GPT`                     | Text      |
-| Bundle           | `metadata.bundle`                  | Text      |
-| Startdatum       | `subscription.created`             | Timestamp |
-| Preis CHF        | `price.unit_amount / 100`          | Währung   |
-| Testphase aktiv? | `trial_end != null`                | Boolean   |
-| Status           | `subscription.status`              | Enum      |
-| Zugriff erlaubt  | `=IF(Status="active","ja","nein")` | Formel    |
-| Region           | CH                                 | fixiert   |
+| Feldname      | Beispiel                    | Zweck                     |
+| ------------- | --------------------------- | ------------------------- |
+| `GPT`         | Honey GPT                   | Produktkennung (sichtbar) |
+| `bundle`      | coaching\_signature         | Kombi-Produktkennung      |
+| `Stratdatum`  | Automatisch bei Aktivierung | DSGVO-Protokoll           |
+| `Zahlungstyp` | Monatliches Abo (CHF 58)    | Preis / Abo-Art           |
 
 ---
 
-## 🔁 Kompatible Stripe Events (empfohlen für Make)
+## 📊 Sheetstruktur für Zugriff & Abomanagement
+
+| Feldname             | Quelle (Make/Stripe)              | Typ     | Format                             |
+| -------------------- | --------------------------------- | ------- | ---------------------------------- |
+| `email`              | `customer.email`                  | Text    | lowercase                          |
+| `name`               | `customer.name`                   | Text    | optional                           |
+| `product_id`         | `metadata.product_id`             | Text    | z. B. `honey_signature`            |
+| `bundle_primary`     | `metadata.bundle`                 | Text    |                                    |
+| `price_chf`          | `price.unit_amount / 100`         | Währung | CHF                                |
+| `trial_days`         | `subscription.trial_days`         | Integer | 0 / 7                              |
+| `trial_active`       | `trial_end > today()`             | Boolean | true/false                         |
+| `status`             | `subscription.status`             | Enum    | active / cancelled / past\_due     |
+| `current_period_end` | `subscription.current_period_end` | Datum   | Unix timestamp                     |
+| `access_granted`     | Formel: via `status`              | Formel  | `=IF(status="active","ja","nein")` |
+| `region`             | Fixwert                           | CH      |                                    |
+
+---
+
+## 🔁 Empfohlene Stripe Events für Make
 
 * `checkout.session.completed`
 * `customer.subscription.created`
 * `customer.subscription.updated`
 * `customer.subscription.deleted`
 * `invoice.payment_succeeded`
+* `invoice.payment_failed`
 
 ---
 
-## ✅ DSGVO- & AI Act-Konformität
+## ✅ DSGVO- & AI Act-Check (v1.1)
 
-Alle Felder wurden geprüft auf:
-
-* ✅ Datenminimierung
-* ✅ Zweckbindung
-* ✅ Automatisierungskompatibilität
-* ✅ Make & Sheet Tauglichkeit
+* ✅ Klar definierte Zweckbindung (pro Feld)
+* ✅ Datenminimierung erfüllt (nur geschäftsrelevante Felder)
+* ✅ Speichersystem: nur auf eigenen Servern (Make / Sheet / Vercel API)
+* ✅ Kündigungsprozesse vollständig automatisierbar
 
 ---
 
-📁 Ablage: `/docs/mapping/kaija-gpt-global-mapping.md`
+📁 Ablage: `/docs/mapping/kaija-gpt-global-mapping-v1.1.md`
 📄 Letztes Update: 25.05.2025
