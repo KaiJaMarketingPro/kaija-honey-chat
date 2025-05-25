@@ -6,8 +6,8 @@
   "builds": [
     { "src": "api/**/*.js", "use": "@vercel/node" },
     { "src": "public/**/*", "use": "@vercel/static" },
-    { "src": "admin/gptPreview.js", "use": "@vercel/node" },
-     ],
+    { "src": "admin/gptPreview.js", "use": "@vercel/node" }
+  ],
   "routes": [
     { "src": "/api/chat", "dest": "/api/chat.js" },
     { "src": "/api/status", "dest": "/api/status.js" },
@@ -16,7 +16,6 @@
     { "src": "/api/gpt-index", "dest": "/api/gpt-index.js" },
     { "src": "/admin/gpt-preview", "dest": "/admin/gptPreview.js" },
     { "src": "/robots.txt", "dest": "/public/robots.txt" },
-    { "src": "/(.*)", "middleware": "/middleware.js" },
     { "src": "/(.*)", "dest": "/index.html" }
   ],
   "headers": [
@@ -33,7 +32,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; connect-src 'self' https://maerki-gpt.vercel.app https://*.kaija-marketing.pro https://proxy.kaija-marketing.pro; style-src 'self' 'unsafe-inline'; frame-ancestors 'self' https://www.kaija-marketing.pro https://editor.wix.com https://*.wixsite.com"
+          "value": "default-src 'self'; script-src 'self'; connect-src 'self' https://honey-gpt.vercel.app https://*.kaija-marketing.pro https://proxy.kaija-marketing.pro; style-src 'self' 'unsafe-inline'; frame-ancestors 'self' https://www.kaija-marketing.pro https://editor.wix.com https://*.wixsite.com"
         },
         {
           "key": "Referrer-Policy",
