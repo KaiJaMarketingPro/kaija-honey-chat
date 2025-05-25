@@ -8,16 +8,6 @@
     { "src": "public/**/*", "use": "@vercel/static" },
     { "src": "admin/gptPreview.js", "use": "@vercel/node" }
   ],
-  "routes": [
-    { "src": "/api/chat", "dest": "/api/chat.js" },
-    { "src": "/api/status", "dest": "/api/status.js" },
-    { "src": "/api/health", "dest": "/api/health.js" },
-    { "src": "/api/validate-yaml", "dest": "/api/validate-yaml.js" },
-    { "src": "/api/gpt-index", "dest": "/api/gpt-index.js" },
-    { "src": "/admin/gpt-preview", "dest": "/admin/gptPreview.js" },
-    { "src": "/robots.txt", "dest": "/public/robots.txt" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ],
   "headers": [
     {
       "source": "/api/(.*)",
