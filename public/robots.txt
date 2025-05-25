@@ -1,3 +1,6 @@
+### 📄 robots.txt (für /public/ im Honey-Projekt)
+
+```
 User-agent: *
 Allow: /
 
@@ -7,5 +10,11 @@ Disallow: /api/test-gpt
 Disallow: /api/validate-yaml
 Disallow: /logs/
 
-# Sitemap (optional)
+# Sitemaps
 Sitemap: https://www.kaija-marketing.pro/sitemap.xml
+Sitemap: https://honey-chat-v1.vercel.app/sitemap-gpts.xml
+```
+
+✅ DSGVO-freundlich – erlaubt alle Bots ohne Einschränkung
+✅ GPT-Routen geschützt
+✅ Haupt- & GPT-Sitemap korrekt integriert
