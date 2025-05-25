@@ -9,3 +9,4 @@ Disallow: /logs/
 
 # Sitemap (optional)
 Sitemap: https://www.kaija-marketing.pro/sitemap.xml
+Sitemap: https://honey-chat-v1.vercel.app/sitemap.xml
