@@ -7,6 +7,7 @@
     body { font-family: sans-serif; padding: 2em; background: #f5f5f5; }
     select, textarea, button { font-size: 1em; margin: 0.5em 0; width: 100%; }
     #output { white-space: pre-wrap; background: #fff; padding: 1em; border-radius: 8px; border: 1px solid #ccc; min-height: 120px; }
+    #canva-link { margin-top: 1em; display: block; font-size: 0.95em; color: #0073e6; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -28,9 +29,11 @@
   <textarea id="prompt" rows="5" placeholder="Schreib mir 3 Tipps für meine Preisstrategie…"></textarea>
 
   <button onclick="sendPrompt()">🚀 Anfrage senden</button>
+  <button onclick="generateCanvaLink()">🎨 Canva Vorlage vorschlagen</button>
 
   <h3>🧠 GPT Antwort</h3>
   <div id="output">Antwort erscheint hier…</div>
+  <a id="canva-link" href="#" target="_blank" style="display:none;">➡️ Canva Vorlage öffnen</a>
 
   <script>
     async function sendPrompt() {
@@ -50,6 +53,26 @@
         output.innerText = data?.choices?.[0]?.message?.content || '⚠️ Keine Antwort erhalten.';
       } catch (err) {
         output.innerText = '❌ Fehler: ' + err.message;
+      }
+    }
+
+    async function generateCanvaLink() {
+      const prompt = document.getElementById('prompt').value;
+      const linkEl = document.getElementById('canva-link');
+      linkEl.innerText = '⏳ Canva-Link wird generiert…';
+      linkEl.style.display = 'block';
+
+      try {
+        const res = await fetch('/api/canva-download', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ type: 'presentation', query: prompt })
+        });
+        const data = await res.json();
+        linkEl.href = data.templateSearchUrl;
+        linkEl.innerText = '➡️ Canva Vorlage öffnen';
+      } catch (err) {
+        linkEl.innerText = '❌ Fehler beim Generieren des Canva-Links';
       }
     }
   </script>
