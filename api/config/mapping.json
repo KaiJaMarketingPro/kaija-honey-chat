@@ -46,7 +46,7 @@
   },
   "_fallback": {
     "prompt": "prompts/fallback.md",
-    "deployment": "default-gpt",
+    "deployment": "honey-gpt",
     "yaml": "store/fallback.yaml"
   }
 }
