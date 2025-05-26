@@ -1,5 +1,5 @@
 // 📁 /api/chat.js
-// Azure OpenAI Proxy mit Retry, Timeout & Deployment/Prompt-Mapping inkl. Fallback
+// Azure OpenAI Proxy mit Retry, Timeout, Mapping, Prompt-Loader, Fallback + Make Webhook
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -9,7 +9,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt.' });
   }
 
-  const { messages = [], gpt = 'maerki-gpt' } = req.body;
+  const { messages = [], gpt = 'maerki-gpt', user = 'anonymous' } = req.body;
 
   if (!Array.isArray(messages)) {
     return res.status(400).json({ error: 'Ungültiges Nachrichtenformat. Erwartet: Array von Messages.' });
@@ -34,6 +34,7 @@ export default async function handler(req, res) {
 
     const endpoint = `${process.env.AZURE_OPENAI_ENDPOINT}/openai/deployments/${deploymentName}/chat/completions?api-version=${process.env.AZURE_OPENAI_VERSION}`;
     const apiKey = process.env.AZURE_OPENAI_KEY;
+    const webhookUrl = process.env.MAKE_WEBHOOK_URL;
 
     if (!endpoint || !apiKey) {
       return res.status(500).json({
@@ -68,6 +69,7 @@ export default async function handler(req, res) {
         });
 
         clearTimeout(timeout);
+        const result = await azureRes.json();
 
         if (!azureRes.ok) {
           const errText = await azureRes.text();
@@ -84,7 +86,22 @@ export default async function handler(req, res) {
           });
         }
 
-        const result = await azureRes.json();
+        // 🔁 Logging an Make Webhook (optional)
+        if (webhookUrl) {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              timestamp: new Date().toISOString(),
+              gpt: safeGpt,
+              user,
+              tokens: result.usage?.total_tokens || 0,
+              prompt: messages?.[0]?.content?.slice(0, 80) || '-',
+              status: usedFallback ? 'fallback' : 'success'
+            })
+          });
+        }
+
         return res.status(200).json(result);
 
       } catch (err) {
