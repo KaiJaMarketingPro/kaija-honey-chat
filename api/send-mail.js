@@ -1,4 +1,4 @@
-// 📁 /api/send-mail.js – DSGVO-konformer Mailversand via Brevo API (optimiert)
+// 📁 /api/send-mail.js – DSGVO-konformer Mailversand via Brevo API (inkl. optionalem Canva-Link)
 
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt' });
   }
 
-  const { to, subject, html } = req.body;
+  const { to, subject, html, canvaPrompt } = req.body;
   const apiKey = process.env.BREVO_API_KEY;
   const senderName = process.env.BREVO_SENDER_NAME || 'KaiJa Marketing!';
   const senderEmail = process.env.BREVO_SENDER_EMAIL || 'noreply@kaija-marketing.pro';
@@ -17,6 +17,15 @@ export default async function handler(req, res) {
   }
   if (!apiKey) {
     return res.status(500).json({ error: 'BREVO_API_KEY fehlt in den Umgebungsvariablen' });
+  }
+
+  let htmlFinal = html;
+
+  // 🔗 Optionalen Canva-Link dynamisch einbinden
+  if (canvaPrompt) {
+    const prompt = encodeURIComponent(canvaPrompt);
+    const link = `https://www.canva.com/presentation/templates/?query=${prompt}`;
+    htmlFinal += `<p><a href="${link}" target="_blank">🎨 Öffne deine visuelle Vorlage in Canva</a></p>`;
   }
 
   try {
@@ -31,7 +40,7 @@ export default async function handler(req, res) {
         sender: { name: senderName, email: senderEmail },
         to: [{ email: to }],
         subject,
-        htmlContent: html
+        htmlContent: htmlFinal
       })
     });
 
