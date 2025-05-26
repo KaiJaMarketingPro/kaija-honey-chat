@@ -2,9 +2,14 @@
 import fs from 'fs/promises';
 import path from 'path';
 import yaml from 'js-yaml';
+import fsSync from 'fs';
 
 export default async function handler(req, res) {
   const isPost = req.method === 'POST';
+  const session = req.cookies?.kaija_admin_session;
+  if (session !== 'valid') {
+    return res.status(401).send('Nicht autorisiert – Admin-Session fehlt oder ungültig');
+  }
 
   try {
     const gptIndexPath = path.join(process.cwd(), 'api/config/gpt-index.json');
@@ -52,6 +57,16 @@ export default async function handler(req, res) {
       return res.writeHead(302, { Location: '/admin/gpt-tools' }).end();
     }
 
+    // CSV Exportbereich (Monatsübersicht)
+    const logDir = path.join(process.cwd(), 'logs');
+    const files = fsSync.existsSync(logDir) ? fsSync.readdirSync(logDir) : [];
+    const months = files
+      .filter(f => f.startsWith('gpt-usage-') && f.endsWith('.jsonl'))
+      .map(f => f.replace('gpt-usage-', '').replace('.jsonl', ''))
+      .sort();
+
+    const csvLinks = months.map(m => `<li><a href="/admin/export-csv?month=${m}" target="_blank">📥 CSV Export – ${m}</a></li>`).join('\n');
+
     const html = `<!DOCTYPE html>
 <html lang="de">
 <head>
@@ -67,6 +82,8 @@ export default async function handler(req, res) {
 </head>
 <body>
   <h1>🛠 KaiJa Admin – YAML Editor + GPT Test</h1>
+  <h3>📥 CSV Exporte</h3>
+  <ul>${csvLinks}</ul>
   ${rows.join('')}
 </body>
 </html>`;
