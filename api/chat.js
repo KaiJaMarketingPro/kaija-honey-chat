@@ -1,5 +1,5 @@
 // 📁 /api/chat.js
-// Azure OpenAI Proxy mit Retry, Timeout, Mapping, Prompt-Loader, Fallback + Make Webhook
+// Azure OpenAI Proxy mit Retry, Timeout, Mapping, Prompt-Loader, Fallback + Make Webhook → Dual Sheet Logging
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -86,7 +86,7 @@ export default async function handler(req, res) {
           });
         }
 
-        // 🔁 Logging an Make Webhook (optional)
+        // 🔁 Logging an Make Webhook → GPT_Activity_Log + Access_Log Sheet
         if (webhookUrl) {
           await fetch(webhookUrl, {
             method: 'POST',
@@ -97,7 +97,11 @@ export default async function handler(req, res) {
               user,
               tokens: result.usage?.total_tokens || 0,
               prompt: messages?.[0]?.content?.slice(0, 80) || '-',
-              status: usedFallback ? 'fallback' : 'success'
+              status: usedFallback ? 'fallback' : 'success',
+              canva_prompt: req.body?.canvaPrompt || '',
+              freepik_used: !!req.body?.freepikMarkdown,
+              mail_sent: true,
+              source: 'chat.js → dual sheet sync'
             })
           });
         }
