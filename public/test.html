@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>GPT Playground – KaiJa Marketing!</title>
+  <style>
+    body { font-family: sans-serif; padding: 2em; background: #f5f5f5; }
+    select, textarea, button { font-size: 1em; margin: 0.5em 0; width: 100%; }
+    #output { white-space: pre-wrap; background: #fff; padding: 1em; border-radius: 8px; border: 1px solid #ccc; min-height: 120px; }
+  </style>
+</head>
+<body>
+  <h2>🧪 KaiJa GPT Playground</h2>
+  <label for="gpt">Wähle einen GPT:</label>
+  <select id="gpt">
+    <option value="maerki-gpt">🧠 Märki GPT</option>
+    <option value="kaija-gpt">📣 KaiJa GPT</option>
+    <option value="honey-gpt">🐝 Honey GPT</option>
+    <option value="homie-gpt">🎓 Homie GPT</option>
+    <option value="kaivio-gpt">💼 KaiVio GPT</option>
+    <option value="baschis-gpt">🤝 Baschi GPT</option>
+    <option value="soulguide-gabriela-gpt">🌿 Gabriela GPT</option>
+    <option value="soulsyncai-gpt">🌙 SoulSync AI</option>
+    <option value="dailyjasmin-gpt">✨ DailyJasmin</option>
+  </select>
+
+  <label for="prompt">Prompt eingeben:</label>
+  <textarea id="prompt" rows="5" placeholder="Schreib mir 3 Tipps für meine Preisstrategie…"></textarea>
+
+  <button onclick="sendPrompt()">🚀 Anfrage senden</button>
+
+  <h3>🧠 GPT Antwort</h3>
+  <div id="output">Antwort erscheint hier…</div>
+
+  <script>
+    async function sendPrompt() {
+      const gpt = document.getElementById('gpt').value;
+      const prompt = document.getElementById('prompt').value;
+      const output = document.getElementById('output');
+
+      output.innerText = '⏳ Anfrage wird verarbeitet…';
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ gpt, messages: [{ role: 'user', content: prompt }] })
+        });
+        const data = await res.json();
+        output.innerText = data?.choices?.[0]?.message?.content || '⚠️ Keine Antwort erhalten.';
+      } catch (err) {
+        output.innerText = '❌ Fehler: ' + err.message;
+      }
+    }
+  </script>
+</body>
+</html>
