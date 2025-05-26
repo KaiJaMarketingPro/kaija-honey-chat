@@ -1,4 +1,4 @@
-// 📁 /api/send-mail.js – DSGVO-konformer Mailversand via Brevo API (inkl. optionalem Canva-Link)
+// 📁 /api/send-mail.js – DSGVO-konformer Mailversand via Brevo API (inkl. optionalem Canva-Link + Freepik-Markdown)
 
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
@@ -7,7 +7,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt' });
   }
 
-  const { to, subject, html, canvaPrompt } = req.body;
+  const { to, subject, html, canvaPrompt, freepikMarkdown } = req.body;
   const apiKey = process.env.BREVO_API_KEY;
   const senderName = process.env.BREVO_SENDER_NAME || 'KaiJa Marketing!';
   const senderEmail = process.env.BREVO_SENDER_EMAIL || 'noreply@kaija-marketing.pro';
@@ -26,6 +26,14 @@ export default async function handler(req, res) {
     const prompt = encodeURIComponent(canvaPrompt);
     const link = `https://www.canva.com/presentation/templates/?query=${prompt}`;
     htmlFinal += `<p><a href="${link}" target="_blank">🎨 Öffne deine visuelle Vorlage in Canva</a></p>`;
+  }
+
+  // 🖼 Optionales Freepik-Markdown übernehmen (in HTML umwandeln)
+  if (freepikMarkdown) {
+    const htmlFromMarkdown = freepikMarkdown
+      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width:100%;border-radius:4px">')
+      .replace(/\[Freepik-Link öffnen\]\((.*?)\)/g, '<p><a href="$1" target="_blank">🖼 Freepik-Link öffnen</a></p>');
+    htmlFinal += `<div>${htmlFromMarkdown}</div>`;
   }
 
   try {
