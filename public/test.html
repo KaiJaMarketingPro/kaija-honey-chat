@@ -7,7 +7,7 @@
     body { font-family: sans-serif; padding: 2em; background: #f5f5f5; }
     select, textarea, button { font-size: 1em; margin: 0.5em 0; width: 100%; }
     #output { white-space: pre-wrap; background: #fff; padding: 1em; border-radius: 8px; border: 1px solid #ccc; min-height: 120px; }
-    #canva-link { margin-top: 1em; display: block; font-size: 0.95em; color: #0073e6; text-decoration: underline; }
+    #canva-link, .freepik-box { margin-top: 1em; display: block; font-size: 0.95em; color: #0073e6; text-decoration: underline; }
   </style>
 </head>
 <body>
@@ -30,10 +30,12 @@
 
   <button onclick="sendPrompt()">🚀 Anfrage senden</button>
   <button onclick="generateCanvaLink()">🎨 Canva Vorlage vorschlagen</button>
+  <button onclick="fetchFreepikImages()">🔎 Bild mit Freepik finden</button>
 
   <h3>🧠 GPT Antwort</h3>
   <div id="output">Antwort erscheint hier…</div>
   <a id="canva-link" href="#" target="_blank" style="display:none;">➡️ Canva Vorlage öffnen</a>
+  <div id="freepik-results"></div>
 
   <script>
     async function sendPrompt() {
@@ -73,6 +75,34 @@
         linkEl.innerText = '➡️ Canva Vorlage öffnen';
       } catch (err) {
         linkEl.innerText = '❌ Fehler beim Generieren des Canva-Links';
+      }
+    }
+
+    async function fetchFreepikImages() {
+      const prompt = document.getElementById('prompt').value;
+      const container = document.getElementById('freepik-results');
+      container.innerHTML = '⏳ Suche wird durchgeführt…';
+
+      try {
+        const res = await fetch('/api/freepik-search', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ query: prompt })
+        });
+        const data = await res.json();
+        if (!data.images?.length) {
+          container.innerText = '⚠️ Keine Bilder gefunden.';
+          return;
+        }
+        container.innerHTML = data.images.map(img => `
+          <div class="freepik-box">
+            <p><strong>${img.title}</strong></p>
+            <img src="${img.thumb}" alt="${img.title}" style="max-width:100%;border-radius:4px">
+            <p><a href="${img.link}" target="_blank">Freepik-Link öffnen</a></p>
+          </div>
+        `).join('');
+      } catch (err) {
+        container.innerText = '❌ Fehler beim Laden der Freepik-Bilder: ' + err.message;
       }
     }
   </script>
