@@ -1,65 +1,9 @@
-// 📁 /api/send-mail.js – DSGVO-konformer Mailversand via Brevo API (inkl. optionalem Canva-Link + Freepik-Markdown)
+// 📁 /api/send-mail.js – Nur für Marketingzwecke aktiv (Brevo deaktiviert, bitte /send-gmail.js für transaktionale Kommunikation nutzen)
 
 export default async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
 
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt' });
-  }
-
-  const { to, subject, html, canvaPrompt, freepikMarkdown } = req.body;
-  const apiKey = process.env.BREVO_API_KEY;
-  const senderName = process.env.BREVO_SENDER_NAME || 'KaiJa Marketing!';
-  const senderEmail = process.env.BREVO_SENDER_EMAIL || 'noreply@kaija-marketing.pro';
-
-  if (!to || !subject || !html) {
-    return res.status(400).json({ error: 'Fehlende Felder: to, subject oder html' });
-  }
-  if (!apiKey) {
-    return res.status(500).json({ error: 'BREVO_API_KEY fehlt in den Umgebungsvariablen' });
-  }
-
-  let htmlFinal = html;
-
-  // 🔗 Optionalen Canva-Link dynamisch einbinden
-  if (canvaPrompt) {
-    const prompt = encodeURIComponent(canvaPrompt);
-    const link = `https://www.canva.com/presentation/templates/?query=${prompt}`;
-    htmlFinal += `<p><a href="${link}" target="_blank">🎨 Öffne deine visuelle Vorlage in Canva</a></p>`;
-  }
-
-  // 🖼 Optionales Freepik-Markdown übernehmen (in HTML umwandeln)
-  if (freepikMarkdown) {
-    const htmlFromMarkdown = freepikMarkdown
-      .replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" style="max-width:100%;border-radius:4px">')
-      .replace(/\[Freepik-Link öffnen\]\((.*?)\)/g, '<p><a href="$1" target="_blank">🖼 Freepik-Link öffnen</a></p>');
-    htmlFinal += `<div>${htmlFromMarkdown}</div>`;
-  }
-
-  try {
-    const response = await fetch('https://api.brevo.com/v3/smtp/email', {
-      method: 'POST',
-      headers: {
-        'api-key': apiKey,
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        sender: { name: senderName, email: senderEmail },
-        to: [{ email: to }],
-        subject,
-        htmlContent: htmlFinal
-      })
-    });
-
-    const result = await response.json();
-    if (!response.ok) {
-      throw new Error(result.message || 'Fehler beim Versenden über Brevo');
-    }
-
-    return res.status(200).json({ message: '✅ Mail erfolgreich gesendet', result });
-  } catch (err) {
-    console.error('[send-mail error]', err);
-    return res.status(500).json({ error: 'Fehler beim Mailversand', details: err.message });
-  }
+  return res.status(503).json({
+    error: 'send-mail.js ist deaktiviert. Bitte verwende /api/send-gmail.js für transaktionale E-Mails via Gmail SMTP.'
+  });
 }
