@@ -1,45 +1,45 @@
 {
-  "baschis-gpt": {
+  "sales-baschi-gpt": {
     "prompt": "prompts/baschis-gpt.md",
     "deployment": "baschis-gpt",
     "yaml": "store/baschis-gpt.yaml"
   },
-  "dailyjasmin-gpt": {
+  "impuls-dailyjasmin-gpt": {
     "prompt": "prompts/dailyjasmin-gpt.md",
     "deployment": "dailyjasmin-gpt",
     "yaml": "store/dailyjasmin-gpt.yaml"
   },
-  "homie-gpt": {
+  "onboard-homie-gpt": {
     "prompt": "prompts/homie-gpt.md",
     "deployment": "homie-gpt",
     "yaml": "store/homie-gpt.yaml"
   },
-  "honey-gpt": {
+  "pricing-honey-gpt": {
     "prompt": "prompts/honey-gpt.md",
     "deployment": "honey-gpt",
     "yaml": "store/honey-gpt.yaml"
   },
-  "kaija-gpt": {
+  "funnel-kaija-gpt": {
     "prompt": "prompts/kaija-gpt.md",
     "deployment": "kaija-gpt",
     "yaml": "store/kaija-gpt.yaml"
   },
-  "kaivio-gpt": {
+  "career-kaivio-gpt": {
     "prompt": "prompts/kaivio-gpt.md",
     "deployment": "kaivio-gpt",
     "yaml": "store/kaivio-gpt.yaml"
   },
-  "maerki-gpt": {
+  "ethic-maerki-gpt": {
     "prompt": "prompts/maerki-gpt.md",
     "deployment": "maerki-gpt",
     "yaml": "store/maerki-gpt.yaml"
   },
-  "soulguide-gabriela-gpt": {
+  "healer-gabriela-gpt": {
     "prompt": "prompts/soulguide-gabriela-gpt.md",
     "deployment": "soulguide-gabriela-gpt",
     "yaml": "store/soulguide-gabriela-gpt.yaml"
   },
-  "soulsyncai-gpt": {
+  "healer-soulsyncai-gpt": {
     "prompt": "prompts/soulsyncai-gpt.md",
     "deployment": "soulsyncai-gpt",
     "yaml": "store/soulsyncai-gpt.yaml"
