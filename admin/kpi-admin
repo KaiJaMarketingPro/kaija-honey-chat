@@ -10,6 +10,7 @@
     h1 { color: #7c3aed; }
     .chart-container { width: 100%; max-width: 800px; margin: auto; }
     select, button { margin: 1rem 0; padding: 0.5rem; }
+    .csv-link { margin-top: 1rem; display: block; text-align: center; }
   </style>
 </head>
 <body>
@@ -36,6 +37,8 @@
     <canvas id="kpiChart"></canvas>
   </div>
 
+  <a id="csvDownload" class="csv-link" href="#" download="kpi-export.csv" style="display:none;">📥 CSV herunterladen</a>
+
   <script>
     let chart;
 
@@ -45,9 +48,10 @@
       const response = await fetch(`/api/kpi-summary.js?cluster=${cluster}&month=${month}`);
       const data = await response.json();
 
-      const labels = data.map(item => item.gpt);
-      const usage = data.map(item => item.usage);
-      const score = data.map(item => item.qualityScore);
+      const filtered = data.clusters.filter(c => cluster === 'all' || c.cluster === cluster);
+      const labels = filtered.map(c => c.gpts.join(', '));
+      const usage = filtered.map(c => c.calls);
+      const score = filtered.map(c => c.qualityScore);
 
       if (chart) chart.destroy();
 
@@ -89,6 +93,16 @@
           }
         }
       });
+
+      // CSV download über Header Base64
+      const csvBase64 = response.headers.get('X-CSV-Download');
+      if (csvBase64) {
+        const blob = new Blob([atob(csvBase64)], { type: 'text/csv' });
+        const url = URL.createObjectURL(blob);
+        const link = document.getElementById('csvDownload');
+        link.href = url;
+        link.style.display = 'block';
+      }
     }
   </script>
 </body>
