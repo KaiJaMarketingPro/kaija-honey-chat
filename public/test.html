@@ -8,10 +8,24 @@
     select, textarea, button { font-size: 1em; margin: 0.5em 0; width: 100%; }
     #output { white-space: pre-wrap; background: #fff; padding: 1em; border-radius: 8px; border: 1px solid #ccc; min-height: 120px; }
     #canva-link, .freepik-box { margin-top: 1em; display: block; font-size: 0.95em; color: #0073e6; text-decoration: underline; }
+    .disclaimer { background: #fff5d1; border-left: 6px solid #ffcc00; padding: 1em; margin-bottom: 2em; font-size: 0.9em; }
   </style>
 </head>
 <body>
   <h2>🧪 KaiJa GPT Playground</h2>
+
+  <div class="disclaimer">
+    <strong>Hinweis zur Datensicherheit:</strong><br>
+    Diese Testumgebung dient ausschließlich zur lokalen Evaluation einzelner GPT-Modelle im Rahmen von KaiJa Marketing!.<br>
+    Es werden keine personenbezogenen Daten gespeichert oder analysiert.<br>
+    <ul>
+      <li>✅ DSGVO-konform bei <strong>lokaler Nutzung</strong> oder auf geschütztem Dev-Server</li>
+      <li>⚠️ Nicht zur Live-Nutzerkommunikation ohne Opt-in verwenden</li>
+      <li>🔒 Kein Tracking, kein Cookie, keine Log-Erhebung in diesem Playground</li>
+    </ul>
+    <em>→ Nur aktivieren, wenn du als Betreiber:in oder Tester:in volle Kontrolle über die Umgebung hast.</em>
+  </div>
+
   <label for="gpt">Wähle einen GPT:</label>
   <select id="gpt">
     <option value="maerki-gpt">🧠 Märki GPT</option>
