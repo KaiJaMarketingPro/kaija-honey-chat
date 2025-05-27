@@ -1,4 +1,4 @@
-// 📁 /admin/gpt-preview.js – mit integriertem Admin-Menü
+// 📁 /admin/gpt-preview.js – Cluster-Filter & Admin-Menü
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -13,8 +13,11 @@ export default async function handler(req, res) {
     const raw = await fs.readFile(indexPath, 'utf8');
     const gpts = JSON.parse(raw);
 
+    const uniqueClusters = new Set(gpts.map(g => g.id.split('-')[0]));
+    const clusterOptions = ['<option value="all">Alle</option>', ...[...uniqueClusters].map(c => `<option value="${c}">${c}</option>`)].join('');
+
     const rows = gpts.map(gpt => `
-      <tr>
+      <tr data-cluster="${gpt.id.split('-')[0]}">
         <td>${gpt.emoji || ''}</td>
         <td><strong>${gpt.name}</strong><br><small>${gpt.id}</small></td>
         <td>${gpt.description}</td>
@@ -39,7 +42,16 @@ export default async function handler(req, res) {
     th { background: #eee; text-align: left; }
     tr:nth-child(even) { background: #f7f7f7; }
     footer { margin-top: 3em; font-size: 0.85em; color: #777; }
+    select { font-size: 1em; margin-bottom: 1em; }
   </style>
+  <script>
+    function filterByCluster() {
+      const selected = document.getElementById('cluster').value;
+      document.querySelectorAll('tbody tr').forEach(row => {
+        row.style.display = selected === 'all' || row.dataset.cluster === selected ? '' : 'none';
+      });
+    }
+  </script>
 </head>
 <body>
   <header>
@@ -51,7 +63,13 @@ export default async function handler(req, res) {
       <a href="/api/validate-yaml" target="_blank">🧪 YAML Check</a>
     </nav>
   </header>
+
   <h2>Live GPT Übersicht</h2>
+  <label for="cluster">🔎 GPT-Cluster filtern:</label>
+  <select id="cluster" onchange="filterByCluster()">
+    ${clusterOptions}
+  </select>
+
   <table>
     <thead>
       <tr>
@@ -60,6 +78,7 @@ export default async function handler(req, res) {
     </thead>
     <tbody>${rows}</tbody>
   </table>
+
   <footer>
     Letztes Update: ${new Date().toLocaleString()}
   </footer>
