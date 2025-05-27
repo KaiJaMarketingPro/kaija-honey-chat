@@ -85,3 +85,48 @@ export default async function handler(req, res) {
             message: errText
           });
         }
+
+        // 🔁 Logging an Make Webhook → GPT_Activity_Log + Access_Log Sheet
+        if (webhookUrl) {
+          await fetch(webhookUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              timestamp: new Date().toISOString(),
+              gpt: safeGpt,
+              user,
+              tokens: result.usage?.total_tokens || 0,
+              prompt: messages?.[0]?.content?.slice(0, 80) || '-',
+              status: usedFallback ? 'fallback' : 'success',
+              canva_prompt: req.body?.canvaPrompt || '',
+              freepik_used: !!req.body?.freepikMarkdown,
+              mail_sent: req.body?.mailSent || false,
+              source: 'chat.js → dual sheet sync'
+            })
+          });
+        }
+
+        return res.status(200).json(result);
+
+      } catch (err) {
+        if (retryCount < maxRetries) {
+          console.warn(`🔁 Retry (#${retryCount + 1}) wegen Netzwerkfehler:`, err);
+          retryCount++;
+          continue;
+        }
+
+        console.error(`[${new Date().toISOString()}] ❌ GPT-Proxy-Fehler (${safeGpt}):`, err);
+        return res.status(500).json({
+          error: 'Serverfehler beim Aufruf der Azure API.',
+          details: err.message
+        });
+      }
+    }
+  } catch (e) {
+    console.error(`[${new Date().toISOString()}] ❌ Fehler beim Laden von Mapping oder Prompt für (${gpt}):`, e);
+    return res.status(500).json({
+      error: `Fehler beim Laden des Prompts oder Deployment für "${gpt}"`,
+      details: e.message
+    });
+  }
+}
