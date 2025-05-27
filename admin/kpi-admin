@@ -1,0 +1,95 @@
+<!-- /admin/kpi.html -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>KPI Dashboard – KaiJa Marketing!</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; color: #333; }
+    h1 { color: #7c3aed; }
+    .chart-container { width: 100%; max-width: 800px; margin: auto; }
+    select, button { margin: 1rem 0; padding: 0.5rem; }
+  </style>
+</head>
+<body>
+  <h1>KPI Dashboard – KaiJa Unicorn GPTs 🦄</h1>
+
+  <label for="cluster">Cluster wählen:</label>
+  <select id="cluster">
+    <option value="all">Alle</option>
+    <option value="sales">Sales Cluster</option>
+    <option value="healer">Healer Cluster</option>
+    <option value="pricing">Pricing Cluster</option>
+  </select>
+
+  <label for="month">Monat:</label>
+  <select id="month">
+    <option value="2025-05">Mai 2025</option>
+    <option value="2025-04">April 2025</option>
+    <option value="2025-03">März 2025</option>
+  </select>
+
+  <button onclick="loadKPI()">📊 Laden</button>
+
+  <div class="chart-container">
+    <canvas id="kpiChart"></canvas>
+  </div>
+
+  <script>
+    let chart;
+
+    async function loadKPI() {
+      const cluster = document.getElementById('cluster').value;
+      const month = document.getElementById('month').value;
+      const response = await fetch(`/api/kpi-summary.js?cluster=${cluster}&month=${month}`);
+      const data = await response.json();
+
+      const labels = data.map(item => item.gpt);
+      const usage = data.map(item => item.usage);
+      const score = data.map(item => item.qualityScore);
+
+      if (chart) chart.destroy();
+
+      chart = new Chart(document.getElementById('kpiChart'), {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Nutzungen',
+              data: usage,
+              backgroundColor: 'rgba(124, 58, 237, 0.6)',
+              yAxisID: 'y',
+            },
+            {
+              label: 'Qualitäts-Score',
+              data: score,
+              backgroundColor: 'rgba(34, 197, 94, 0.6)',
+              yAxisID: 'y1',
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              type: 'linear',
+              position: 'left',
+              title: { display: true, text: 'Nutzungen' }
+            },
+            y1: {
+              type: 'linear',
+              position: 'right',
+              title: { display: true, text: 'Score (1–10)' },
+              min: 0,
+              max: 10,
+              grid: { drawOnChartArea: false }
+            }
+          }
+        }
+      });
+    }
+  </script>
+</body>
+</html>
