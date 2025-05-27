@@ -1,9 +1,8 @@
 // 📁 /admin/kpi-summary.js
-// Analyse GPT-Logs aus JSONL → Cluster + Token + Call KPIs (monatlich)
+// Analyse GPT-Logs aus JSONL → Cluster + Token + Call KPIs (monatlich) + Score + GPT-Names
 
 import fs from 'fs';
 import path from 'path';
-import { format } from 'date-fns';
 
 export default async function handler(req, res) {
   const month = req.query.month || new Date().toISOString().slice(0, 7); // Format: YYYY-MM
@@ -22,11 +21,13 @@ export default async function handler(req, res) {
 
     for (const entry of entries) {
       const cluster = entry.cluster || 'unknown';
+      const gpt = entry.gpt || 'unbekannt';
       if (!summary[cluster]) {
-        summary[cluster] = { calls: 0, tokens: 0 };
+        summary[cluster] = { calls: 0, tokens: 0, gpts: new Set() };
       }
       summary[cluster].calls += 1;
       summary[cluster].tokens += entry.tokens || 0;
+      summary[cluster].gpts.add(gpt);
       totalTokens += entry.tokens || 0;
     }
 
@@ -34,9 +35,19 @@ export default async function handler(req, res) {
       cluster,
       calls: data.calls,
       tokens: data.tokens,
-      avgTokens: Math.round(data.tokens / data.calls)
+      avgTokens: Math.round(data.tokens / data.calls),
+      gpts: Array.from(data.gpts).sort(),
+      qualityScore: +(10 - (5000 / Math.max(data.tokens / data.calls, 1))).toFixed(2) // Näherung
     }));
 
+    const csv = ['Cluster,Calls,Tokens,AvgTokens,GPTs,Score']
+      .concat(clusters.map(c =>
+        `${c.cluster},${c.calls},${c.tokens},${c.avgTokens},"${c.gpts.join(';')}",${c.qualityScore}`
+      ))
+      .join('\n');
+
+    res.setHeader('Content-Type', 'application/json');
+    res.setHeader('X-CSV-Download', Buffer.from(csv).toString('base64')); // base64 für UI-Download (optional)
     return res.status(200).json({
       month,
       totalCalls: entries.length,
