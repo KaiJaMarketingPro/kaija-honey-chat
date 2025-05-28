@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Honey Abo verwalten</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #f8fafc; color: #333; }
+    h1 { color: #7c3aed; }
+    input, button { padding: 0.5rem; margin: 0.5rem 0; width: 100%; font-size: 1rem; }
+    #redirect-message { margin-top: 1rem; color: green; }
+  </style>
+  <script>
+    async function openStripePortal() {
+      const emailInput = document.getElementById("email-input");
+      const email = emailInput.value.trim();
+      const msg = document.getElementById("redirect-message");
+      msg.textContent = "⏳ Weiterleitung wird vorbereitet…";
+
+      try {
+        const res = await fetch("/api/create-stripe-portal-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email })
+        });
+        const data = await res.json();
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          msg.textContent = "❌ Fehler: Keine gültige Session erhalten.";
+        }
+      } catch (err) {
+        msg.textContent = "❌ Fehler: " + err.message;
+      }
+    }
+
+    window.onload = () => {
+      const params = new URLSearchParams(window.location.search);
+      const email = params.get("email");
+      if (email) {
+        document.getElementById("email-input").value = email;
+      }
+    };
+  </script>
+</head>
+<body>
+  <h1>🔧 Verwalte dein Honey Abo</h1>
+  <p>Bitte gib die E-Mail-Adresse ein, mit der du dein Abo gebucht hast:</p>
+  <input type="email" id="email-input" placeholder="deine@email.ch">
+  <button onclick="openStripePortal()">➡️ Zum Kundenportal</button>
+  <p id="redirect-message"></p>
+</body>
+</html>
