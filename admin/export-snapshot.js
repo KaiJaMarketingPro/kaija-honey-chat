@@ -16,14 +16,20 @@ export default async function handler(req, res) {
 
     archive.pipe(res);
 
+    // YAML-Files (optional)
     const storeDir = path.join(process.cwd(), 'api/store');
-    const yamlFiles = await fs.readdir(storeDir);
-    for (const file of yamlFiles) {
-      const filePath = path.join(storeDir, file);
-      const content = await fs.readFile(filePath);
-      archive.append(content, { name: `yaml/${file}` });
+    try {
+      const yamlFiles = await fs.readdir(storeDir);
+      for (const file of yamlFiles) {
+        const filePath = path.join(storeDir, file);
+        const content = await fs.readFile(filePath);
+        archive.append(content, { name: `yaml/${file}` });
+      }
+    } catch (e) {
+      console.warn('[Snapshot] Kein store/ Verzeichnis gefunden oder leer. Wird übersprungen.');
     }
 
+    // mapping.json immer einfügen
     const mappingPath = path.join(process.cwd(), 'api/config/mapping.json');
     const mappingContent = await fs.readFile(mappingPath);
     archive.append(mappingContent, { name: 'mapping.json' });
