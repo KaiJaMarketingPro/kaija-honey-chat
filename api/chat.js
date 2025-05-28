@@ -1,5 +1,5 @@
 // 📁 /api/chat.js
-// KaiJa GPT-Proxy mit Retry, Prompt-Loader, Mapping & Make Webhook Logging (Dual Sheet Ready)
+// KaiJa GPT Proxy mit Azure OpenAI, Retry, Prompt-Mapping, Webhook-Logging (Make + Sheets)
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -17,7 +17,6 @@ export default async function handler(req, res) {
 
   try {
     const safeGpt = gpt.replace(/[^\w-]/g, '');
-
     const mappingPath = path.join(process.cwd(), 'api/config/mapping.json');
     const deploymentMap = JSON.parse(await fs.readFile(mappingPath, 'utf8'));
     const mapping = deploymentMap[safeGpt] || deploymentMap['_fallback'];
@@ -37,9 +36,7 @@ export default async function handler(req, res) {
     const webhookUrl = process.env.MAKE_WEBHOOK_URL;
 
     if (!endpoint || !apiKey) {
-      return res.status(500).json({
-        error: 'Fehlende Umgebungsvariablen. Bitte prüfe AZURE_OPENAI_* in Vercel.'
-      });
+      return res.status(500).json({ error: 'Fehlende Azure API-Konfiguration in Vercel.' });
     }
 
     const payload = {
@@ -56,8 +53,7 @@ export default async function handler(req, res) {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 10000);
 
-        console.log(`[${new Date().toISOString()}] 🚀 Request an ${safeGpt} → Deployment: ${deploymentName}`);
-
+        console.log(`[${new Date().toISOString()}] 🚀 GPT-Request an "${safeGpt}" → ${deploymentName}`);
         const azureRes = await fetch(endpoint, {
           method: 'POST',
           headers: {
@@ -84,7 +80,7 @@ export default async function handler(req, res) {
           });
         }
 
-        // ✅ Logging an Make Webhook (Dual Sheet Ready)
+        // 📤 Logging an Make Webhook (für Sheets & Admin KPIs)
         if (webhookUrl) {
           await fetch(webhookUrl, {
             method: 'POST',
@@ -101,7 +97,7 @@ export default async function handler(req, res) {
               canva_prompt: req.body?.canvaPrompt || '',
               freepik_used: !!req.body?.freepikMarkdown,
               mail_sent: req.body?.mailSent || false,
-              source: 'chat.js → dual sheet sync'
+              source: 'chat.js → webhook log'
             })
           });
         }
@@ -114,7 +110,6 @@ export default async function handler(req, res) {
           retryCount++;
           continue;
         }
-
         console.error(`[${new Date().toISOString()}] ❌ GPT-Proxy-Fehler (${safeGpt}):`, err);
         return res.status(500).json({
           error: 'Serverfehler beim Aufruf der Azure API.',
@@ -125,7 +120,7 @@ export default async function handler(req, res) {
   } catch (e) {
     console.error(`[${new Date().toISOString()}] ❌ Fehler beim Laden von Mapping oder Prompt für (${gpt}):`, e);
     return res.status(500).json({
-      error: `Fehler beim Laden des Prompts oder Deployment für "${gpt}"`,
+      error: `Fehler beim Laden des Prompts oder Deployments für "${gpt}"`,
       details: e.message
     });
   }
