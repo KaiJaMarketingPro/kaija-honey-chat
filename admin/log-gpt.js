@@ -1,5 +1,5 @@
 // 📁 /admin/log-gpt.js
-// GPT Call Logger (JSONL Format) + Cluster + Heatmap Metrics + Sheet-Ready
+// GPT Call Logger (JSONL Format) → Cluster + Heatmap + Sheet-Ready Entry
 
 import fs from 'fs';
 import path from 'path';
@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const now = new Date();
     const cluster = gpt?.split('-')[0] || 'unknown';
     const hour = now.getHours();
-    const weekday = now.getDay(); // 0 = Sonntag
+    const weekday = now.getDay() === 0 ? 7 : now.getDay(); // 1 = Montag, 7 = Sonntag
     const token_class = tokens > 1000 ? 'high' : tokens > 250 ? 'medium' : 'low';
 
     const entry = {
@@ -30,7 +30,7 @@ export default async function handler(req, res) {
       tokens: tokens || 0,
       token_class,
       hour,
-      weekday: weekday === 0 ? 7 : weekday,
+      weekday,
       prompt: prompt?.slice(0, 80) || '-',
       status: status || 'unknown'
     };
