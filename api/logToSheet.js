@@ -1,5 +1,5 @@
 // 📁 /api/logToSheet.js
-// Direktes Logging in Google Sheet via googleapis JWT Auth
+// Logging von GPT Calls direkt an Google Sheet via googleapis
 
 import { google } from 'googleapis';
 import { JWT } from 'google-auth-library';
@@ -23,7 +23,7 @@ export default async function handler(req, res) {
   const now = new Date().toISOString();
 
   const values = [
-    [now, gpt, user, tokens, prompt?.slice(0, 80) || '-', status || 'ok']
+    [now, gpt, user, tokens || 0, prompt?.slice(0, 80) || '-', status || 'unknown']
   ];
 
   try {
