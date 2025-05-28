@@ -1,5 +1,5 @@
 // 📁 /api/chat.js
-// Azure OpenAI Proxy mit Retry, Timeout, Mapping, Prompt-Loader, Fallback + Make Webhook → Dual Sheet Logging
+// KaiJa GPT-Proxy mit Retry, Prompt-Loader, Mapping & Make Webhook Logging (Dual Sheet Ready)
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     const usedFallback = !deploymentMap[safeGpt];
 
     if (usedFallback) {
-      console.warn(`[${new Date().toISOString()}] ⚠️ Unbekannter GPT "${safeGpt}" – Fallback aktiviert.`);
+      console.warn(`[${new Date().toISOString()}] ⚠️ Fallback aktiviert: "${safeGpt}" nicht im Mapping.`);
     }
 
     const promptPath = path.join(process.cwd(), mapping.prompt);
@@ -69,7 +69,6 @@ export default async function handler(req, res) {
         });
 
         clearTimeout(timeout);
-
         const result = await azureRes.json();
 
         if (!azureRes.ok) {
@@ -79,14 +78,13 @@ export default async function handler(req, res) {
             retryCount++;
             continue;
           }
-
           return res.status(azureRes.status).json({
             error: `Azure GPT Fehler: ${azureRes.status}`,
             message: errText
           });
         }
 
-        // 🔁 Logging an Make Webhook → GPT_Activity_Log + Access_Log Sheet
+        // ✅ Logging an Make Webhook (Dual Sheet Ready)
         if (webhookUrl) {
           await fetch(webhookUrl, {
             method: 'POST',
@@ -98,6 +96,8 @@ export default async function handler(req, res) {
               tokens: result.usage?.total_tokens || 0,
               prompt: messages?.[0]?.content?.slice(0, 80) || '-',
               status: usedFallback ? 'fallback' : 'success',
+              cluster: mapping?.cluster || 'unknown',
+              yaml: mapping?.yaml || null,
               canva_prompt: req.body?.canvaPrompt || '',
               freepik_used: !!req.body?.freepikMarkdown,
               mail_sent: req.body?.mailSent || false,
