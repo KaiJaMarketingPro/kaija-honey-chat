@@ -1,5 +1,5 @@
 // 📁 /admin/kpi-summary.js
-// Analyse GPT-Logs aus JSONL → Cluster + Token + Call KPIs (monatlich) + Score + GPT-Names
+// Analyse GPT-Logs aus JSONL → Cluster + Token + Call KPIs + GPT-Liste + Qualitäts-Score + CSV-Export
 
 import fs from 'fs';
 import path from 'path';
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       tokens: data.tokens,
       avgTokens: Math.round(data.tokens / data.calls),
       gpts: Array.from(data.gpts).sort(),
-      qualityScore: +(10 - (5000 / Math.max(data.tokens / data.calls, 1))).toFixed(2) // Näherung
+      qualityScore: +(10 - (5000 / Math.max(data.tokens / data.calls, 1))).toFixed(2)
     }));
 
     const csv = ['Cluster,Calls,Tokens,AvgTokens,GPTs,Score']
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
       .join('\n');
 
     res.setHeader('Content-Type', 'application/json');
-    res.setHeader('X-CSV-Download', Buffer.from(csv).toString('base64')); // base64 für UI-Download (optional)
+    res.setHeader('X-CSV-Download', Buffer.from(csv).toString('base64')); // Optional: CSV als Download-Link
     return res.status(200).json({
       month,
       totalCalls: entries.length,
