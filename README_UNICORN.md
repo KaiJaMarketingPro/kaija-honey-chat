@@ -14,7 +14,7 @@ Willkommen im Unicorn README für das KaiJa KI-System – ein modulares, ethisch
 
 ## 🌟 GPT Matrix & Rollen
 
-| GPT                      | Rolle                                      | Status                     |
+| GPT                      | Rolle                                       | Status                     |
 |--------------------------|---------------------------------------------|----------------------------|
 | Märki GPT                | Entscheidungs-Logik, Leadership & Ethik-Coach | ✅ live (Azure CH)         |
 | KaiJa GPT                | Funnel- & Content-Automation                | ✅ live (Azure CH)         |
@@ -32,11 +32,11 @@ Willkommen im Unicorn README für das KaiJa KI-System – ein modulares, ethisch
 ## ⚙ Architektur & Hosting
 
 - **Azure OpenAI** (Switzerland North): GPT-4 turbo, DSGVO-konform
-- **Vercel**: Frontend, Admin, API Proxy
-- **Make.com**: Webhooks, Logging, Sheet-Sync, Reminderflows
-- **Google Sheets**: Unicorn Metrics Dashboard (ROI, Tokens, API Calls)
-- **Stripe**: Subscriptions, Webhooks
-- **Brevo/Mailgun**: Monatsimpulse, Onboarding-Mailings
+- **Vercel**: Frontend, Admin, API Proxy (`chat.js`, `logToSheet.js`, Admin UI)
+- **Make.com**: Webhooks, Logging, Reminderflows, CRM-Sync
+- **Google Sheets**: GPT Activity Log, Cluster KPI, Access Control
+- **Stripe**: Subscriptions, Pricing, Kündigungs-Trigger
+- **Brevo/Mailgun**: Onboarding-Mails, Monatsimpulse
 
 ---
 
@@ -44,78 +44,89 @@ Willkommen im Unicorn README für das KaiJa KI-System – ein modulares, ethisch
 
 Trackbare Metriken pro GPT:
 
-| Feld         | Bedeutung                      |
-|--------------|--------------------------------|
-| GPT Name     | z. B. `honey-gpt`               |
-| Tokens       | GPT-Verbrauchskosten (via Azure) |
-| ROI          | Umsatz / Token-Verhältnis       |
-| Status       | `✅ live`, `⚙ Launch`, `🛠 geplant` |
+| Feld         | Bedeutung                          |
+|--------------|------------------------------------|
+| GPT Name     | z. B. `honey-gpt`                   |
+| Tokens       | GPT-Verbrauchskosten (via Azure)   |
+| ROI          | Umsatz / Token-Verhältnis          |
+| Status       | `✅ live`, `⚙ Launch`, `🛠 geplant`  |
 
-→ Automatisiert via Webhook aus `chat.js` → Google Sheet
+→ Automatisiert via Webhook aus `chat.js` → Google Sheets
 
 ---
 
 ## 🔁 Lessons Learned = System-Features
 
-| Herausforderung (z. B. NetWyl)       | GPT-Modul als Lösung                      |
-|--------------------------------------|-------------------------------------------|
-| Unklare Rollen & Ziele               | 🎯 Märki GPT: Strategischer Rollen-Coach   |
-| Pricing-Druck & Unsicherheit         | 💰 Honey GPT: Klarer Value & Fairness      |
-| Kein Raum für Reflexion & Werte      | 🌿 Gabriela GPT: Ethik & Selbstklärung     |
-| Onboarding-Chaos                     | 🧩 Homie GPT: Klarer Start, Tempo-Coach     |
-| Überforderung durch Tech & Funnels   | 🧠 KaiJa GPT: Visual Funnel & Contenterzeugung |
-| Keine Exitkultur                     | 🧘 Märki + Gabriela: Reflektierter Exitflow |
+| Herausforderung             | GPT-Modul als Lösung                      |
+|-----------------------------|-------------------------------------------|
+| Unklare Rollen & Ziele      | 🎯 Märki GPT: Strategischer Rollen-Coach   |
+| Pricing-Druck & Unsicherheit| 💰 Honey GPT: Klarer Value & Fairness      |
+| Kein Raum für Reflexion     | 🌿 Gabriela GPT: Ethik & Selbstklärung     |
+| Onboarding-Chaos            | 🧩 Homie GPT: Klarer Start, Tempo-Coach     |
+| Funnel-Überforderung        | 🧠 KaiJa GPT: Visual Funnel & Contenterzeugung |
+| Keine Exitkultur            | 🧘 Märki + Gabriela: Reflektierter Exitflow |
 
 ---
 
 ## 🧩 Admin-Tools Übersicht
 
-| Datei               | Funktion |
-|---------------------|----------|
-| `chat.js`           | Azure Proxy mit Retry, Logging, Webhook |
-| `log-gpt.js`        | JSONL Logging lokal |
-| `test-gpt.js`       | Einzeltest für jeden GPT |
-| `export-snapshot.js`| YAML + Mapping ZIP-Export (🔜) |
-| `gpt-tools.js`      | Live-Editor & Prompt-Test |
-| `gpt-preview.js`    | Übersicht aller GPTs |
-| `validate-yaml.js`  | YAML-Strukturprüfung |
+| Datei                | Funktion                                           |
+|----------------------|----------------------------------------------------|
+| `chat.js`            | Azure Proxy mit Retry, Logging, Sheet-Sync        |
+| `log-gpt.js`         | JSONL Logging lokal mit Token-Klassifikation      |
+| `logToSheet.js`      | Logging an Google Sheet via `googleapis`          |
+| `kpi-summary.js`     | Monatsauswertung (Calls, Tokens, Score, GPTs)     |
+| `export-csv.js`      | Export der KPIs als CSV                           |
+| `gpt-preview.js`     | Admin-Vorschau aller GPTs                         |
+| `gpt-tools.js`       | Editor für Prompts + Test-Calls                   |
+| `validate-logs.js`   | Prüft JSONL Logs auf Format & Felder              |
+| `export-snapshot.js` | YAML + mapping.json ZIP-Export für Archiv (🔜)    |
 
 ---
 
 ## 📚 Struktur (Verzeichnislogik)
 
 ```bash
-├── api/                # GPT-Proxies (chat.js etc.)
-├── admin/              # Tools & Logs
-├── prompts/            # Markdown Prompts (*.md)
-├── api/config/         # mapping.json, gpt-index.json
-├── api/store/          # YAML für GPT Store / OpenAI GPTs
-├── logs/               # Monatliche JSONL Logs
-├── test.html           # DSGVO-sicherer Playground (optional)
-└── vercel.json         # Deployment Konfiguration
+├── api/                    # GPT-Proxies (chat.js, logToSheet.js)
+├── admin/                  # KPI-Tools & Logging (kpi-summary.js etc.)
+├── prompts/                # Markdown Prompts (*.md) je GPT
+├── api/config/             # mapping.json, fallback.yaml
+├── api/store/              # YAMLs für GPT Store
+├── logs/                   # Monatliche JSONL Usage Logs
+├── test.html               # DSGVO-sicherer Playground (optional)
+└── vercel.json             # Deployment Konfiguration
 🔐 Sicherheit & Compliance
-✅ DSGVO + nDSG konform
+✅ DSGVO + nDSG-konform
+✅ Azure OpenAI mit Hosting in Zürich
+✅ Kein Cookie-Tracking / Kein Personenbezug
+✅ Admin geschützt mit ADMIN_SECRET_TOKEN
+✅ _fallback GPT immer aktiv
 
-✅ Azure Hosting 🇨🇭
+🗓 Unicorn Roadmap (Stand: 28.05.2025)
+ chat.js optimieren → Retry + Webhook Logging
 
-✅ Admin via Middleware & ADMIN_SECRET_TOKEN
+ logToSheet.js bereitstellen
 
-✅ mapping.json mit _fallback für Sicherheit
+ kpi-summary.js mit Score & GPTs
 
-🗓 To-Dos (Unicorn Roadmap – Stand 27.05.2025)
- Make Webhook Logging → Sheets
+ Dual Logging: JSONL + Google Sheets
 
- chat.js mit Retry & Token Tracker
+ mapping.json konsistent mit Clustern
 
- mapping.json + fallback.md
+ Vercel Deploy + Environment Variables setzen
 
- Märki & Honey als systemisches Modul nutzen
+ Admin UI mit Preview, Export & Test
 
- test.html aktivieren
+ export-snapshot.js für YAML ZIP-Archiv
 
- export-csv.js für Admin Reports
+ GPT Store: YAML-Export + Submission (Honey, Gabriela, KaiJa)
 
- GPT Store Launch (Beta)
+ test.html DSGVO-konform reaktivieren
 
-© 2025 Daniel Betschart / KaiJa Marketing! – Swiss Made Unicorn Intelligence
+ Webhook-Sync für GPT Score / KPI Heatmap aktivieren
+
+ Partner-Onboarding FLiP!N, CBA, Daniela HUK automatisieren
+
+© 2025 Daniel Betschart / KaiJa Marketing!
+Swiss Made Unicorn Intelligence
 Brücken bauen zwischen Herz, Hightech & Handlungskraft.
