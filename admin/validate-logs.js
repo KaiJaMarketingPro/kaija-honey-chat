@@ -20,7 +20,8 @@ export default async function handler(req, res) {
       malformed: [],
       missingFields: [],
       suspiciousTokens: [],
-      unknownStatus: []
+      unknownStatus: [],
+      fallbackUsage: []
     };
 
     lines.forEach((line, index) => {
@@ -42,6 +43,11 @@ export default async function handler(req, res) {
         if (json.status === 'unknown') {
           results.unknownStatus.push({ line: index + 1, json });
         }
+
+        if (json.status === 'fallback') {
+          results.fallbackUsage.push({ line: index + 1, json });
+        }
+
       } catch (err) {
         results.malformed.push({ line: index + 1, error: err.message });
       }
