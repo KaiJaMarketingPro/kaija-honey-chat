@@ -1,0 +1,82 @@
+[
+  {
+    "id": "sales-baschi-gpt",
+    "name": "Sales Baschi Gpt",
+    "cluster": "sales",
+    "prompt": "prompts/baschis-gpt.md",
+    "yaml": "store/baschis-gpt.yaml",
+    "deployment": "baschis-gpt"
+  },
+  {
+    "id": "impuls-dailyjasmin-gpt",
+    "name": "Impuls Dailyjasmin Gpt",
+    "cluster": "impulse",
+    "prompt": "prompts/dailyjasmin-gpt.md",
+    "yaml": "store/dailyjasmin-gpt.yaml",
+    "deployment": "dailyjasmin-gpt"
+  },
+  {
+    "id": "onboard-homie-gpt",
+    "name": "Onboard Homie Gpt",
+    "cluster": "onboarding",
+    "prompt": "prompts/homie-gpt.md",
+    "yaml": "store/homie-gpt.yaml",
+    "deployment": "homie-gpt"
+  },
+  {
+    "id": "pricing-honey-gpt",
+    "name": "Pricing Honey Gpt",
+    "cluster": "pricing",
+    "prompt": "prompts/honey-gpt.md",
+    "yaml": "store/honey-gpt.yaml",
+    "deployment": "honey-gpt"
+  },
+  {
+    "id": "funnel-kaija-gpt",
+    "name": "Funnel Kaija Gpt",
+    "cluster": "funnel",
+    "prompt": "prompts/kaija-gpt.md",
+    "yaml": "store/kaija-gpt.yaml",
+    "deployment": "kaija-gpt"
+  },
+  {
+    "id": "career-kaivio-gpt",
+    "name": "Career Kaivio Gpt",
+    "cluster": "career",
+    "prompt": "prompts/kaivio-gpt.md",
+    "yaml": "store/kaivio-gpt.yaml",
+    "deployment": "kaivio-gpt"
+  },
+  {
+    "id": "strategy-maerki-gpt",
+    "name": "Strategy Maerki Gpt",
+    "cluster": "strategy",
+    "prompt": "prompts/maerki-gpt.md",
+    "yaml": "store/maerki-gpt.yaml",
+    "deployment": "maerki-gpt"
+  },
+  {
+    "id": "healer-gabriela-gpt",
+    "name": "Healer Gabriela Gpt",
+    "cluster": "healer",
+    "prompt": "prompts/soulguide-gabriela-gpt.md",
+    "yaml": "store/soulguide-gabriela-gpt.yaml",
+    "deployment": "soulguide-gabriela-gpt"
+  },
+  {
+    "id": "healer-soulsyncai-gpt",
+    "name": "Healer Soulsyncai Gpt",
+    "cluster": "healer",
+    "prompt": "prompts/soulsyncai-gpt.md",
+    "yaml": "store/soulsyncai-gpt.yaml",
+    "deployment": "soulsyncai-gpt"
+  },
+  {
+    "id": "_fallback",
+    "name": "Fallback",
+    "cluster": "fallback",
+    "prompt": "prompts/fallback.md",
+    "yaml": "store/fallback.yaml",
+    "deployment": "fallback-gpt"
+  }
+]
