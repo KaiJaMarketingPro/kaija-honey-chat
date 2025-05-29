@@ -1,140 +1,56 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>GPT Playground – KaiJa Marketing!</title>
+  <meta charset="UTF-8" />
+  <title>Honey GPT Test – DSGVO konform</title>
   <style>
-    body { font-family: sans-serif; padding: 2em; background: #f5f5f5; }
-    select, textarea, button, input { font-size: 1em; margin: 0.5em 0; width: 100%; }
-    #output { white-space: pre-wrap; background: #fff; padding: 1em; border-radius: 8px; border: 1px solid #ccc; min-height: 120px; }
-    #canva-link, .freepik-box { margin-top: 1em; display: block; font-size: 0.95em; color: #0073e6; text-decoration: underline; }
-    .disclaimer { background: #fff5d1; border-left: 6px solid #ffcc00; padding: 1em; margin-bottom: 2em; font-size: 0.9em; }
-    iframe { width: 100%; height: 600px; border: 1px solid #ccc; display: none; margin-top: 2rem; }
+    body { font-family: sans-serif; background: #f6f9fc; padding: 2rem; color: #333; }
+    input, button { margin: 0.5rem 0; padding: 0.6rem; font-size: 1em; width: 100%; }
+    .consent-box { background: #fff; padding: 1.5rem; border-radius: 10px; box-shadow: 0 0 10px #ccc; max-width: 500px; margin: auto; }
   </style>
-  <script type="module">
-    import { handleAccess } from './access-check.js';
-
-    window.checkAccessAndStart = () => {
-      const email = document.getElementById("email-input").value.trim();
-      handleAccess(email, "honey-gpt-frame");
-    };
-  </script>
 </head>
 <body>
-  <h2>🧪 KaiJa GPT Playground</h2>
-
-  <div class="disclaimer">
-    <strong>Hinweis zur Datensicherheit:</strong><br>
-    Diese Testumgebung dient ausschließlich zur lokalen Evaluation einzelner GPT-Modelle im Rahmen von KaiJa Marketing!.<br>
-    Es werden keine personenbezogenen Daten gespeichert oder analysiert.<br>
-    <ul>
-      <li>✅ DSGVO-konform bei <strong>lokaler Nutzung</strong> oder auf geschütztem Dev-Server</li>
-      <li>⚠️ Nicht zur Live-Nutzerkommunikation ohne Opt-in verwenden</li>
-      <li>🔒 Kein Tracking, kein Cookie, keine Log-Erhebung in diesem Playground</li>
-    </ul>
-    <em>→ Nur aktivieren, wenn du als Betreiber:in oder Tester:in volle Kontrolle über die Umgebung hast.</em>
+  <div class="consent-box">
+    <h2>✅ Jetzt Honey GPT testen – kostenlos & DSGVO-konform</h2>
+    <form id="consentForm">
+      <input type="email" id="email" placeholder="Deine E-Mail-Adresse" required />
+      <label style="display: block; margin: 1rem 0;">
+        <input type="checkbox" id="consentCheckbox" required />
+        Ich willige ein, dass meine E-Mail-Adresse für den Empfang von Informationen zu Honey GPT verarbeitet wird.
+        Die Verarbeitung erfolgt auf Grundlage der <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>.
+      </label>
+      <button type="submit">🎤 Test starten</button>
+    </form>
+    <div id="feedback" style="margin-top: 1rem;"></div>
   </div>
 
-  <label for="email-input">Zugang via E-Mail verifizieren:</label>
-  <input type="email" id="email-input" placeholder="name@domain.com" required>
-  <button onclick="checkAccessAndStart()">🔐 Zugang prüfen</button>
-  <p id="access-message" style="color:red;"></p>
-
-  <iframe id="honey-gpt-frame" src="https://kaija-honey-chat.vercel.app"></iframe>
-
-  <label for="gpt">Wähle einen GPT:</label>
-  <select id="gpt">
-    <option value="maerki-gpt">🧠 Märki GPT</option>
-    <option value="kaija-gpt">📣 KaiJa GPT</option>
-    <option value="honey-gpt">🐝 Honey GPT</option>
-    <option value="homie-gpt">🎓 Homie GPT</option>
-    <option value="kaivio-gpt">💼 KaiVio GPT</option>
-    <option value="baschis-gpt">🤝 Baschi GPT</option>
-    <option value="soulguide-gabriela-gpt">🌿 Gabriela GPT</option>
-    <option value="soulsyncai-gpt">🌙 SoulSync AI</option>
-    <option value="dailyjasmin-gpt">✨ DailyJasmin</option>
-  </select>
-
-  <label for="prompt">Prompt eingeben:</label>
-  <textarea id="prompt" rows="5" placeholder="Schreib mir 3 Tipps für meine Preisstrategie…"></textarea>
-
-  <button onclick="sendPrompt()">🚀 Anfrage senden</button>
-  <button onclick="generateCanvaLink()">🎨 Canva Vorlage vorschlagen</button>
-  <button onclick="fetchFreepikImages()">🔎 Bild mit Freepik finden</button>
-
-  <h3>🧠 GPT Antwort</h3>
-  <div id="output">Antwort erscheint hier…</div>
-  <a id="canva-link" href="#" target="_blank" style="display:none;">➡️ Canva Vorlage öffnen</a>
-  <div id="freepik-results"></div>
-
   <script>
-    async function sendPrompt() {
-      const gpt = document.getElementById('gpt').value;
-      const prompt = document.getElementById('prompt').value;
-      const output = document.getElementById('output');
+    document.getElementById("consentForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const consent = document.getElementById("consentCheckbox").checked;
+      const email = document.getElementById("email").value.trim();
+      const feedback = document.getElementById("feedback");
 
-      output.innerText = '⏳ Anfrage wird verarbeitet…';
-
-      try {
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ gpt, messages: [{ role: 'user', content: prompt }] })
-        });
-        const data = await res.json();
-        output.innerText = data?.choices?.[0]?.message?.content || '⚠️ Keine Antwort erhalten.';
-      } catch (err) {
-        output.innerText = '❌ Fehler: ' + err.message;
+      if (!consent || !email) {
+        feedback.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail ein.";
+        return;
       }
-    }
 
-    async function generateCanvaLink() {
-      const prompt = document.getElementById('prompt').value;
-      const linkEl = document.getElementById('canva-link');
-      linkEl.innerText = '⏳ Canva-Link wird generiert…';
-      linkEl.style.display = 'block';
+      await fetch("https://hook.eu2.make.com/your_make_webhook_url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          email,
+          consent: true,
+          source: "test.html",
+          brevo_triggered: true
+        })
+      });
 
-      try {
-        const res = await fetch('/api/canva-download', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ type: 'presentation', query: prompt })
-        });
-        const data = await res.json();
-        linkEl.href = data.templateSearchUrl;
-        linkEl.innerText = '➡️ Canva Vorlage öffnen';
-      } catch (err) {
-        linkEl.innerText = '❌ Fehler beim Generieren des Canva-Links';
-      }
-    }
-
-    async function fetchFreepikImages() {
-      const prompt = document.getElementById('prompt').value;
-      const container = document.getElementById('freepik-results');
-      container.innerHTML = '⏳ Suche wird durchgeführt…';
-
-      try {
-        const res = await fetch('/api/freepik-search', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ query: prompt })
-        });
-        const data = await res.json();
-        if (!data.images?.length) {
-          container.innerText = '⚠️ Keine Bilder gefunden.';
-          return;
-        }
-        container.innerHTML = data.images.map(img => `
-          <div class="freepik-box">
-            <p><strong>${img.title}</strong></p>
-            <img src="${img.thumb}" alt="${img.title}" style="max-width:100%;border-radius:4px">
-            <p><a href="${img.link}" target="_blank">Freepik-Link öffnen</a></p>
-          </div>
-        `).join('');
-      } catch (err) {
-        container.innerText = '❌ Fehler beim Laden der Freepik-Bilder: ' + err.message;
-      }
-    }
+      feedback.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT startet…</strong>";
+      setTimeout(() => window.location.href = "/honey-gpt.html", 2000);
+    });
   </script>
 </body>
 </html>
