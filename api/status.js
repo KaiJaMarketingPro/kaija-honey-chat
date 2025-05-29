@@ -1,5 +1,6 @@
 // 📁 /api/status.js
-// Übersicht & Verfügbarkeit aller GPTs laut mapping.json (inkl. Prompt/YAML-Check)
+// KaiJa GPT Status Overview 🧠
+// Prüft Mapping, Prompt & YAML-Verfügbarkeit für alle GPTs
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -15,22 +16,34 @@ export default async function handler(req, res) {
 
     const statusReport = await Promise.all(
       Object.entries(deploymentMap).map(async ([gptKey, config]) => {
-        const result = { gpt: gptKey, ...config };
+        const result = {
+          gpt: gptKey,
+          deployment: config.deployment,
+          cluster: config.cluster || 'n/a',
+          temperature: config.temperature ?? 0.5,
+          max_tokens: config.max_tokens ?? 1200
+        };
 
+        // Check Prompt File
         try {
           const promptPath = path.join(process.cwd(), config.prompt);
           await fs.access(promptPath);
-          result.promptStatus = '✅ gefunden';
+          result.prompt = '✅ vorhanden';
         } catch {
-          result.promptStatus = '❌ fehlt';
+          result.prompt = '❌ fehlt';
         }
 
-        try {
-          const yamlPath = path.join(process.cwd(), config.yaml);
-          await fs.access(yamlPath);
-          result.yamlStatus = '✅ vorhanden';
-        } catch {
-          result.yamlStatus = '❌ fehlt';
+        // Check YAML File (optional)
+        if (config.yaml) {
+          try {
+            const yamlPath = path.join(process.cwd(), config.yaml);
+            await fs.access(yamlPath);
+            result.yaml = '✅ vorhanden';
+          } catch {
+            result.yaml = '❌ fehlt';
+          }
+        } else {
+          result.yaml = '⚠️ nicht definiert';
         }
 
         return result;
@@ -38,12 +51,18 @@ export default async function handler(req, res) {
     );
 
     return res.status(200).json({
+      status: '🟢 OK',
       updated: new Date().toISOString(),
+      count: statusReport.length,
       gpts: statusReport
     });
 
   } catch (err) {
-    console.error('[STATUS] ❌ Fehler beim Prüfen des GPT-Mappings:', err);
-    return res.status(500).json({ error: 'Interner Fehler beim Laden des Status.', details: err.message });
+    console.error('[STATUS] ❌ Fehler beim Status-Check:', err);
+    return res.status(500).json({
+      status: '🔴 Fehler',
+      error: 'Interner Fehler beim Laden des Status.',
+      details: err.message
+    });
   }
 }
