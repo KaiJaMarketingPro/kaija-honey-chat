@@ -1,5 +1,5 @@
 // 📁 /api/chat.js
-// KaiJa GPT Proxy mit Azure OpenAI, Retry, Prompt-Mapping, Webhook-Logging (Make + Sheets)
+// KaiJa GPT Proxy – Azure OpenAI + Mapping + Retry + Webhook Logging + Unicorn Ready 🦄
 
 import fs from 'fs/promises';
 import path from 'path';
@@ -41,8 +41,8 @@ export default async function handler(req, res) {
 
     const payload = {
       messages: [systemPrompt, ...messages],
-      temperature: 0.3,
-      max_tokens: 1200
+      temperature: mapping.temperature ?? 0.5,
+      max_tokens: mapping.max_tokens ?? 1200
     };
 
     const maxRetries = 1;
