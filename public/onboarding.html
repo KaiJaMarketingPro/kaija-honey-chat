@@ -1,59 +1,57 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <title>Willkommen bei Honey – Dein Abo ist aktiv!</title>
+  <meta charset="UTF-8" />
+  <title>Willkommen bei Honey</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #f0f4f8; color: #333; }
-    h1, h2 { color: #7c3aed; }
-    p { font-size: 1.1em; }
-    #honey-frame { width: 100%; height: 600px; border: 1px solid #ccc; display: none; margin-top: 2rem; }
-    #access-message { margin-top: 1rem; color: red; }
-    input, button { padding: 0.5rem; margin: 0.5rem 0; width: 100%; font-size: 1rem; }
-    .section { margin-bottom: 2rem; background: #fff; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-    a { color: #4f46e5; font-weight: 500; }
+    body { font-family: sans-serif; background: #eef2f7; padding: 2rem; color: #333; }
+    .wrapper { background: #fff; max-width: 600px; margin: auto; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
+    input, button { margin: 0.5rem 0; padding: 0.6rem; width: 100%; font-size: 1em; }
   </style>
-  <script type="module">
-    import { handleAccess } from './access-check.js';
-
-    window.onload = () => {
-      const params = new URLSearchParams(window.location.search);
-      const email = params.get("email");
-      if (email) {
-        document.getElementById("email-input").value = email;
-        handleAccess(email, "honey-frame");
-      }
-    };
-
-    window.checkManual = () => {
-      const email = document.getElementById("email-input").value.trim();
-      handleAccess(email, "honey-frame");
-    };
-  </script>
 </head>
 <body>
-  <div class="section">
-    <h1>🥳 Willkommen bei Honey Signature!</h1>
-    <p>Dein Abo wurde erfolgreich aktiviert. Hier kannst du direkt loslegen:</p>
-    <ul>
-      <li>💡 Nutze Honey GPT für Klarheit in deinem Pricing</li>
-      <li>🔐 Zugang ist nur mit gültigem Abo & E-Mail möglich (bitte unten prüfen)</li>
-      <li>📩 Bei Problemen erreichst du uns unter <a href="mailto:support@kaija-marketing.pro">support@kaija-marketing.pro</a></li>
-    </ul>
+  <div class="wrapper">
+    <h2>🥳 Willkommen bei Honey Signature!</h2>
+    <p>Du hast dein Abo erfolgreich aktiviert. Jetzt kannst du loslegen – aber bitte bestätige vorher deine Einwilligung:</p>
+    <form id="onboardingForm">
+      <input type="email" id="email" placeholder="Deine E-Mail-Adresse" required />
+      <label style="display: block; margin: 1rem 0;">
+        <input type="checkbox" id="consentCheckbox" required />
+        Ich willige ein, dass meine E-Mail-Adresse für den Empfang von Abo-bezogenen Informationen zu Honey GPT verarbeitet wird.
+        Die Verarbeitung erfolgt auf Grundlage der <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>.
+      </label>
+      <button type="submit">🔐 Zugang prüfen & starten</button>
+    </form>
+    <div id="status" style="margin-top: 1rem;"></div>
   </div>
 
-  <div class="section">
-    <h2>🔍 Zugang prüfen & starten</h2>
-    <p>Gib hier die E-Mail-Adresse ein, mit der du dein Abo gebucht hast:</p>
-    <input type="email" id="email-input" placeholder="name@domain.com">
-    <button onclick="checkManual()">Zugang prüfen & starten</button>
-    <p id="access-message"></p>
-    <iframe id="honey-frame" src="https://kaija-honey-chat.vercel.app"></iframe>
-  </div>
+  <script>
+    document.getElementById("onboardingForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const consent = document.getElementById("consentCheckbox").checked;
+      const email = document.getElementById("email").value.trim();
+      const status = document.getElementById("status");
 
-  <div class="section">
-    <h2>📄 Dein Abo verwalten</h2>
-    <p>➡️ <a href="abo-verwalten.html">Abo ändern, pausieren oder kündigen</a> (Stripe Self-Service Portal)</p>
-  </div>
+      if (!consent || !email) {
+        status.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail ein.";
+        return;
+      }
+
+      await fetch("https://hook.eu2.make.com/your_make_webhook_url", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          timestamp: new Date().toISOString(),
+          email,
+          consent: true,
+          source: "onboarding.html",
+          brevo_triggered: true
+        })
+      });
+
+      status.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert. GPT wird geladen…";
+      setTimeout(() => window.location.href = "/honey-gpt.html", 2000);
+    });
+  </script>
 </body>
 </html>
