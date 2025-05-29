@@ -21,7 +21,7 @@ Willkommen im Unicorn README für das KaiJa KI-System – ein modulares, ethisch
 | Honey GPT                | Pricing & Monetarisierung                   | ✅ live (Azure CH + Vercel)|
 | Homie GPT                | Onboarding, Trainings, Team-Coaching        | ✅ bereit                  |
 | KaiVio GPT               | CV- & Karriere-Coaching                     | ✅ bereit                  |
-| Baschi GPT               | Sales & LinkedIn Funnel                     | ✅ bereit                  |
+| baschti GPT               | Sales & LinkedIn Funnel                     | ✅ bereit                  |
 | SoulGuide Gabriela GPT   | Ethik, Werte & Selbstführung                | ✅ bereit                  |
 | SoulSync AI              | Human Design Coaching & Energetik          | ✅ bereit                  |
 | DailyJasmin              | Impulsgeberin, Stil & Frequenz              | ✅ bereit                  |
