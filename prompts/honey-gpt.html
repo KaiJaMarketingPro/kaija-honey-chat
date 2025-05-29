@@ -1,0 +1,72 @@
+<!-- /public/honey-gpt.html – Unicorn Honey GPT iFrame Version -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Honey GPT – Klarheit für Coaches</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f7f8fa;
+      margin: 0;
+      padding: 2rem;
+      color: #333;
+    }
+    .chat-box {
+      background: white;
+      border-radius: 1rem;
+      box-shadow: 0 0 15px rgba(0,0,0,0.05);
+      padding: 2rem;
+      max-width: 700px;
+      margin: auto;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-box">
+    <h1 class="text-xl font-bold mb-4">🐝 Honey GPT – dein Klarheits-Coach</h1>
+    <p class="mb-4">Stelle deine Frage und erhalte sofort Feedback – DSGVO-konform, empathisch & datenbasiert.</p>
+
+    <label for="prompt" class="block font-medium">Deine Frage an Honey:</label>
+    <textarea id="prompt" rows="4" placeholder="Was ist ein fairer Preis für mein Coaching?" class="w-full p-2 mt-1 mb-3 border rounded"></textarea>
+    
+    <button id="send" class="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded mb-4">🚀 Antwort anfordern</button>
+
+    <div id="output" class="bg-gray-100 p-3 rounded min-h-[100px] whitespace-pre-wrap"></div>
+
+    <p class="text-sm text-gray-500 mt-6">Gehostet in der Schweiz via Azure OpenAI. Kein Tracking. Kein Cookie. Kein Risiko.</p>
+  </div>
+
+  <script>
+    document.getElementById("send").addEventListener("click", async () => {
+      const prompt = document.getElementById("prompt").value;
+      const output = document.getElementById("output");
+      output.innerText = "⏳ Honey denkt ...";
+
+      try {
+        const res = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            gpt: "honey-gpt",
+            messages: [{ role: "user", content: prompt }]
+          })
+        });
+
+        const data = await res.json();
+        output.innerText = data.choices?.[0]?.message?.content || "⚠️ Keine Antwort erhalten.";
+      } catch (err) {
+        output.innerText = "❌ Fehler: " + err.message;
+      }
+    });
+
+    // Auto-Resize für iFrame
+    const resizeObserver = new ResizeObserver(() => {
+      parent.postMessage({ type: 'resize', height: document.body.scrollHeight }, '*');
+    });
+    resizeObserver.observe(document.body);
+  </script>
+</body>
+</html>
