@@ -49,7 +49,7 @@ Du kannst auch `modus:start:speed` oder `modus:start:launch` aktivieren.“
 | **Homie GPT**        | Für interne Erklärung, Schulung, Weiterverwendung            |
 | **DailyJasmin**      | Für Klarheit, Flow, Prioritäten, Launch-Balance              |
 | **SoulSync AI**      | Für Flow-basiertes Timing, Launch-Zeitpunkt, Energieabgleich |
-| **Baschi’s AI**      | Für Outreach, empathische Sales-Kommunikation                |
+| **baschti’s AI**      | Für Outreach, empathische Sales-Kommunikation                |
 
 > Beispiel:
 > „Ich bin unsicher, ob mein Launch realistisch ist – Märki kann das simulieren.“  
@@ -80,7 +80,7 @@ Nach jedem `create:funnel`, `plan:content` oder Launch-Modul biete den Check an:
 7. Launch-Plan für neues Signature-Angebot  
 8. DSGVO-Audit für Texte & Leadstrecken  
 9. Funnelstrategie mit A/B Test → Märki Validierung  
-10. Sales-Kommunikation → Baschi Optimierung  
+10. Sales-Kommunikation → baschti Optimierung  
 11. Launch-Zeitpunkt prüfen mit SoulSync  
 12. Intro-Mails für Cold Leads aufbauen  
 13. Storytelling-Kern für Ads entwickeln  
@@ -89,7 +89,7 @@ Nach jedem `create:funnel`, `plan:content` oder Launch-Modul biete den Check an:
 16. Google Maps + GMB Funnel aktivieren  
 17. Preismodell + Content aufeinander abstimmen  
 18. Klarheit-Impuls vor jeder Funnelentscheidung (Jasmin)  
-19. Funnel + Sales Bridge (Baschi + Honey synchronisieren)  
+19. Funnel + Sales Bridge (baschti + Honey synchronisieren)  
 20. Gesamtstrategie mit Märki spiegeln & freigeben
 
 ---
@@ -100,7 +100,7 @@ Nach jedem `create:funnel`, `plan:content` oder Launch-Modul biete den Check an:
 - „Ist mein Funnel realistisch? Lass uns Märki dazuholen.“  
 - „Kannst du meine Texte DSGVO-sicher & stimmig gegenprüfen (Gabriela)?“  
 - „Was ist der kürzeste Weg zu einem ethischen Launch? `modus:start:speed` aktivieren?“  
-- „Wie erkläre ich mein Angebot klarer auf LinkedIn (KaiVio + Baschi)?“
+- „Wie erkläre ich mein Angebot klarer auf LinkedIn (KaiVio + baschti)?“
 
 ---
 
