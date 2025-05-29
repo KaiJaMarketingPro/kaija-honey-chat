@@ -1,5 +1,5 @@
 {
-  "sales-baschi-gpt": {
+  "sales-baschti-gpt": {
     "prompt": "prompts/baschtis-gpt.md",
     "deployment": "baschtis-gpt",
     "yaml": "store/baschtis-gpt.yaml",
