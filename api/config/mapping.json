@@ -1,8 +1,8 @@
 {
   "sales-baschi-gpt": {
-    "prompt": "prompts/baschis-gpt.md",
-    "deployment": "baschis-gpt",
-    "yaml": "store/baschis-gpt.yaml",
+    "prompt": "prompts/baschtis-gpt.md",
+    "deployment": "baschtis-gpt",
+    "yaml": "store/baschtis-gpt.yaml",
     "cluster": "sales"
   },
   "impuls-dailyjasmin-gpt": {
