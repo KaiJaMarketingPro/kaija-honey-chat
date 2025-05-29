@@ -1,11 +1,11 @@
 [
   {
-    "id": "sales-baschi-gpt",
-    "name": "Sales Baschi Gpt",
+    "id": "sales-baschti-gpt",
+    "name": "Sales Baschti Gpt",
     "cluster": "sales",
-    "prompt": "prompts/baschis-gpt.md",
-    "yaml": "store/baschis-gpt.yaml",
-    "deployment": "baschis-gpt"
+    "prompt": "prompts/baschtis-gpt.md",
+    "yaml": "store/baschtis-gpt.yaml",
+    "deployment": "baschtis-gpt"
   },
   {
     "id": "impuls-dailyjasmin-gpt",
