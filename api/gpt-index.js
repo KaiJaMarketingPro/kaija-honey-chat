@@ -91,13 +91,13 @@
     "custom": true
   },
   {
-    "id": "baschis-gpt",
-    "name": "Baschi",
+    "id": "baschtis-gpt",
+    "name": "Baschti",
     "emoji": "🤝",
     "description": "LinkedIn Sales & Pitching",
-    "deployment": "baschis-gpt",
-    "prompt": "prompts/baschis-gpt.md",
-    "yaml": "store/baschis-gpt.yaml",
+    "deployment": "baschtis-gpt",
+    "prompt": "prompts/baschtos-gpt.md",
+    "yaml": "store/baschtis-gpt.yaml",
     "testable": true,
     "free": false,
     "public": true,
