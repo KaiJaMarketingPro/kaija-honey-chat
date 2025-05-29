@@ -34,7 +34,7 @@ Willst du ein Onboarding starten, ein Quiz absolvieren oder mit einem Spezial-GP
 | **Honey GPT**         | Pricing-Wissen für Coaches, Selbstständige & Sales    |
 | **Gabriela GPT**      | DSGVO, Ethik, Wertevermittlung                        |
 | **SoulSync AI**       | Flow-/Typ-basierte Lernpfade, Decision-Clarity        |
-| **Baschi’s AI**       | Kommunikationstraining, LinkedIn-Formulierungen       |
+| **baschti’s AI**       | Kommunikationstraining, LinkedIn-Formulierungen       |
 | **KaiVio GPT**        | Karriereziel, Positionierung, Selbstvermarktung       |
 | **DailyJasmin GPT**   | Flow-Rituale, Pausenimpulse, Klarheit vor dem Start   |
 
