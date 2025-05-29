@@ -16,7 +16,7 @@
 | `kaija-gpt`           | `prompts/kaija-gpt.md`              | Funnel & Content Builder             |
 | `homie-gpt`           | `prompts/homie-gpt.md`              | Lernreise- & Onboarding-Coach        |
 | `kaivio-gpt`          | `prompts/kaivio-gpt.md`             | Karriere & CV-Coach                  |
-| `baschis-gpt`         | `prompts/baschis-gpt.md`            | LinkedIn Sales Co-Pilot              |
+| `baschtis-gpt`         | `prompts/baschtis-gpt.md`            | LinkedIn Sales Co-Pilot              |
 | `soulguide-gabriela`  | `prompts/soulguide-gabriela-gpt.md` | Werte & Ethik in Branding            |
 | `soulsyncai-gpt`      | `prompts/soulsyncai-gpt.md`         | Human Design für Business            |
 | `dailyjasmin-gpt`     | `prompts/dailyjasmin-gpt.md`        | Selfcare & Tagesimpulse              |
@@ -33,7 +33,7 @@
 | `kaija-gpt`           | `api/store/kaija-gpt.yaml`          | Funnel-Automation                |
 | `homie-gpt`           | `api/store/homie-gpt.yaml`          | Lernlogik                        |
 | `kaivio-gpt`          | `api/store/kaivio-gpt.yaml`         | Karriere & Bewerbung             |
-| `baschis-gpt`         | `api/store/baschis-gpt.yaml`        | Sales-Kommunikation              |
+| `baschtis-gpt`         | `api/store/baschtis-gpt.yaml`        | Sales-Kommunikation              |
 | `soulguide-gabriela`  | `api/store/soulguide-gabriela.yaml` | Markenethik & Intuition          |
 | `soulsyncai-gpt`      | `api/store/soulsyncai-gpt.yaml`     | Energetische Transformation       |
 | `dailyjasmin-gpt`     | `api/store/dailyjasmin-gpt.yaml`    | Tagesfokus & Inspiration         |
