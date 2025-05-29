@@ -22,7 +22,7 @@ Dieses Mapping definiert alle strukturierten Felder für KaiJa GPT-Produkte. Es 
 | `maerki-gpt`         | strategy\_audit     | 0\_free             | maerki\_lifecycle  | freemium      | lifecycle   | 0           | CH     |
 | `homie-gpt`          | onboarding\_ai      | 58\_month\_standard | homie\_learning    | premium       | homie       | 7           | CH     |
 | `kaivio-gpt`         | career\_coaching    | 58\_month\_standard | kaivio\_cv         | premium       | kaivio      | 7           | CH     |
-| `baschis-gpt`        | linkedin\_sales     | 58\_month\_standard | baschi\_sales      | premium       | baschi      | 7           | CH     |
+| `baschtis-gpt`        | linkedin\_sales     | 58\_month\_standard | baschti\_sales      | premium       | baschti      | 7           | CH     |
 | `soulguide-gabriela` | ethical\_branding   | 58\_month\_standard | gabriela\_guide    | premium       | gabriela    | 7           | CH     |
 | `soulsyncai-gpt`     | human\_design\_sync | 58\_month\_standard | soulsync\_energy   | premium       | soulsync    | 7           | CH     |
 | `dailyjasmin-gpt`    | daily\_support      | 0\_free             | jasmin\_daily      | freemium      | jasmin      | 0           | CH     |
