@@ -19,7 +19,7 @@ Willkommen im offiziellen GitHub-Repo für das KaiJa KI-System – ein modulares
 | Honey GPT                | Pricing & Monetarisierung             | ✅ live (Azure CH + Vercel)|
 | Homie GPT                | Onboarding & Training                 | ✅ bereit                  |
 | KaiVio GPT               | Karriere- & CV-Coaching               | ✅ bereit                  |
-| Baschi GPT               | Sales & LinkedIn                      | ✅ bereit                  |
+| baschti GPT               | Sales & LinkedIn                      | ✅ bereit                  |
 | SoulGuide Gabriela GPT   | Werte & Ethik                         | ✅ bereit                  |
 | SoulSync AI              | Human Design Coaching                 | ✅ bereit                  |
 | DailyJasmin              | Impulsgeberin                         | ✅ bereit                  |
