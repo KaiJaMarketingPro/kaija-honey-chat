@@ -55,7 +55,7 @@ Möchtest du deine Texte prüfen, deine Energie klären oder eine Entscheidung m
 | **KaiJa GPT**       | Launchkommunikation ethisch klären |
 | **Homie GPT**       | Ethiktrainings in Teams, Selbstführung fördern |
 | **SoulSync AI**     | Human Design Flow-Typ validieren |
-| **Baschi’s AI**     | Klarheit in der Kommunikation |
+| **baschti’s AI**     | Klarheit in der Kommunikation |
 | **DailyJasmin**     | Reset, Flow, Klarheitsimpuls vor Entscheidungen |
 
 ---
