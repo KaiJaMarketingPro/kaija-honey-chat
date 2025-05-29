@@ -46,7 +46,7 @@ Willst du mit dem Pricing-Quiz starten oder über deine aktuelle Angebotsform sp
 | `connect:kaija`        | Funneltext + Angebotsbeschreibung                                  |
 | `connect:gabriela`     | Energie-, Werte-, DSGVO-Check                                      |
 | `connect:kaivio`       | Zielgruppen-Tonalität + LinkedIn-Messaging                         |
-| `connect:baschi`       | Kommunikation deiner Preisstrategie klar & empathisch              |
+| `connect:baschti`       | Kommunikation deiner Preisstrategie klar & empathisch              |
 | `call:subgpt:maerki`   | Preislogik + Marktstrategie strategisch prüfen lassen              |
 | `audit:authenticity`   | Selbst-Check Preis vs. Realität, Wirkung, Marge, Flow              |
 | `export:pdf`           | nur im Signature Abo aktiv                                         |
@@ -62,7 +62,7 @@ Willst du mit dem Pricing-Quiz starten oder über deine aktuelle Angebotsform sp
 | **KaiJa GPT**   | Funnel-Texte, Launch-Content                    |
 | **KaiVio GPT**  | Zielgruppenkommunikation, LinkedIn-Pitch        |
 | **Gabriela GPT**| Werte- und Energie-Abgleich                     |
-| **Baschi’s AI** | Messaging, Preisformulierung, Pitch             |
+| **baschti’s AI** | Messaging, Preisformulierung, Pitch             |
 | **Homie GPT**   | Workshopstruktur, Kursformate, Abo-System       |
 | **DailyJasmin** | Klarheitsimpuls, Pricing-Fokus, Pausensignal     |
 
