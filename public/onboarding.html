@@ -4,9 +4,26 @@
   <meta charset="UTF-8" />
   <title>Willkommen bei Honey</title>
   <style>
-    body { font-family: sans-serif; background: #eef2f7; padding: 2rem; color: #333; }
-    .wrapper { background: #fff; max-width: 600px; margin: auto; padding: 2rem; border-radius: 10px; box-shadow: 0 0 10px #ccc; }
-    input, button { margin: 0.5rem 0; padding: 0.6rem; width: 100%; font-size: 1em; }
+    body {
+      font-family: sans-serif;
+      background: #eef2f7;
+      padding: 2rem;
+      color: #333;
+    }
+    .wrapper {
+      background: #fff;
+      max-width: 600px;
+      margin: auto;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+    }
+    input, button {
+      margin: 0.5rem 0;
+      padding: 0.6rem;
+      width: 100%;
+      font-size: 1em;
+    }
   </style>
 </head>
 <body>
@@ -40,20 +57,24 @@
         return;
       }
 
-      await fetch("https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          email,
-          consent: true,
-          source: "onboarding.html",
-          brevo_triggered: true
-        })
-      });
+      try {
+        await fetch("https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            email,
+            consent: true,
+            source: "onboarding.html",
+            brevo_triggered: true
+          })
+        });
 
-      status.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert. GPT wird geladen…";
-      setTimeout(() => window.location.href = "/honey-gpt.html", 2000);
+        status.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert. GPT wird geladen…";
+        setTimeout(() => window.location.href = "/gpt.html", 2000);
+      } catch (err) {
+        status.textContent = "❌ Fehler beim Senden. Bitte versuche es später erneut.";
+      }
     });
   </script>
 </body>
