@@ -3,57 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <title>Willkommen bei Honey</title>
+  <meta name="robots" content="noindex, nofollow" />
   <style>
     body {
-      font-family: sans-serif;
+      font-family: "Segoe UI", sans-serif;
       background: #eef2f7;
       padding: 2rem;
       color: #333;
     }
     .wrapper {
-      background: #fff;
-      max-width: 600px;
+      background: #ffffff;
+      max-width: 520px;
       margin: auto;
       padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+    h2 {
+      color: #7c3aed;
+      margin-bottom: 1rem;
     }
     input, button {
       margin: 0.5rem 0;
-      padding: 0.6rem;
-      width: 100%;
+      padding: 0.7rem;
       font-size: 1em;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: #7c3aed;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #6b21a8;
+    }
+    .hint {
+      font-size: 0.9em;
+      margin-top: 1.5rem;
+      color: #555;
+    }
+    .hint a {
+      color: #7c3aed;
+      text-decoration: none;
+    }
+    .hint a:hover {
+      text-decoration: underline;
+    }
+    #status {
+      margin-top: 1rem;
+      font-size: 0.95em;
     }
   </style>
 </head>
 <body>
   <div class="wrapper">
     <h2>🥳 Willkommen bei Honey Signature!</h2>
-    <p>Du hast dein Abo erfolgreich aktiviert. Jetzt kannst du loslegen – aber bitte bestätige vorher deine Einwilligung:</p>
+    <p>Dein Abo ist aktiv. Um deinen Zugang zu starten, bestätige bitte kurz deine DSGVO-Einwilligung:</p>
     <form id="onboardingForm">
       <input type="email" id="email" placeholder="Deine E-Mail-Adresse" required />
       <label style="display: block; margin: 1rem 0;">
         <input type="checkbox" id="consentCheckbox" required />
-        Ich willige ein, dass meine E-Mail-Adresse für den Empfang von Abo-bezogenen Informationen zu Honey GPT verarbeitet wird.
-        Die Verarbeitung erfolgt auf Grundlage der <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>.
+        Ich willige ein, dass meine E-Mail-Adresse für den Empfang von GPT-Updates verarbeitet wird.
+        Grundlage ist die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>.
       </label>
-      <button type="submit">🔐 Zugang prüfen & starten</button>
+      <button type="submit">🔐 Zugang starten</button>
     </form>
-    <p style="margin-top:2rem; font-size:0.9em;">
+    <p class="hint">
       ❓ Fragen oder Probleme? Schreib uns an <a href="mailto:hello@kaija-marketing.pro">hello@kaija-marketing.pro</a>
     </p>
-    <div id="status" style="margin-top: 1rem;"></div>
+    <div id="status"></div>
   </div>
 
   <script>
-    document.getElementById("onboardingForm").addEventListener("submit", async function(e) {
+    document.getElementById("onboardingForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       const consent = document.getElementById("consentCheckbox").checked;
       const email = document.getElementById("email").value.trim();
       const status = document.getElementById("status");
 
       if (!consent || !email) {
-        status.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail ein.";
+        status.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail-Adresse ein.";
         return;
       }
 
@@ -70,7 +103,7 @@
           })
         });
 
-        status.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert. GPT wird geladen…";
+        status.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT wird geladen…</strong>";
         setTimeout(() => window.location.href = "/gpt.html", 2000);
       } catch (err) {
         status.textContent = "❌ Fehler beim Senden. Bitte versuche es später erneut.";
