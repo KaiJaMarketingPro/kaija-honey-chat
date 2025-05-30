@@ -4,9 +4,26 @@
   <meta charset="UTF-8" />
   <title>Honey GPT Test – DSGVO konform</title>
   <style>
-    body { font-family: sans-serif; background: #f6f9fc; padding: 2rem; color: #333; }
-    input, button { margin: 0.5rem 0; padding: 0.6rem; font-size: 1em; width: 100%; }
-    .consent-box { background: #fff; padding: 1.5rem; border-radius: 10px; box-shadow: 0 0 10px #ccc; max-width: 500px; margin: auto; }
+    body {
+      font-family: sans-serif;
+      background: #f6f9fc;
+      padding: 2rem;
+      color: #333;
+    }
+    .consent-box {
+      background: #fff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      max-width: 500px;
+      margin: auto;
+    }
+    input, button {
+      margin: 0.5rem 0;
+      padding: 0.6rem;
+      font-size: 1em;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
@@ -39,20 +56,24 @@
         return;
       }
 
-      await fetch("https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          timestamp: new Date().toISOString(),
-          email,
-          consent: true,
-          source: "test.html",
-          brevo_triggered: true
-        })
-      });
+      try {
+        await fetch("https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            email,
+            consent: true,
+            source: "test.html",
+            brevo_triggered: true
+          })
+        });
 
-      feedback.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT startet…</strong>";
-      setTimeout(() => window.location.href = "/honey-gpt.html", 2000);
+        feedback.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT startet…</strong>";
+        setTimeout(() => window.location.href = "/gpt.html", 2000);
+      } catch (err) {
+        feedback.textContent = "❌ Ein Fehler ist aufgetreten. Bitte versuche es später erneut.";
+      }
     });
   </script>
 </body>
