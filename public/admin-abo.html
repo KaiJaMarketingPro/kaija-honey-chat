@@ -3,24 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>Honey Abo verwalten</title>
+  <meta name="robots" content="noindex, nofollow" />
   <style>
     body {
-      font-family: sans-serif;
+      font-family: "Segoe UI", sans-serif;
       padding: 2rem;
       background: #f8fafc;
       color: #333;
     }
     h1 {
       color: #7c3aed;
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
     }
     input, button {
-      padding: 0.5rem;
+      padding: 0.7rem;
       margin: 0.5rem 0;
       width: 100%;
       font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: #7c3aed;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #6b21a8;
     }
     #redirect-message {
       margin-top: 1rem;
+      font-size: 0.95em;
       color: green;
     }
     .footer {
@@ -31,6 +47,9 @@
     .footer a {
       color: #7c3aed;
       text-decoration: none;
+    }
+    .footer a:hover {
+      text-decoration: underline;
     }
   </style>
   <script>
@@ -75,7 +94,7 @@
 <body>
   <h1>🔧 Verwalte dein Honey Abo</h1>
   <p>Bitte gib die E-Mail-Adresse ein, mit der du dein Abo gebucht hast:</p>
-  <input type="email" id="email-input" placeholder="deine@email.ch">
+  <input type="email" id="email-input" placeholder="deine@email.ch" />
   <button onclick="openStripePortal()">➡️ Zum Kundenportal</button>
   <p id="redirect-message"></p>
 
