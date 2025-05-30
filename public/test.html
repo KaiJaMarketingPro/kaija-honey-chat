@@ -3,56 +3,90 @@
 <head>
   <meta charset="UTF-8" />
   <title>Honey GPT Test – DSGVO konform</title>
+  <meta name="robots" content="noindex, nofollow" />
   <style>
     body {
-      font-family: sans-serif;
+      font-family: "Segoe UI", sans-serif;
       background: #f6f9fc;
       padding: 2rem;
       color: #333;
     }
     .consent-box {
-      background: #fff;
-      padding: 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
-      max-width: 500px;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      max-width: 520px;
       margin: auto;
+    }
+    h2 {
+      color: #7c3aed;
+      margin-bottom: 1rem;
     }
     input, button {
       margin: 0.5rem 0;
-      padding: 0.6rem;
+      padding: 0.7rem;
       font-size: 1em;
       width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: #7c3aed;
+      color: white;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #6b21a8;
+    }
+    .hint {
+      font-size: 0.9em;
+      margin-top: 1.5rem;
+      color: #555;
+    }
+    .hint a {
+      color: #7c3aed;
+      text-decoration: none;
+    }
+    .hint a:hover {
+      text-decoration: underline;
+    }
+    #feedback {
+      margin-top: 1rem;
+      font-size: 0.95em;
     }
   </style>
 </head>
 <body>
   <div class="consent-box">
-    <h2>✅ Jetzt Honey GPT testen – kostenlos & DSGVO-konform</h2>
+    <h2>🎤 Starte deinen Honey GPT Test</h2>
+    <p>🧠 7 Tage kostenlos. DSGVO-konform. Swiss Hosted via Microsoft Azure.</p>
     <form id="consentForm">
       <input type="email" id="email" placeholder="Deine E-Mail-Adresse" required />
       <label style="display: block; margin: 1rem 0;">
         <input type="checkbox" id="consentCheckbox" required />
-        Ich willige ein, dass meine E-Mail-Adresse für den Empfang von Informationen zu Honey GPT verarbeitet wird.
-        Die Verarbeitung erfolgt auf Grundlage der <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>.
+        Ich willige ein, dass meine E-Mail-Adresse für den Empfang von GPT-bezogenen Informationen verarbeitet wird.
+        Grundlage ist die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>.
       </label>
-      <button type="submit">🎤 Test starten</button>
+      <button type="submit">✅ GPT jetzt starten</button>
     </form>
-    <p style="margin-top:2rem; font-size:0.9em;">
+    <p class="hint">
       ❓ Fragen oder Probleme? Schreib uns an <a href="mailto:hello@kaija-marketing.pro">hello@kaija-marketing.pro</a>
     </p>
-    <div id="feedback" style="margin-top: 1rem;"></div>
+    <div id="feedback"></div>
   </div>
 
   <script>
-    document.getElementById("consentForm").addEventListener("submit", async function(e) {
+    document.getElementById("consentForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       const consent = document.getElementById("consentCheckbox").checked;
       const email = document.getElementById("email").value.trim();
       const feedback = document.getElementById("feedback");
 
       if (!consent || !email) {
-        feedback.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail ein.";
+        feedback.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail-Adresse ein.";
         return;
       }
 
@@ -69,10 +103,10 @@
           })
         });
 
-        feedback.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT startet…</strong>";
+        feedback.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT wird geladen…</strong>";
         setTimeout(() => window.location.href = "/gpt.html", 2000);
       } catch (err) {
-        feedback.textContent = "❌ Ein Fehler ist aufgetreten. Bitte versuche es später erneut.";
+        feedback.textContent = "❌ Es gab ein Problem beim Starten. Bitte versuche es später erneut.";
       }
     });
   </script>
