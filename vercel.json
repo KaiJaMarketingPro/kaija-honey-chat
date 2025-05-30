@@ -11,7 +11,9 @@
   "rewrites": [
     { "source": "/test", "destination": "/test.html" },
     { "source": "/onboarding", "destination": "/onboarding.html" },
-    { "source": "/admin-abo", "destination": "/admin-abo.html" }
+    { "source": "/admin-abo", "destination": "/admin-abo.html" },
+    { "source": "/gpt", "destination": "/gpt.html" },
+    { "source": "/test-openai", "destination": "/test-openai.html" }
   ],
   "headers": [
     {
@@ -27,7 +29,7 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self'; script-src 'self'; connect-src 'self' https://chat.kaija-marketing.pro https://*.kaija-marketing.pro https://proxy.kaija-marketing.pro; style-src 'self' 'unsafe-inline'; frame-ancestors 'self' https://www.kaija-marketing.pro https://editor.wix.com https://*.wixsite.com"
+          "value": "default-src 'self'; script-src 'self'; connect-src 'self' https://chat.kaija-marketing.pro https://*.kaija-marketing.pro https://proxy.kaija-marketing.pro https://hook.eu2.make.com https://chat.openai.com; style-src 'self' 'unsafe-inline'; frame-ancestors 'self' https://www.kaija-marketing.pro https://editor.wix.com https://*.wixsite.com"
         },
         {
           "key": "Referrer-Policy",
