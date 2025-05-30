@@ -4,16 +4,46 @@
   <meta charset="UTF-8">
   <title>Honey Abo verwalten</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #f8fafc; color: #333; }
-    h1 { color: #7c3aed; }
-    input, button { padding: 0.5rem; margin: 0.5rem 0; width: 100%; font-size: 1rem; }
-    #redirect-message { margin-top: 1rem; color: green; }
+    body {
+      font-family: sans-serif;
+      padding: 2rem;
+      background: #f8fafc;
+      color: #333;
+    }
+    h1 {
+      color: #7c3aed;
+    }
+    input, button {
+      padding: 0.5rem;
+      margin: 0.5rem 0;
+      width: 100%;
+      font-size: 1rem;
+    }
+    #redirect-message {
+      margin-top: 1rem;
+      color: green;
+    }
+    .footer {
+      margin-top: 3rem;
+      font-size: 0.9em;
+      text-align: center;
+    }
+    .footer a {
+      color: #7c3aed;
+      text-decoration: none;
+    }
   </style>
   <script>
     async function openStripePortal() {
       const emailInput = document.getElementById("email-input");
       const email = emailInput.value.trim();
       const msg = document.getElementById("redirect-message");
+
+      if (!email) {
+        msg.textContent = "❌ Bitte gib eine gültige E-Mail-Adresse ein.";
+        return;
+      }
+
       msg.textContent = "⏳ Weiterleitung wird vorbereitet…";
 
       try {
@@ -48,5 +78,10 @@
   <input type="email" id="email-input" placeholder="deine@email.ch">
   <button onclick="openStripePortal()">➡️ Zum Kundenportal</button>
   <p id="redirect-message"></p>
+
+  <div class="footer">
+    🔙 <a href="/gpt.html">Zurück zu Honey GPT</a><br><br>
+    📬 <a href="mailto:hello@kaija-marketing.pro">Support kontaktieren</a>
+  </div>
 </body>
 </html>
