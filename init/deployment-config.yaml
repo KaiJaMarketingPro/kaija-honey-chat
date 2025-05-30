@@ -1,0 +1,91 @@
+# KaiJa Unicorn Deployment Config – Stand 2025-05-30
+# Pfad: /init/deployment-config.yaml
+
+version: 1.0
+project: KaiJa Marketing!
+environment: production
+region: switzerland-north
+hosting: azure
+compliance:
+  dsgvo: true
+  ai_act: true
+  n_dsg: true
+  hosting: swiss
+  logging: true
+
+gpt_deployments:
+  - id: maerki-gpt
+    model: gpt-4
+    endpoint: azure
+    temperature: 0.2
+    routing: /api/chat.js
+    purpose: Orchestrator, Strategie, Entscheidung, Rollen
+  - id: honey-gpt
+    model: gpt-4
+    endpoint: azure
+    temperature: 0.3
+    routing: /api/chat.js
+    purpose: Pricing, Klarheit, Abo-Logik
+  - id: kaija-gpt
+    model: gpt-4
+    endpoint: azure
+    temperature: 0.25
+    routing: /api/chat.js
+    purpose: Funnel, Content, Launch
+  - id: dailyjasmin-gpt
+    model: gpt-4
+    endpoint: azure
+    temperature: 0.2
+    routing: /api/chat.js
+    purpose: Klarheit, Präsenz, Fokus
+  - id: soulgabriela-gpt
+    model: gpt-4
+    endpoint: azure
+    temperature: 0.2
+    routing: /api/chat.js
+    purpose: Ethik, DSGVO, Energie
+  - id: soulsyncai-gpt
+    model: gpt-4
+    endpoint: azure
+    temperature: 0.25
+    routing: /api/chat.js
+    purpose: Flow, Human Design, Entscheidung
+  - id: kaivio-gpt
+    model: gpt-4
+    endpoint: azure
+    temperature: 0.25
+    routing: /api/chat.js
+    purpose: Karriere, ATS, HR
+  - id: homie-gpt
+    model: gpt-4
+    endpoint: azure
+    temperature: 0.3
+    routing: /api/chat.js
+    purpose: Onboarding, LMS, Enablement
+  - id: baschis-gpt
+    model: gpt-4
+    endpoint: azure
+    temperature: 0.3
+    routing: /api/chat.js
+    purpose: Sales, LinkedIn, Preis-Kommunikation
+
+logging:
+  format: jsonl
+  target: /logs/gpt-activity/
+  retention_days: 30
+  fallback_gpt: maerki-gpt
+
+security:
+  allow_origins:
+    - https://www.kaija-marketing.pro
+    - https://chat.kaija-marketing.pro
+  access_control:
+    enable_cors: true
+    headers:
+      - Access-Control-Allow-Origin
+      - X-Content-Type-Options
+      - Strict-Transport-Security
+
+status_check:
+  path: /api/status.js
+  expected: 200
