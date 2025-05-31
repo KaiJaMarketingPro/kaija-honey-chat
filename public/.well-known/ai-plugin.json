@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Honey GPT",
+  "name_for_model": "honey_gpt",
+  "description_for_human": "🐝 Preisstrategie-Coach für Klarheit, Signature-Angebote & Abo-Modelle.",
+  "description_for_model": "Ein empathischer GPT für Coaches, Heiler:innen & KMU. Unterstützt bei Pricing, Positionierung, ROI-Logik und Klarheit.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://chat.kaija-marketing.pro/openapi.yaml"
+  },
+  "logo_url": "https://chat.kaija-marketing.pro/logo-honey.png",
+  "contact_email": "you@kaija-marketing.pro",
+  "legal_info_url": "https://www.kaija-marketing.pro/datenschutz"
+}
