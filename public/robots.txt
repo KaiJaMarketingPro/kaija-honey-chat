@@ -1,20 +1,17 @@
-### 📄 robots.txt (für /public/ im Honey-Projekt)
-
-```
 User-agent: *
 Allow: /
 
-# Disallow sensitive admin routes
+# ❌ Noindex für GPT Journeys
+Disallow: /test
+Disallow: /onboarding
+Disallow: /admin-abo
+Disallow: /gpt
+Disallow: /test-openai
+
+# ❌ Disallow API / Admin / Logs
+Disallow: /api/
 Disallow: /admin/
-Disallow: /api/test-gpt
-Disallow: /api/validate-yaml
 Disallow: /logs/
 
-# Sitemaps
+# ✅ Sitemap für Landing + Public SEO
 Sitemap: https://www.kaija-marketing.pro/sitemap.xml
-Sitemap: https://honey-chat-v1.vercel.app/sitemap-gpts.xml
-```
-
-✅ DSGVO-freundlich – erlaubt alle Bots ohne Einschränkung
-✅ GPT-Routen geschützt
-✅ Haupt- & GPT-Sitemap korrekt integriert
