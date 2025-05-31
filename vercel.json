@@ -10,6 +10,8 @@
     { "src": "public/**/*", "use": "@vercel/static" }
   ],
   "rewrites": [
+    { "source": "/test.html", "destination": "/test.html" },
+    { "source": "/__debug", "destination": "/test.html" },
     { "source": "/test", "destination": "/test.html" },
     { "source": "/onboarding", "destination": "/onboarding.html" },
     { "source": "/admin-abo", "destination": "/admin-abo.html" },
