@@ -2,7 +2,8 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Willkommen bei Honey</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Honey GPT Onboarding – DSGVO konform</title>
   <meta name="robots" content="noindex, nofollow" />
   <style>
     body {
@@ -10,26 +11,31 @@
       background: #eef2f7;
       padding: 2rem;
       color: #333;
+      margin: 0;
     }
-    .wrapper {
+    .consent-box {
       background: #ffffff;
-      max-width: 520px;
-      margin: auto;
       padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      max-width: 520px;
+      margin: auto;
     }
     h2 {
       color: #7c3aed;
       margin-bottom: 1rem;
+      font-size: 1.5rem;
     }
     input, button {
       margin: 0.5rem 0;
       padding: 0.7rem;
       font-size: 1em;
       width: 100%;
-      border: 1px solid #ccc;
       border-radius: 6px;
+      box-sizing: border-box;
+    }
+    input {
+      border: 1px solid #ccc;
     }
     button {
       background: #7c3aed;
@@ -53,45 +59,57 @@
     .hint a:hover {
       text-decoration: underline;
     }
-    #status {
+    #feedback {
       margin-top: 1rem;
       font-size: 0.95em;
+    }
+    .footer-note {
+      font-size: 0.75em;
+      color: #aaa;
+      margin-top: 3rem;
+      text-align: center;
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
+  <div class="consent-box">
     <h2>🥳 Willkommen bei Honey Signature!</h2>
-    <p>Dein Abo ist aktiv. Um deinen GPT-Zugang zu starten, bestätige bitte deine DSGVO-Einwilligung:</p>
-    <form id="onboardingForm">
-      <input type="email" id="email" placeholder="Deine E-Mail-Adresse" required />
+    <p>Dein Abo ist aktiv. Um deinen Zugang zu starten, bestätige bitte kurz deine DSGVO-Einwilligung:</p>
+
+    <form id="consentForm">
+      <input type="email" id="email" name="email" placeholder="Deine E-Mail-Adresse" required autocomplete="email" />
       <label style="display: block; margin: 1rem 0;">
         <input type="checkbox" id="consentCheckbox" required />
-        Ich willige ein, dass meine E-Mail-Adresse für den Empfang von GPT-basierten Abo-Informationen verarbeitet wird.
+        Ich willige ein, dass meine E-Mail-Adresse für den Empfang von Abo-bezogenen GPT-Informationen verarbeitet wird.
         Grundlage ist die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>.
       </label>
-      <button type="submit">🔐 Zugang aktivieren</button>
+      <button type="submit">🔐 Zugang starten</button>
     </form>
+
     <p class="hint">
       ❓ Fragen oder Probleme? Schreib uns an <a href="mailto:hello@kaija-marketing.pro">hello@kaija-marketing.pro</a>
     </p>
-    <div id="status"></div>
+    <div id="feedback"></div>
   </div>
 
+  <p class="footer-note">
+    DSGVO-konform. Swiss Hosted via Microsoft Azure. Keine Speicherung.
+  </p>
+
   <script>
-    document.getElementById("onboardingForm").addEventListener("submit", async function (e) {
+    document.getElementById("consentForm").addEventListener("submit", async function (e) {
       e.preventDefault();
       const consent = document.getElementById("consentCheckbox").checked;
       const email = document.getElementById("email").value.trim();
-      const status = document.getElementById("status");
+      const feedback = document.getElementById("feedback");
 
       if (!consent || !email) {
-        status.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail-Adresse ein.";
+        feedback.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail-Adresse ein.";
         return;
       }
 
       try {
-        await fetch("https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2", {
+        const response = await fetch("https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -103,10 +121,12 @@
           })
         });
 
-        status.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT wird geladen…</strong>";
+        if (!response.ok) throw new Error("Serverproblem");
+
+        feedback.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT wird geladen…</strong>";
         setTimeout(() => window.location.href = "/gpt.html", 2000);
       } catch (err) {
-        status.textContent = "❌ Fehler beim Senden. Bitte versuche es später erneut.";
+        feedback.textContent = "❌ Es gab ein Problem beim Starten. Bitte versuche es später erneut.";
       }
     });
   </script>
