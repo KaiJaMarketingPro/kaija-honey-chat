@@ -19,11 +19,18 @@ export default async function handler(req, res) {
     const safeGpt = gpt.replace(/[^\w-]/g, '');
     const mappingPath = path.join(process.cwd(), 'api/config/mapping.json');
     const deploymentMap = JSON.parse(await fs.readFile(mappingPath, 'utf8'));
-    const mapping = deploymentMap[safeGpt] || deploymentMap['_fallback'];
-    const usedFallback = !deploymentMap[safeGpt];
+
+    // ✨ Optionales Alias-Routing ergänzen (z. B. "baschtis" → "baschtis-gpt")
+    const gptAliases = {
+      baschtis: 'baschtis-gpt'
+    };
+    const resolvedGpt = gptAliases[safeGpt] || safeGpt;
+
+    const mapping = deploymentMap[resolvedGpt] || deploymentMap['_fallback'];
+    const usedFallback = !deploymentMap[resolvedGpt];
 
     if (usedFallback) {
-      console.warn(`[${new Date().toISOString()}] ⚠️ Fallback aktiviert: "${safeGpt}" nicht im Mapping.`);
+      console.warn(`[${new Date().toISOString()}] ⚠️ Fallback aktiviert: "${resolvedGpt}" nicht im Mapping.`);
     }
 
     const promptPath = path.join(process.cwd(), mapping.prompt);
@@ -53,7 +60,7 @@ export default async function handler(req, res) {
         const controller = new AbortController();
         const timeout = setTimeout(() => controller.abort(), 10000);
 
-        console.log(`[${new Date().toISOString()}] 🚀 GPT-Request an "${safeGpt}" → ${deploymentName}`);
+        console.log(`[${new Date().toISOString()}] 🚀 GPT-Request an "${resolvedGpt}" → ${deploymentName}`);
         const azureRes = await fetch(endpoint, {
           method: 'POST',
           headers: {
@@ -87,7 +94,7 @@ export default async function handler(req, res) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
               timestamp: new Date().toISOString(),
-              gpt: safeGpt,
+              gpt: resolvedGpt,
               user,
               tokens: result.usage?.total_tokens || 0,
               prompt: messages?.[0]?.content?.slice(0, 80) || '-',
@@ -110,7 +117,7 @@ export default async function handler(req, res) {
           retryCount++;
           continue;
         }
-        console.error(`[${new Date().toISOString()}] ❌ GPT-Proxy-Fehler (${safeGpt}):`, err);
+        console.error(`[${new Date().toISOString()}] ❌ GPT-Proxy-Fehler (${resolvedGpt}):`, err);
         return res.status(500).json({
           error: 'Serverfehler beim Aufruf der Azure API.',
           details: err.message
