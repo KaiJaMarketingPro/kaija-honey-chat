@@ -7,20 +7,27 @@
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      padding: 2rem;
       background: #f8fafc;
       color: #333;
+      padding: 2rem;
     }
     h1 {
       color: #7c3aed;
-      font-size: 1.5rem;
-      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #ffffff;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
     }
     input, button {
       padding: 0.7rem;
       margin: 0.5rem 0;
       width: 100%;
-      font-size: 1rem;
+      font-size: 1em;
       border: 1px solid #ccc;
       border-radius: 6px;
     }
@@ -36,8 +43,8 @@
     }
     #redirect-message {
       margin-top: 1rem;
-      font-size: 0.95em;
       color: green;
+      font-size: 0.95em;
     }
     .footer {
       margin-top: 3rem;
@@ -92,11 +99,13 @@
   </script>
 </head>
 <body>
-  <h1>🔧 Verwalte dein Honey Abo</h1>
-  <p>Bitte gib die E-Mail-Adresse ein, mit der du dein Abo gebucht hast:</p>
-  <input type="email" id="email-input" placeholder="deine@email.ch" />
-  <button onclick="openStripePortal()">➡️ Zum Kundenportal</button>
-  <p id="redirect-message"></p>
+  <div class="container">
+    <h1>🔧 Verwalte dein Honey Abo</h1>
+    <p>Bitte gib die E-Mail-Adresse ein, mit der du dein Abo gebucht hast:</p>
+    <input type="email" id="email-input" placeholder="deine@email.ch" />
+    <button onclick="openStripePortal()">➡️ Zum Kundenportal</button>
+    <p id="redirect-message"></p>
+  </div>
 
   <div class="footer">
     🔙 <a href="/gpt.html">Zurück zu Honey GPT</a><br><br>
