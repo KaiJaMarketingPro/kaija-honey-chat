@@ -69,6 +69,14 @@
       margin-top: 3rem;
       text-align: center;
     }
+    #adminTest {
+      display: none;
+      background: #eef;
+      border: 1px dashed #7c3aed;
+      color: #333;
+      margin-top: 1rem;
+      padding: 0.5rem;
+    }
   </style>
 </head>
 <body>
@@ -86,6 +94,8 @@
       <button type="submit">✅ GPT jetzt starten</button>
     </form>
 
+    <button id="adminTest">🧪 Admin-Test Webhook auslösen</button>
+
     <p class="hint">
       ❓ Fragen oder Probleme? Schreib uns an <a href="mailto:hello@kaija-marketing.pro">hello@kaija-marketing.pro</a>
     </p>
@@ -97,11 +107,19 @@
   </p>
 
   <script>
-    document.getElementById("consentForm").addEventListener("submit", async function (e) {
+    const form = document.getElementById("consentForm");
+    const adminBtn = document.getElementById("adminTest");
+
+    form.addEventListener("submit", async function (e) {
       e.preventDefault();
       const consent = document.getElementById("consentCheckbox").checked;
       const email = document.getElementById("email").value.trim();
       const feedback = document.getElementById("feedback");
+
+      // Admin-Test aktivieren
+      if (email === "admin@kaija.dev") {
+        adminBtn.style.display = "block";
+      }
 
       if (!consent || !email) {
         feedback.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail-Adresse ein.";
@@ -126,7 +144,27 @@
         feedback.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT wird geladen…</strong>";
         setTimeout(() => window.location.href = "/gpt.html", 2000);
       } catch (err) {
-        feedback.textContent = "❌ Es gab ein Problem beim Starten. Bitte versuche es später erneut. ";
+        feedback.textContent = "❌ Es gab ein Problem beim Starten. Bitte versuche es später erneut.";
+      }
+    });
+
+    adminBtn.addEventListener("click", async function () {
+      const feedback = document.getElementById("feedback");
+      try {
+        await fetch("https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            email: "admin@kaija.dev",
+            consent: true,
+            source: "test.html – AdminTrigger",
+            brevo_triggered: true
+          })
+        });
+        feedback.innerHTML = "🧪 Admin-Test erfolgreich ausgelöst!";
+      } catch (err) {
+        feedback.textContent = "❌ Fehler beim Admin-Test.";
       }
     });
   </script>
