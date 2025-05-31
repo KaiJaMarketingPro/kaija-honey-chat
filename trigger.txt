@@ -1,0 +1,4 @@
+echo "# 🔁 Trigger redeploy $(date)" >> trigger.txt
+git add trigger.txt
+git commit -m "🔁 Trigger: Vercel redeploy via GitHub Action"
+git push origin main
