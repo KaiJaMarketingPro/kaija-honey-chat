@@ -1,0 +1,62 @@
+export default function Onboarding() {
+  return (
+    <main style={{
+      fontFamily: "Segoe UI, sans-serif",
+      padding: "2rem",
+      maxWidth: "640px",
+      margin: "0 auto",
+      textAlign: "center",
+      lineHeight: "1.6"
+    }}>
+      <h1 style={{ color: "#f16a00", fontSize: "2rem" }}>
+        Willkommen bei Honey GPT 🐝
+      </h1>
+
+      <p style={{ marginTop: "1rem", color: "#333" }}>
+        Schön, dass du hier bist. Du hast den ersten Schritt gemacht, um dein Signature-Angebot klar, fair und ehrlich zu bepreisen.
+      </p>
+
+      <p style={{ marginTop: "1rem" }}>
+        Honey GPT begleitet dich auf deinem Weg zu mehr Klarheit – mit Preismodell, GPT-Coach und DSGVO-sicherem Abo.
+      </p>
+
+      <div style={{ marginTop: "2rem" }}>
+        <a href="/gpt"
+          style={{
+            backgroundColor: "#1a4d6e",
+            color: "#ffffff",
+            padding: "14px 28px",
+            borderRadius: "10px",
+            fontWeight: "600",
+            textDecoration: "none",
+            display: "inline-block",
+            margin: "12px 0"
+          }}>
+          Starte jetzt mit deinem GPT-Coach
+        </a>
+      </div>
+
+      <p style={{ color: "#f16a00", marginTop: "2rem" }}>
+        Du willst dein Abo verwalten oder kündigen?
+      </p>
+
+      <a href="/admin-abo"
+        style={{
+          backgroundColor: "#f16a00",
+          color: "#ffffff",
+          padding: "14px 28px",
+          borderRadius: "10px",
+          fontWeight: "600",
+          textDecoration: "none",
+          display: "inline-block"
+        }}>
+        Mein Abo verwalten – Klarheit behalten
+      </a>
+
+      <p style={{ fontSize: "0.85rem", marginTop: "2rem", color: "#666" }}>
+        DSGVO-konform · Deine Daten bleiben bei dir. <br />
+        Fragen? Schreib an <a href="mailto:you@kaija-marketing.pro" style={{ color: "#1a4d6e" }}>hello@kaija-marketing.pro</a>
+      </p>
+    </main>
+  );
+}
