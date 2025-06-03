@@ -6,74 +6,99 @@
   <title>Honey Abo verwalten</title>
   <meta name="robots" content="noindex, nofollow" />
   <style>
+    :root {
+      --kaija-orange: #f16a00;
+      --kaija-blue: #1a4d6e;
+      --kaija-white: #ffffff;
+      --kaija-bg: #fdf9f5;
+    }
+
     body {
       font-family: "Segoe UI", sans-serif;
-      background: #f8fafc;
-      color: #333;
-      padding: 2rem;
+      background: var(--kaija-bg);
+      color: var(--kaija-blue);
       margin: 0;
+      padding: 2rem;
     }
+
     .container {
-      max-width: 520px;
+      max-width: 500px;
       margin: auto;
-      background: #ffffff;
+      background: var(--kaija-white);
       padding: 2rem;
       border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
     }
+
     h1 {
-      color: #7c3aed;
+      color: var(--kaija-orange);
       text-align: center;
       margin-bottom: 1rem;
     }
+
+    p {
+      text-align: center;
+      font-size: 1rem;
+      color: #333;
+    }
+
     input, button {
-      padding: 0.7rem;
-      margin: 0.5rem 0;
       width: 100%;
       font-size: 1em;
-      border-radius: 6px;
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-top: 1rem;
       box-sizing: border-box;
     }
+
     input {
       border: 1px solid #ccc;
     }
+
     button {
-      background: #7c3aed;
-      color: white;
+      background: var(--kaija-blue);
+      color: var(--kaija-white);
       font-weight: bold;
       border: none;
       cursor: pointer;
+      transition: background 0.3s ease;
     }
+
     button:hover {
-      background: #6b21a8;
+      background: #143c53;
     }
+
     #redirect-message {
       margin-top: 1rem;
       color: green;
       font-size: 0.95em;
       text-align: center;
     }
+
     .footer {
       margin-top: 2rem;
-      font-size: 0.9em;
+      font-size: 0.85em;
       text-align: center;
-      color: #555;
+      color: #666;
     }
+
     .footer a {
-      color: #7c3aed;
+      color: var(--kaija-blue);
       text-decoration: none;
     }
+
     .footer a:hover {
       text-decoration: underline;
     }
   </style>
+
   <script>
     async function openStripePortal() {
       const emailInput = document.getElementById("email-input");
       const email = emailInput.value.trim();
       const msg = document.getElementById("redirect-message");
 
-      if (!email) {
+      if (!email || !email.includes("@")) {
         msg.textContent = "❌ Bitte gib eine gültige E-Mail-Adresse ein.";
         return;
       }
@@ -86,6 +111,7 @@
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email })
         });
+
         const data = await res.json();
         if (data.url) {
           window.location.href = data.url;
@@ -108,8 +134,8 @@
 </head>
 <body>
   <div class="container">
-    <h1>🔧 Verwalte dein Honey Abo</h1>
-    <p>Bitte gib die E-Mail-Adresse ein, mit der du dein Abo gebucht hast:</p>
+    <h1>🔐 Abo verwalten</h1>
+    <p>Gib bitte deine E-Mail-Adresse ein, mit der du dein Abo gebucht hast:</p>
     <input type="email" id="email-input" placeholder="deine@email.ch" />
     <button onclick="openStripePortal()">➡️ Zum Kundenportal</button>
     <p id="redirect-message"></p>
