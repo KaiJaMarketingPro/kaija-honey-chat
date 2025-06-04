@@ -5,6 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Honey GPT Test – DSGVO konform</title>
   <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Open Graph Meta -->
+  <meta property="og:title" content="Honey GPT – Klarheit für Coaches & Heiler:innen" />
+  <meta property="og:description" content="Teste Honey GPT 7 Tage kostenlos. DSGVO-konform. Swiss Hosted." />
+  <meta property="og:image" content="https://www.kaija-marketing.pro/_files/og-honey.png" />
+  <meta property="og:url" content="https://chat.kaija-marketing.pro/test.html" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
@@ -88,8 +97,9 @@
       <input type="email" id="email" name="email" placeholder="Deine E-Mail-Adresse" required autocomplete="email" />
       <label style="display: block; margin: 1rem 0;">
         <input type="checkbox" id="consentCheckbox" required />
-        Ich willige ein, dass meine E-Mail-Adresse für den Empfang von GPT-bezogenen Informationen verarbeitet wird.
-        Grundlage ist die <a href="/datenschutz" target="_blank">Datenschutzerklärung</a>.
+        Ich willige gemäss <a href="/datenschutzrichtlinie" target="_blank">Datenschutzerklärung</a> ein,
+        dass meine E-Mail-Adresse verarbeitet wird, um mir GPT-basierte Klarheitsimpulse zu senden.
+        Ich kann die Einwilligung jederzeit widerrufen.
       </label>
       <button type="submit">✅ GPT jetzt starten</button>
     </form>
@@ -116,15 +126,18 @@
       const email = document.getElementById("email").value.trim();
       const feedback = document.getElementById("feedback");
 
-      // Admin-Test aktivieren
-      if (email === "admin@kaija.dev") {
-        adminBtn.style.display = "block";
-      }
-
       if (!consent || !email) {
         feedback.textContent = "❌ Bitte bestätige deine Einwilligung und gib eine gültige E-Mail-Adresse ein.";
         return;
       }
+
+      // Admin-Test sichtbar nur für spezifische E-Mail + localhost
+      if (email === "admin@kaija.dev" && location.hostname.includes("localhost")) {
+        adminBtn.style.display = "block";
+      }
+
+      const controller = new AbortController();
+      setTimeout(() => controller.abort(), 5000);
 
       try {
         const response = await fetch("https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2", {
@@ -136,7 +149,8 @@
             consent: true,
             source: "test.html",
             brevo_triggered: true
-          })
+          }),
+          signal: controller.signal
         });
 
         if (!response.ok) throw new Error("Serverproblem");
