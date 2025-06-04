@@ -2,7 +2,7 @@
   "version": 2,
   "outputDirectory": "public",
   "regions": ["fra1"],
-  "cleanUrls": false,
+  "cleanUrls": true,
   "trailingSlash": false,
   "builds": [
     { "src": "api/**/*.js", "use": "@vercel/node" },
@@ -10,13 +10,12 @@
     { "src": "public/**/*", "use": "@vercel/static" }
   ],
   "rewrites": [
-    { "source": "/test.html", "destination": "/test.html" },
-    { "source": "/__debug", "destination": "/test.html" },
     { "source": "/test", "destination": "/test.html" },
     { "source": "/onboarding", "destination": "/onboarding.html" },
     { "source": "/admin-abo", "destination": "/admin-abo.html" },
     { "source": "/gpt", "destination": "/gpt.html" },
-    { "source": "/test-openai", "destination": "/test-openai.html" }
+    { "source": "/start", "destination": "/test.html" },
+    { "source": "/__debug", "destination": "/test.html" }
   ],
   "headers": [
     {
@@ -34,42 +33,14 @@
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self'; connect-src 'self' https://chat.kaija-marketing.pro https://*.kaija-marketing.pro https://proxy.kaija-marketing.pro https://hook.eu2.make.com https://chat.openai.com; style-src 'self' 'unsafe-inline'; frame-ancestors 'self' https://www.kaija-marketing.pro https://editor.wix.com https://*.wixsite.com"
         },
-        {
-          "key": "X-Frame-Options",
-          "value": "ALLOW-FROM https://www.kaija-marketing.pro"
-        },
-        {
-          "key": "Access-Control-Allow-Origin",
-          "value": "https://www.kaija-marketing.pro"
-        },
-        {
-          "key": "Referrer-Policy",
-          "value": "strict-origin-when-cross-origin"
-        },
-        {
-          "key": "Permissions-Policy",
-          "value": "clipboard-write=(), microphone=(), camera=()"
-        },
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "Strict-Transport-Security",
-          "value": "max-age=63072000; includeSubDomains; preload"
-        },
-        {
-          "key": "Cache-Control",
-          "value": "no-cache, no-store, must-revalidate"
-        },
-        {
-          "key": "Pragma",
-          "value": "no-cache"
-        },
-        {
-          "key": "Expires",
-          "value": "0"
-        }
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "clipboard-write=(), microphone=(), camera=()" },
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Strict-Transport-Security", "value": "max-age=63072000; includeSubDomains; preload" },
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" },
+        { "key": "Pragma", "value": "no-cache" },
+        { "key": "Expires", "value": "0" }
       ]
     }
   ]
