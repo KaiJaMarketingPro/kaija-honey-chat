@@ -1,9 +1,7 @@
-// /api/create-stripe-portal-session.js
-
 import Stripe from 'stripe';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-10-16' // Aktuelle API-Version explizit setzen
+  apiVersion: '2023-10-16'
 });
 
 export default async function handler(req, res) {
@@ -17,8 +15,12 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Gültige E-Mail ist erforderlich.' });
   }
 
+  const referer = req.headers.referer || "";
+  if (!referer.includes("kaija-marketing.pro")) {
+    return res.status(403).json({ error: 'Zugriff nur über KaiJa Marketing erlaubt.' });
+  }
+
   try {
-    // Suche nach dem Kunden anhand der E-Mail-Adresse
     const customers = await stripe.customers.list({ email, limit: 1 });
     const customer = customers.data[0];
 
@@ -27,7 +29,6 @@ export default async function handler(req, res) {
       return res.status(404).json({ error: 'Kein Stripe-Kunde mit dieser E-Mail gefunden.' });
     }
 
-    // Erstelle eine sichere Portal-Session mit Rücksprung zur Website
     const session = await stripe.billingPortal.sessions.create({
       customer: customer.id,
       return_url: 'https://www.kaija-marketing.pro/fuer-coaches'
