@@ -33,7 +33,6 @@
           "key": "Content-Security-Policy",
           "value": "default-src 'self'; script-src 'self'; connect-src 'self' https://chat.kaija-marketing.pro https://*.kaija-marketing.pro https://proxy.kaija-marketing.pro https://hook.eu2.make.com https://chat.openai.com; style-src 'self' 'unsafe-inline'; frame-ancestors 'self' https://www.kaija-marketing.pro https://editor.wix.com https://*.wixsite.com"
         },
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" },
         { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
         { "key": "Permissions-Policy", "value": "clipboard-write=(), microphone=(), camera=()" },
         { "key": "X-Content-Type-Options", "value": "nosniff" },
