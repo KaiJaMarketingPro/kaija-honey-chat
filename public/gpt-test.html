@@ -10,7 +10,7 @@
   <meta property="og:title" content="Honey GPT – Klarheit für Coaches & Heiler:innen" />
   <meta property="og:description" content="Teste Honey GPT 7 Tage kostenlos. DSGVO-konform. Swiss Hosted." />
   <meta property="og:image" content="https://www.kaija-marketing.pro/_files/og-honey.png" />
-  <meta property="og:url" content="https://chat.kaija-marketing.pro/test.html" />
+  <meta property="og:url" content="https://gpt.kaija-marketing.pro/gpt-test.html" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
 
@@ -131,7 +131,6 @@
         return;
       }
 
-      // Admin-Test sichtbar nur für spezifische E-Mail + localhost
       if (email === "admin@kaija.dev" && location.hostname.includes("localhost")) {
         adminBtn.style.display = "block";
       }
@@ -147,7 +146,7 @@
             timestamp: new Date().toISOString(),
             email,
             consent: true,
-            source: "test.html",
+            source: "gpt-test.html",
             brevo_triggered: true
           }),
           signal: controller.signal
@@ -156,7 +155,7 @@
         if (!response.ok) throw new Error("Serverproblem");
 
         feedback.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT wird geladen…</strong>";
-        setTimeout(() => window.location.href = "/gpt.html", 2000);
+        setTimeout(() => window.location.href = "https://gpt.kaija-marketing.pro/gpt.html", 2000);
       } catch (err) {
         feedback.textContent = "❌ Es gab ein Problem beim Starten. Bitte versuche es später erneut.";
       }
@@ -172,7 +171,7 @@
             timestamp: new Date().toISOString(),
             email: "admin@kaija.dev",
             consent: true,
-            source: "test.html – AdminTrigger",
+            source: "gpt-test.html – AdminTrigger",
             brevo_triggered: true
           })
         });
