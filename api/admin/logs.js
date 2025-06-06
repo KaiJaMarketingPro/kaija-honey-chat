@@ -1,31 +1,32 @@
 // 📁 /api/admin/logs.js
-// KaiJa GPT – Admin Logs View (YAML, GPT, Tokens, Webhook-Trigger)
 
+import { validateAdminAuth } from './middleware.js';
 import fs from 'fs/promises';
 import path from 'path';
 
 export default async function handler(req, res) {
+  // Auth prüfen
+  const authError = validateAdminAuth(req, res);
+  if (authError) return authError;
+
+  // Nur GET erlaubt
   if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Nur GET erlaubt' });
+    return res.status(405).json({ error: 'Nur GET-Anfragen erlaubt.' });
   }
 
   try {
-    const logsPath = path.join(process.cwd(), 'api/logs/gpt-usage.jsonl');
-    const raw = await fs.readFile(logsPath, 'utf8');
-    const lines = raw.trim().split('\n').map(line => JSON.parse(line));
+    const logsPath = path.join(process.cwd(), 'logs');
+    const files = await fs.readdir(logsPath);
 
-    // Neueste oben, limitiere auf 100
-    const recent = lines.reverse().slice(0, 100);
+    const result = await Promise.all(
+      files.map(async file => {
+        const content = await fs.readFile(path.join(logsPath, file), 'utf8');
+        return { file, content: JSON.parse(content) };
+      })
+    );
 
-    return res.status(200).json({
-      count: recent.length,
-      logs: recent
-    });
-
-  } catch (err) {
-    return res.status(500).json({
-      error: 'Fehler beim Lesen der Logs',
-      details: err.message
-    });
+    res.status(200).json(result);
+  } catch (e) {
+    res.status(500).json({ error: 'Fehler beim Lesen der Logs.', details: e.message });
   }
 }
