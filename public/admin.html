@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login – KaiJa GPT</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="max-w-md mx-auto mt-20 p-6 bg-white rounded-xl shadow-md">
+    <h1 class="text-2xl font-bold mb-4">Admin Login (Token-basiert)</h1>
+    <form id="admin-form" class="space-y-4">
+      <input
+        type="password"
+        id="token"
+        class="w-full p-2 border rounded"
+        placeholder="Admin Token eingeben"
+        required
+      />
+      <button
+        type="submit"
+        class="w-full bg-black text-white p-2 rounded hover:bg-gray-800"
+      >
+        Zugriff prüfen
+      </button>
+    </form>
+    <p id="status" class="mt-4 text-sm text-gray-700"></p>
+  </div>
+
+  <script>
+    document.getElementById('admin-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const token = document.getElementById('token').value;
+      const status = document.getElementById('status');
+      status.textContent = 'Prüfe Zugriff...';
+
+      try {
+        const res = await fetch('/api/admin/logs.js', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (res.status === 200) {
+          const data = await res.json();
+          status.textContent = `✅ Zugriff erfolgreich. ${data.length} Log-Dateien gefunden.`;
+        } else if (res.status === 401) {
+          status.textContent = '❌ Zugriff verweigert: Token fehlt.';
+        } else if (res.status === 403) {
+          status.textContent = '❌ Zugriff verweigert: Ungültiger Token.';
+        } else {
+          status.textContent = '⚠️ Unbekannter Fehler beim Abrufen der Logs.';
+        }
+      } catch (error) {
+        status.textContent = '⚠️ Fehler beim Verbindungsaufbau.';
+      }
+    });
+  </script>
+</body>
+</html>
