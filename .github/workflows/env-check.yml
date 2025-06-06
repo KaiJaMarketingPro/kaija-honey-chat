@@ -1,0 +1,21 @@
+# 📁 .github/workflows/env-check.yml
+name: Check ENV Sync
+
+on:
+  schedule:
+    - cron: "0 7 * * 1" # jeden Montag, 07:00 UTC
+  workflow_dispatch:
+
+jobs:
+  check-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: Check ENV Keys
+        run: |
+          echo "✅ Vergleiche .env.production mit README_ENV_VARS.md"
+          grep "=" api/.env | cut -d= -f1 | sort > current_env.txt
+          grep -oP "^\\| \\K.*?(?= \\|)" api/README_ENV_VARS.md | sort > doc_env.txt
+          diff current_env.txt doc_env.txt || echo '❗ Abweichung erkannt. Bitte ENV prüfen.'
