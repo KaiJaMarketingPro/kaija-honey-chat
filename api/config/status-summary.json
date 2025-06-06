@@ -1,0 +1,71 @@
+{
+  "version": "v1.3.0",
+  "region": "switzerlandnorth",
+  "model": "gpt-4-turbo",
+  "deployments": {
+    "strategy-maerki-gpt": {
+      "prompt": "maerki-gpt.md",
+      "deployment": "maerki-gpt",
+      "cluster": "strategy",
+      "fallback": false
+    },
+    "funnel-kaija-gpt": {
+      "prompt": "kaija-gpt.md",
+      "deployment": "kaija-gpt",
+      "cluster": "funnel",
+      "fallback": false
+    },
+    "pricing-honey-gpt": {
+      "prompt": "honey-gpt.md",
+      "deployment": "honey-gpt",
+      "cluster": "pricing",
+      "fallback": false
+    },
+    "onboard-homie-gpt": {
+      "prompt": "homie-gpt.md",
+      "deployment": "homie-gpt",
+      "cluster": "onboarding",
+      "fallback": false
+    },
+    "career-kaivio-gpt": {
+      "prompt": "kaivio-gpt.md",
+      "deployment": "kaivio-gpt",
+      "cluster": "career",
+      "fallback": false
+    },
+    "sales-baschti-gpt": {
+      "prompt": "baschtis-gpt.md",
+      "deployment": "baschtis-gpt",
+      "cluster": "sales",
+      "fallback": false
+    },
+    "healer-gabriela-gpt": {
+      "prompt": "soulguide-gabriela-gpt.md",
+      "deployment": "soulguide-gabriela-gpt",
+      "cluster": "healer",
+      "fallback": false
+    },
+    "healer-soulsyncai-gpt": {
+      "prompt": "soulsyncai-gpt.md",
+      "deployment": "soulsyncai-gpt",
+      "cluster": "healer",
+      "fallback": false
+    },
+    "impuls-dailyjasmin-gpt": {
+      "prompt": "dailyjasmin-gpt.md",
+      "deployment": "dailyjasmin-gpt",
+      "cluster": "impulse",
+      "fallback": false
+    },
+    "_fallback": {
+      "prompt": "fallback.md",
+      "deployment": "fallback-gpt",
+      "cluster": "fallback",
+      "fallback": true
+    }
+  },
+  "optin_enforced": true,
+  "log_enabled": true,
+  "ds_gvo_compliant": true,
+  "azure_verified": true
+}
