@@ -1,0 +1,38 @@
+name: Post Deploy Smoke Test
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  smoke-tests:
+    runs-on: ubuntu-latest
+    name: 🚨 Smoke Test nach Deployment
+
+    steps:
+      - name: 📡 Teste GPT Proxy (chat.js)
+        run: |
+          curl -s -X POST https://gpt.kaija-marketing.pro/api/chat.js \
+          -H "Content-Type: application/json" \
+          -d '{"gpt":"honey","messages":[{"role":"user","content":"Was ist ein fairer Preis?"}],"optin":true,"log":false}' \
+          | grep -q 'choices' && echo "✅ Honey GPT antwortet" || exit 1
+
+      - name: 🔍 DSGVO Opt-in Test (test-gpt.js)
+        run: |
+          curl -s -X POST https://gpt.kaija-marketing.pro/api/test-gpt.js \
+          -H "Content-Type: application/json" \
+          -d '{"gpt":"gabriela","message":"Wer bin ich als Marke?","optin":false}' \
+          | grep -q 'DSGVO-Einwilligung fehlt' && echo "✅ Opt-in greift" || exit 1
+
+      - name: 🔐 Status Check
+        run: |
+          curl -s https://gpt.kaija-marketing.pro/api/status.js | grep -q 'azure' && echo "✅ Status.js aktiv" || exit 1
+
+      - name: ✅ Smoke HTML Pages
+        run: |
+          for page in test gpt-test onboarding 404; do
+            curl -s -o /dev/null -w "%{http_code}" https://gpt.kaija-marketing.pro/$page.html | grep -q "200" \
+            && echo "✅ $page.html online" || exit 1
+          done
