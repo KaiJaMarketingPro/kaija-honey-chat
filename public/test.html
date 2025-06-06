@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Honey GPT – DSGVO-konformer Test</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-900">
+
+  <div class="max-w-xl mx-auto p-6 mt-10 bg-white rounded-xl shadow-md">
+    <h1 class="text-2xl font-bold mb-4">Honey GPT – DSGVO-Testzugang</h1>
+
+    <form id="gpt-form" class="space-y-4">
+      <textarea
+        id="user-message"
+        class="w-full p-3 border rounded resize-none"
+        rows="5"
+        placeholder="Was möchtest du Honey GPT fragen?"
+        required
+      ></textarea>
+
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="optin" required />
+        <label for="optin" class="text-sm">
+          Ich stimme der DSGVO-konformen Verarbeitung meiner Eingabe zu.
+          (<a href="/DSGVO_FLOW.md" class="underline text-blue-600">Details einsehen</a>)
+        </label>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-black text-white p-2 rounded hover:bg-gray-800"
+      >
+        Anfrage senden
+      </button>
+    </form>
+
+    <div id="response" class="mt-6 text-sm text-gray-800 whitespace-pre-line hidden"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('gpt-form');
+    const responseDiv = document.getElementById('response');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const optin = document.getElementById('optin').checked;
+      const message = document.getElementById('user-message').value;
+
+      responseDiv.textContent = '⏳ Anfrage wird gesendet ...';
+      responseDiv.classList.remove('hidden');
+
+      const res = await fetch('/api/chat.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          gpt: 'honey',
+          user: 'webtest',
+          message,
+          optin,
+          log: true
+        })
+      });
+
+      const data = await res.json();
+      if (res.status !== 200) {
+        responseDiv.textContent = `⚠️ Fehler: ${data.error || 'Unbekannter Fehler'}`;
+      } else {
+        responseDiv.textContent = data.choices?.[0]?.message?.content || 'Keine Antwort erhalten.';
+      }
+    });
+  </script>
+
+</body>
+</html>
