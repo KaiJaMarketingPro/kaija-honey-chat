@@ -9,7 +9,20 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Nur POST-Anfragen erlaubt.' });
   }
 
-  const { messages = [], gpt = 'maerki-gpt', user = 'anonymous' } = req.body;
+  const {
+    messages = [],
+    gpt = 'maerki-gpt',
+    user = 'anonymous',
+    optin = false,
+    log = false
+  } = req.body;
+
+  // 🛡 DSGVO Opt-in validieren
+  if (!optin) {
+    return res.status(403).json({
+      error: 'DSGVO-Einwilligung fehlt. Bitte Opt-in aktivieren, um den GPT-Service zu nutzen.'
+    });
+  }
 
   if (!Array.isArray(messages)) {
     return res.status(400).json({ error: 'Ungültiges Nachrichtenformat. Erwartet: Array von Messages.' });
@@ -20,7 +33,6 @@ export default async function handler(req, res) {
     const mappingPath = path.join(process.cwd(), 'api/config/mapping.json');
     const deploymentMap = JSON.parse(await fs.readFile(mappingPath, 'utf8'));
 
-    // ✨ Optionales Alias-Routing ergänzen (z. B. "baschtis" → "baschtis-gpt")
     const gptAliases = {
       baschtis: 'baschtis-gpt'
     };
@@ -87,8 +99,8 @@ export default async function handler(req, res) {
           });
         }
 
-        // 📤 Logging an Make Webhook (für Sheets & Admin KPIs)
-        if (webhookUrl) {
+        // 📤 DSGVO-konformes Logging (nur wenn log=true gesetzt)
+        if (webhookUrl && log) {
           await fetch(webhookUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
