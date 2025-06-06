@@ -1,0 +1,17 @@
+name: 🧪 Status Summary Integrity Check
+
+on:
+  push:
+    paths:
+      - 'api/config/status-summary.json'
+      - '.github/workflows/status-compare.yml'
+  schedule:
+    - cron: '0 6 * * *'  # täglich um 06:00 Uhr
+
+jobs:
+  diff-status-summary:
+    runs-on: ubuntu-latest
+    name: ✨ Vergleiche status-summary.json – Prod vs Last Commit
+
+    steps:
+      - name: 
