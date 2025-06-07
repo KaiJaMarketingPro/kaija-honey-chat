@@ -1,6 +1,4 @@
-name: Deploy to Vercel
-
-description: "CI/CD Deployment to Vercel triggered on push to main"
+name: 🔁 Deploy to Vercel
 
 on:
   push:
@@ -22,9 +20,14 @@ jobs:
       - name: ✨ Install Vercel CLI
         run: npm install -g vercel
 
-      - name: 🚀 Deploy to Vercel
+      - name: 🧠 Link project with Vercel
+        run: vercel link --yes --token ${{ secrets.VERCEL_TOKEN }}
         env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-        run: vercel --prod --token $VERCEL_TOKEN --yes
+
+      - name: 🚀 Deploy to Vercel
+        run: vercel deploy --prod --token ${{ secrets.VERCEL_TOKEN }} --yes
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
