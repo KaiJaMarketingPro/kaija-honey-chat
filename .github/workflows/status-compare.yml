@@ -6,12 +6,51 @@ on:
       - 'api/config/status-summary.json'
       - '.github/workflows/status-compare.yml'
   schedule:
-    - cron: '0 6 * * *'  # täglich um 06:00 Uhr
+    - cron: '0 6 * * *'  # täglich um 06:00 Uhr CET
 
 jobs:
   diff-status-summary:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     name: ✨ Vergleiche status-summary.json – Prod vs Last Commit
 
     steps:
-      - name: 
+      - name: ✅ Checkout main branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2  # für diff-Vergleich
+
+      - name: ⭐ Setup Node.js (für Script & JSON)
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: 🔍 Lade Production status-summary von Vercel
+        run: |
+          PROD_URL="https://honey-chat-v1-${{ secrets.VERCEL_DEPLOYMENT_ID }}.vercel.app/api/config/status-summary.json"
+          curl --fail --retry 3 --silent "$PROD_URL" -o prod-status.json
+        env:
+          VERCEL_DEPLOYMENT_ID: ${{ secrets.VERCEL_DEPLOYMENT_ID }}
+
+      - name: 🔄 Vergleiche mit neuem Commit
+        run: |
+          git diff --no-index prod-status.json api/config/status-summary.json || true
+
+      - name: 📊 Diff-Resultat ausgeben
+        run: |
+          if diff prod-status.json api/config/status-summary.json > diff.txt; then
+            echo "✅ Beide Dateien sind identisch."
+          else
+            echo "❌ Unterschiede gefunden zwischen Production und Commit!"
+            cat diff.txt
+            exit 1
+          fi
+
+      - name: 🛠 Vollständiger Deployment-Scan (Brutal Truth Check)
+        run: |
+          echo "🔬 Inspect Deployment-Relevante Dateien:"
+          find .github/workflows deployment.json api public package.json .vercel -maxdepth 1 -type f
+
+      - name: 🧩 Abschluss-Log
+        run: |
+          echo "Job abgeschlossen am $(date)"
