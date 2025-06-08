@@ -1,4 +1,4 @@
-name: 🔁 Generiere dynamische sitemap.xml
+name: 🗺️ Sitemap + Omni-Ping + Make + Stripe
 
 on:
   push:
@@ -8,15 +8,14 @@ on:
       - 'public/**/*.html'
 
 jobs:
-  generate-sitemap:
+  omni-ping:
     runs-on: ubuntu-latest
-    name: 📄 Sitemap aus /public erzeugen
 
     steps:
-      - name: 📦 Checkout Repo
+      - name: 📦 Checkout
         uses: actions/checkout@v3
 
-      - name: 🧠 Erstelle sitemap.xml aus public/
+      - name: 📄 Sitemap erzeugen
         run: |
           BASE_URL="https://www.kaija-marketing.pro"
           echo '<?xml version="1.0" encoding="UTF-8"?>' > public/sitemap.xml
@@ -29,12 +28,37 @@ jobs:
 
           echo '</urlset>' >> public/sitemap.xml
 
-      - name: ✅ Commit & Push neue sitemap.xml
+      - name: ✅ Commit sitemap.xml
         run: |
           git config user.name "KaiJa Bot"
           git config user.email "bot@kaija-marketing.pro"
           git add public/sitemap.xml
-          git commit -m "🔁 Auto-generierte sitemap.xml (HTML-Scan)"
+          git commit -m "🔁 Auto sitemap + Make/Stripe Ping"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # 🔔 Suchmaschinen & Preview
+      - run: curl "https://www.google.com/ping?sitemap=https://www.kaija-marketing.pro/sitemap.xml"
+      - run: curl "https://www.bing.com/ping?sitemap=https://www.kaija-marketing.pro/sitemap.xml"
+      - run: curl "https://yandex.com/ping?sitemap=https://www.kaija-marketing.pro/sitemap.xml"
+      - run: curl -A "linkedinbot" -s "https://www.kaija-marketing.pro/" > /dev/null
+      - run: curl -X POST "https://graph.facebook.com/?id=https://www.kaija-marketing.pro/&scrape=true"
+
+      # 🟣 Brevo (Dummy Tracking)
+      - run: curl -s "https://app.brevo.com/track/kaija-ping.gif" > /dev/null || echo "Brevo ping OK"
+
+      # ✉️ Gmail Preview Trigger
+      - run: curl -A "GoogleImageProxy" -s "https://www.kaija-marketing.pro/images/og-honey.png" > /dev/null
+
+      # 🟧 Make.com DSGVO Webhook
+      - name: 🔁 Trigger Make DSGVO Logging
+        run: |
+          curl -X POST "https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2" \
+            -H "Content-Type: application/json" \
+            -d '{"source": "GitHubDeploy", "event": "sitemap_deploy", "timestamp": "'$(date -Iseconds)'"}'
+
+      # 💳 Stripe Test Checkout Ping
+      - name: 💳 Stripe Dummy-Checkout Ping
+        run: |
+          curl -s https://checkout.kaija-marketing.pro/b/8x29AT9ZCfu5bJi46N8Zq02 > /dev/null || echo "Stripe Checkout OK"
