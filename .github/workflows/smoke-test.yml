@@ -1,25 +1,36 @@
-name: 🚨 Smoke-Test Honey GPT /test Endpoint
+name: 🚨 Smoke-Test mit E-Mail Alert via Make
 
 on:
   schedule:
-    - cron: '5 6 * * *'  # täglich um 06:05 CET
-  workflow_dispatch:     # manuelles Triggern jederzeit
+    - cron: '14 6 * * *'  # täglich um 06:14 CET
+  workflow_dispatch:
 
 jobs:
-  check-test-endpoint:
+  check:
     runs-on: ubuntu-latest
-    name: 🌐 Prüfe /test – HTTP 200 Check
+    name: 🔍 /test prüfen + E-Mail bei Fehler
 
     steps:
-      - name: 🧠 Check /test Endpoint auf Vercel Deployment
+      - name: 🧪 Smoke-Test
+        id: test
         run: |
-          URL="https://gpt.kaija-marketing.pro/test"
-          echo "Teste URL: $URL"
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" $URL)
-
-          if [ "$STATUS" -eq 200 ]; then
-            echo "✅ /test Endpoint erreichbar."
-          else
-            echo "❌ /test Endpoint liefert $STATUS!"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://gpt.kaija-marketing.pro/test)
+          echo "HTTP_STATUS=$STATUS" >> $GITHUB_ENV
+          if [ "$STATUS" -ne 200 ]; then
+            echo "❌ Fehler – Status $STATUS"
             exit 1
+          else
+            echo "✅ /test OK (200)"
           fi
+
+      - name: 📧 Sende Nur-Text-E-Mail via Make Webhook
+        if: failure()
+        run: |
+          curl -X POST https://hook.eu2.make.com/YOUR-MAKE-WEBHOOK-ID \
+          -H "Content-Type: application/json" \
+          -d '{
+                "status": "'${{ env.HTTP_STATUS }}'",
+                "timestamp": "'$(date -Iseconds)'",
+                "source": "GitHub Smoke Test",
+                "message": "🚨 Honey GPT ist aktuell nicht erreichbar.\n\nDer automatische Smoke-Test aus GitHub hat eine Fehlerantwort erhalten:\n\nURL: https://gpt.kaija-marketing.pro/test\nHTTP Status: '${{ env.HTTP_STATUS }}'\nZeitstempel: '$(date -Iseconds)'\nQuelle: GitHub Smoke Test\n\nBitte prüfe die GPT-Verfügbarkeit, das Vercel Deployment oder den DNS-Status.\n\n--\nKaiJa Monitoring System\nAutomatischer Alert via GitHub + Make"
+              }'
