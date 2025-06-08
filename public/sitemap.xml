@@ -2,108 +2,32 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <!-- KaiJa Website Core -->
-  <url>
-    <loc>https://www.kaija-marketing.pro/</loc>
-    <priority>1.0</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.kaija-marketing.pro/fuer-coaches</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.kaija-marketing.pro/fuer-unternehmen</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.kaija-marketing.pro/gpts-entdecken</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.kaija-marketing.pro/termin-buchen</loc>
-    <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
-  </url>
+  <url><loc>https://www.kaija-marketing.pro/</loc><priority>1.0</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://www.kaija-marketing.pro/fuer-coaches</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://www.kaija-marketing.pro/fuer-unternehmen</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://www.kaija-marketing.pro/gpts-entdecken</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://www.kaija-marketing.pro/termin-buchen</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
 
-  <!-- GPT Proxy Views (Vercel iFrame Access) -->
-  <url>
-    <loc>https://chat.kaija-marketing.pro/test</loc>
-    <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://chat.kaija-marketing.pro/onboarding</loc>
-    <priority>0.8</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://chat.kaija-marketing.pro/admin-abo</loc>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://chat.kaija-marketing.pro/gpt</loc>
-    <priority>0.9</priority>
-    <changefreq>weekly</changefreq>
-  </url>
-  <url>
-    <loc>https://chat.kaija-marketing.pro/test-openai</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
+  <!-- GPT Proxy Views (für GPT Store & Verlinkung) -->
+  <url><loc>https://chat.kaija-marketing.pro/test</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://chat.kaija-marketing.pro/onboarding</loc><priority>0.8</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://chat.kaija-marketing.pro/admin-abo</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://chat.kaija-marketing.pro/gpt</loc><priority>0.9</priority><changefreq>weekly</changefreq></url>
+  <url><loc>https://chat.kaija-marketing.pro/test-openai</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
 
-  <!-- GPT Projekte Live/Ready -->
-  <url>
-    <loc>https://honey-chat-v1.vercel.app/</loc>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://maerki-gpt.vercel.app/</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
+  <!-- GPT Projekte Live -->
+  <url><loc>https://honey-chat-v1.vercel.app/</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://maerki-gpt.vercel.app/</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
 
-  <!-- Info- & Wissensseiten -->
-  <url>
-    <loc>https://www.kaija-marketing.pro/ueberdaniel</loc>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.kaija-marketing.pro/glossar</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.kaija-marketing.pro/faq</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.kaija-marketing.pro/kaijablog</loc>
-    <priority>0.6</priority>
-    <changefreq>monthly</changefreq>
-  </url>
+  <!-- Info & Wissensseiten -->
+  <url><loc>https://www.kaija-marketing.pro/ueberdaniel</loc><priority>0.7</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://www.kaija-marketing.pro/glossar</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://www.kaija-marketing.pro/faq</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
+  <url><loc>https://www.kaija-marketing.pro/kaijablog</loc><priority>0.6</priority><changefreq>monthly</changefreq></url>
 
   <!-- Legal -->
-  <url>
-    <loc>https://www.kaija-marketing.pro/datenschutzrichtlinie</loc>
-    <priority>0.5</priority>
-    <changefreq>yearly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.kaija-marketing.pro/impressum</loc>
-    <priority>0.5</priority>
-    <changefreq>yearly</changefreq>
-  </url>
-  <url>
-    <loc>https://www.kaija-marketing.pro/agb</loc>
-    <priority>0.5</priority>
-    <changefreq>yearly</changefreq>
-  </url>
+  <url><loc>https://www.kaija-marketing.pro/datenschutzrichtlinie</loc><priority>0.5</priority><changefreq>yearly</changefreq></url>
+  <url><loc>https://www.kaija-marketing.pro/impressum</loc><priority>0.5</priority><changefreq>yearly</changefreq></url>
+  <url><loc>https://www.kaija-marketing.pro/agb</loc><priority>0.5</priority><changefreq>yearly</changefreq></url>
 
 </urlset>
