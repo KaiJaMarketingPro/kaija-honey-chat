@@ -1,8 +1,9 @@
 User-agent: *
 Allow: /
 
-# ❌ Noindex für GPT Journeys
+# ❌ Noindex für sensible GPT Journeys
 Disallow: /test
+Disallow: /gpt-test
 Disallow: /onboarding
 Disallow: /admin-abo
 Disallow: /gpt
@@ -13,5 +14,5 @@ Disallow: /api/
 Disallow: /admin/
 Disallow: /logs/
 
-# ✅ Sitemap für Landing + Public SEO
+# ✅ Sitemap für SEO + GPT Store
 Sitemap: https://www.kaija-marketing.pro/sitemap.xml
