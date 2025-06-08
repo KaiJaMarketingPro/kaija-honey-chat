@@ -1,0 +1,25 @@
+name: 🚨 Smoke-Test Honey GPT /test Endpoint
+
+on:
+  schedule:
+    - cron: '5 6 * * *'  # täglich um 06:05 CET
+  workflow_dispatch:     # manuelles Triggern jederzeit
+
+jobs:
+  check-test-endpoint:
+    runs-on: ubuntu-latest
+    name: 🌐 Prüfe /test – HTTP 200 Check
+
+    steps:
+      - name: 🧠 Check /test Endpoint auf Vercel Deployment
+        run: |
+          URL="https://gpt.kaija-marketing.pro/test"
+          echo "Teste URL: $URL"
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" $URL)
+
+          if [ "$STATUS" -eq 200 ]; then
+            echo "✅ /test Endpoint erreichbar."
+          else
+            echo "❌ /test Endpoint liefert $STATUS!"
+            exit 1
+          fi
