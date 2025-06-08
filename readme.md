@@ -1,4 +1,4 @@
-# KaiJa Marketing! – Das erste KI-Unicorn-Ökosystem aus der Schweiz 🇨🇭
+# 🦄 KaiJa Marketing! – Das erste KI-Unicorn-Ökosystem aus der Schweiz 🇨🇭
 
 Willkommen im offiziellen GitHub-Repo für das KaiJa KI-System – ein modulares, datenschutzkonformes und strategisch durchdachtes AI-Framework für Coaches, Solopreneure und Unternehmen.
 
@@ -10,7 +10,7 @@ Willkommen im offiziellen GitHub-Repo für das KaiJa KI-System – ein modulares
 
 > „Mit KaiJa bauen wir ein echtes AI-System mit Herz, Hirn und Hightech – 100 % Swiss Made, 100 % DSGVO- & AI Act-konform.“
 
-### 💡 Kernmodule (GPTs)
+### 💡 GPT-Kernmodule
 
 | GPT                      | Rolle                                | Status                     |
 |--------------------------|---------------------------------------|----------------------------|
@@ -23,101 +23,96 @@ Willkommen im offiziellen GitHub-Repo für das KaiJa KI-System – ein modulares
 | SoulGuide Gabriela GPT   | Werte & Ethik                         | ✅ bereit                  |
 | InnerPilot AI            | Human Design & Inner Work             | ✅ bereit                  |
 | DailyJasmin              | Impulsgeberin                         | ✅ bereit                  |
-| _Fallback GPT_           | Sichere Rückmeldung / default         | ✅ aktiv in `mapping.json` |
+| Fallback GPT             | Sichere Rückmeldung / Default Routing | ✅ aktiv in `mapping.json` |
 
 ---
 
-## 🔧 Setup & Struktur
+## 🧠 Setup & Projektstruktur
 
 ```bash
-├── api/                   # GPT-Endpunkte (chat.js, health.js, test-gpt.js etc.)
-├── admin/                 # Admin-Tools (Login, Prompt-Editor, Logs, Snapshots)
-├── prompts/              # Markdown-Systemprompts (*.md pro GPT)
+├── public/               # Öffentliche HTML + robots.txt + sitemap.xml + 404.html
+├── api/                  # GPT-Endpunkte (chat.js, health.js, test-gpt.js etc.)
 ├── api/config/           # mapping.json, gpt-index.json
-├── api/store/            # YAML-Prompts für GPT Store / CustomGPT
-├── jsonl/                # JSONL-Dateien für Voicebots & Training
-├── logs/                 # Automatisch generierte Logs (GPT Calls, JSONL)
-├── middleware.js         # Admin-Zugangsschutz & IP-Restriktion
-├── test.html             # Lokaler GPT Playground (optional aktivierbar)
-└── vercel.json           # Vercel Deployment Config (Region: fra1)
+├── api/store/            # YAML für GPT Store Submissions
+├── prompts/              # Systemprompts als Markdown (*.md pro GPT)
+├── admin/                # Admin-Tools (Prompt-Editor, Logs, Snapshots)
+├── logs/                 # JSONL-generierte GPT Logs
+├── jsonl/                # Trainingsdaten (z. B. Voicebots)
+├── .github/workflows/    # CI/CD: Deploy, Smoke-Test, Sitemap, Alerts
+└── vercel.json           # Vercel Config (Region: fra1 + Security Headers)
 🔐 Admin-Zugang & Sicherheit
-Login: /admin/login
+Admin-Login: /admin/login
 
-Session-Cookie: kaija_admin_session=valid
+Session Cookie: kaija_admin_session=valid
 
-Zugriff via middleware.js abgesichert
+IP & Token Schutz via middleware.js
 
-ENV: ADMIN_SECRET_TOKEN in Vercel UI gesetzt
+ENV Variable: ADMIN_SECRET_TOKEN in Vercel UI
 
-📦 Admin Tools
-Tool	Funktion
-gpt-tools.js	Live-Promptbearbeitung, Test & Speichern
-log-gpt.js	API Call Logging → JSONL pro Monat
-test-gpt.js	GPT-Test mit optionalem log=true
-gpt-preview.js	Übersicht & Konfiguration aller GPTs
-sync-jsonl.js	JSONL-Prompts aktualisieren & synchronisieren
-export-snapshot.js	YAML + Mapping ZIP-Export (🔜 geplant)
-
-⚙ Deployment
-Hosting: Vercel – FRA1 (Frankfurt)
-
-KI-Backend: Azure OpenAI – Switzerland North
-
-Datenschutz: DSGVO-, nDSG- & AI Act-konform
-
-Domain: kaija-marketing.pro – 100 % verifiziert
-
-Microsoft Partner Status: ✅ App-ID 3132180
+🔧 Deploy & Hosting
+Komponente	Technologie / Setup
+Hosting	Vercel (Region fra1, EU/CH)
+KI-Backend	Azure OpenAI – Switzerland North
+Domain	kaija-marketing.pro ✅ verifiziert
+DSGVO & AI Act	✅ voll konform
+Microsoft Partner	✅ App-ID: 3132180
 
 🔁 Logging & Monitoring
-log-gpt.js: Webhook + lokales JSONL Logging
+log-gpt.js → GPT Requests in logs/ + JSONL
 
-Make.com: optionaler Webhook für GPT-Metrics (Token, Nutzer, ROI → Google Sheets)
+Make.com → DSGVO-Webhook für Einwilligungen
 
-Alerts via Azure Budget-Forecast (empfohlen)
+Stripe → Auto-Renew & Abo mit create-checkout-session.js
+
+Smoke-Test.yml → GitHub Action prüft /test täglich
+
+Make-Mail bei Ausfall → DSGVO-konformer Alert via Webhook
 
 🧩 Integrationen
-GPT Store: YAML-Export & Markdown-Prompts vorbereitet (OpenAI Submission folgt)
+System	Beschreibung
+GPT Store	YAML-Export + Markdown-Prompts für Submission vorbereitet
+Make.com	DSGVO Logging, CRM, Sheets, E-Mail Impulse
+Stripe	Checkout + Auto-Conversion nach 7 Tagen
+Google Sheets	GPT Call Metrics + Dashboard
+Brevo	Monatsimpulse, Opt-in Mails, Reminder
 
-Make: Webhook-Trigger für Sheets, CRM, E-Mail, Reminder
+📚 Dokumentation & Logik
+Datei / Ordner	Inhalt
+mapping.json	GPT Routing-Logik
+prompts/*.md	GPT Systemprompts
+store/*.yaml	OpenAI GPT Store-ready
+robots.txt	Crawlingsteuerung (test, api disallowed)
+sitemap.xml	SEO-optimierte Seitenübersicht
+README.md	Dev-Übersicht (diese Datei)
+README_UNICORN.md	Vision + Branding für Partner (in Vorbereitung)
 
-Stripe: create-checkout-session.js für Abo-Handling + Auto-Conversion aktiviert
+📍 Roadmap & To-Dos (Q3/Q4 2025)
+ chat.js Logging in Make (inkl. ROI)
 
-Google Sheets: API Call Sync + Unicorn Metrics Dashboard
+ DSGVO-Claim & Swiss Hosting Hinweis auf /test
 
-Brevo: Monatsimpulse, Opt-in Logging, Follow-up Automationen
+ Testimonials integriert (Rigerthof, V-ZUG)
 
-📚 Dokumentation & Struktur
-mapping.json – GPT Routing
+ Stripe Auto-Renew aktiv
 
-prompts/*.md – alle Systemprompts
+ GPT Store Submission: honey-gpt-store.json vorbereiten
 
-store/*.yaml – CustomGPT / GPT Store Format
+ GitHub Project-Board: Milestones & Feedback
 
-robots.txt
+ Video „Was ist Honey?“ auf /gpt.html
 
-sitemap.xml
+💡 Mitmachen oder übernehmen?
+Für Onboarding oder Co-Entwicklung:
 
-📍 Öffentliche Roadmap (in Vorbereitung)
-GitHub Projects für Releases, Feedback & Milestones (Q3/Q4 2025)
-
-Feature-Wünsche via Brevo Formular / Notion Voting geplant
-
-README_UNICORN.md ist zentrale Startseite für Devs, Partner & Investoren
-
-✅ Aktuelle To-Dos (Stand 06.06.2025)
- chat.js mit Make Logging
-
- DSGVO-Picker & Swiss Hosting Claim aktiv auf test.html
-
- Testimonials auf Website eingebaut (Rigerthof, V-ZUG)
-
- Stripe Auto-Abo nach 7 Tagen aktiv
-
- GPT Store Submission vorbereiten (honey-gpt-store.json)
-
- Roadmap-Board auf GitHub freischalten
-
- "Was ist Honey?" – Video auf gpt.html / Canva
+bash
+Kopieren
+Bearbeiten
+git clone https://github.com/KaiJaMarketingPro/kaija-honey-chat.git
+cd kaija-honey-chat
+vercel dev
+👤 Autor
+Daniel Betschart
+🧠 www.kaija-marketing.pro
+📩 you@kaija-marketing.pro
 
 © 2025 Daniel Betschart / KaiJa Marketing! – Swiss Made Unicorn Intelligence 🦄
