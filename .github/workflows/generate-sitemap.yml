@@ -1,0 +1,40 @@
+name: 🔁 Generiere dynamische sitemap.xml
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'public/**/*.html'
+
+jobs:
+  generate-sitemap:
+    runs-on: ubuntu-latest
+    name: 📄 Sitemap aus /public erzeugen
+
+    steps:
+      - name: 📦 Checkout Repo
+        uses: actions/checkout@v3
+
+      - name: 🧠 Erstelle sitemap.xml aus public/
+        run: |
+          BASE_URL="https://www.kaija-marketing.pro"
+          echo '<?xml version="1.0" encoding="UTF-8"?>' > public/sitemap.xml
+          echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' >> public/sitemap.xml
+
+          for file in $(find public -name "*.html" | sort); do
+            path=${file#public}
+            echo "  <url><loc>$BASE_URL$path</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>" >> public/sitemap.xml
+          done
+
+          echo '</urlset>' >> public/sitemap.xml
+
+      - name: ✅ Commit & Push neue sitemap.xml
+        run: |
+          git config user.name "KaiJa Bot"
+          git config user.email "bot@kaija-marketing.pro"
+          git add public/sitemap.xml
+          git commit -m "🔁 Auto-generierte sitemap.xml (HTML-Scan)"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
