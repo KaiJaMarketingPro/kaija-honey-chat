@@ -12,121 +12,116 @@ Willkommen im Unicorn README für das KaiJa KI-System – ein modulares, ethisch
 
 ---
 
-## 🌟 GPT Matrix & Rollen
+## 🌟 GPT Matrix
 
-| GPT                      | Rolle                                       | Status                     |
-|--------------------------|---------------------------------------------|----------------------------|
-| Märki GPT                | Entscheidungs-Logik, Leadership & Ethik-Coach | ✅ live (Azure CH)         |
-| KaiJa GPT                | Funnel- & Content-Automation                | ✅ live (Azure CH)         |
-| Honey GPT                | Pricing & Monetarisierung                   | ✅ live (Azure CH + Vercel)|
-| Homie GPT                | Onboarding, Trainings, Team-Coaching        | ✅ bereit                  |
-| KaiVio GPT               | CV- & Karriere-Coaching                     | ✅ bereit                  |
-| baschti GPT               | Sales & LinkedIn Funnel                     | ✅ bereit                  |
-| SoulGuide Gabriela GPT   | Ethik, Werte & Selbstführung                | ✅ bereit                  |
-| SoulSync AI              | Human Design Coaching & Energetik          | ✅ bereit                  |
-| DailyJasmin              | Impulsgeberin, Stil & Frequenz              | ✅ bereit                  |
-| _Fallback GPT_           | Neutrale Standardantworten / Absicherung    | ✅ aktiv in `mapping.json` |
+| GPT                    | Fokusbereich                         | Status            |
+|------------------------|--------------------------------------|-------------------|
+| Märki GPT              | Entscheidung, Ethik, Orchestrierung | ✅ live (Azure CH) |
+| KaiJa GPT              | Funnel, Content, Automation         | ✅ live (Azure CH) |
+| Honey GPT              | Pricing, Subscription, ROI          | ✅ live (Azure + Vercel) |
+| Homie GPT              | Onboarding, Training, SOP           | ✅ bereit          |
+| KaiVio GPT             | CV, Karriere, LinkedIn Optimierung  | ✅ bereit          |
+| Baschti GPT            | Sales, Messaging, LinkedIn Funnel   | ✅ bereit          |
+| SoulGuide Gabriela     | Werte, Ethik, Selbstführung         | ✅ bereit          |
+| SoulSync AI            | Human Design & Energy Coaching      | ✅ bereit          |
+| DailyJasmin            | Impulse, Rhythmus, Inspiration      | ✅ bereit          |
+| Fallback GPT           | Fehlerbehandlung, Absicherung       | ✅ aktiv           |
 
 ---
 
 ## ⚙ Architektur & Hosting
 
-- **Azure OpenAI** (Switzerland North): GPT-4 turbo, DSGVO-konform
-- **Vercel**: Frontend, Admin, API Proxy (`chat.js`, `logToSheet.js`, Admin UI)
-- **Make.com**: Webhooks, Logging, Reminderflows, CRM-Sync
-- **Google Sheets**: GPT Activity Log, Cluster KPI, Access Control
-- **Stripe**: Subscriptions, Pricing, Kündigungs-Trigger
-- **Brevo/Mailgun**: Onboarding-Mails, Monatsimpulse
+- **Azure OpenAI** – Switzerland North 🇨🇭
+- **Vercel** – FRA1 (EU) für Frontend/API Proxy
+- **Make.com** – DSGVO-Webhooks, Reminder, Sheets
+- **Google Sheets** – Logs, KPIs, GPT Usage
+- **Stripe** – Subscription Flow & Auto-Conversion
+- **Brevo** – Onboarding, Monatsimpulse, DSGVO-Mail
 
 ---
 
-## 📊 Unicorn Metrics Dashboard
+## 📊 Unicorn Metrics (automatisch getrackt)
 
-Trackbare Metriken pro GPT:
+| Metrik     | Beschreibung |
+|------------|-------------|
+| GPT        | z. B. `honey-gpt` |
+| Tokens     | GPT-Nutzungskosten |
+| ROI        | Umsatz / Token-Verhältnis |
+| Status     | `✅ live`, `🛠 geplant`, `⚙ Test` |
 
-| Feld         | Bedeutung                          |
-|--------------|------------------------------------|
-| GPT Name     | z. B. `honey-gpt`                   |
-| Tokens       | GPT-Verbrauchskosten (via Azure)   |
-| ROI          | Umsatz / Token-Verhältnis          |
-| Status       | `✅ live`, `⚙ Launch`, `🛠 geplant`  |
-
-→ Automatisiert via Webhook aus `chat.js` → Google Sheets
+Tracking via `chat.js` + `logToSheet.js` + JSONL
 
 ---
 
-## 🔁 Lessons Learned = System-Features
+## 🔁 Lessons Learned → Feature-System
 
-| Herausforderung             | GPT-Modul als Lösung                      |
-|-----------------------------|-------------------------------------------|
-| Unklare Rollen & Ziele      | 🎯 Märki GPT: Strategischer Rollen-Coach   |
-| Pricing-Druck & Unsicherheit| 💰 Honey GPT: Klarer Value & Fairness      |
-| Kein Raum für Reflexion     | 🌿 Gabriela GPT: Ethik & Selbstklärung     |
-| Onboarding-Chaos            | 🧩 Homie GPT: Klarer Start, Tempo-Coach     |
-| Funnel-Überforderung        | 🧠 KaiJa GPT: Visual Funnel & Contenterzeugung |
-| Keine Exitkultur            | 🧘 Märki + Gabriela: Reflektierter Exitflow |
-
----
-
-## 🧩 Admin-Tools Übersicht
-
-| Datei                | Funktion                                           |
-|----------------------|----------------------------------------------------|
-| `chat.js`            | Azure Proxy mit Retry, Logging, Sheet-Sync        |
-| `log-gpt.js`         | JSONL Logging lokal mit Token-Klassifikation      |
-| `logToSheet.js`      | Logging an Google Sheet via `googleapis`          |
-| `kpi-summary.js`     | Monatsauswertung (Calls, Tokens, Score, GPTs)     |
-| `export-csv.js`      | Export der KPIs als CSV                           |
-| `gpt-preview.js`     | Admin-Vorschau aller GPTs                         |
-| `gpt-tools.js`       | Editor für Prompts + Test-Calls                   |
-| `validate-logs.js`   | Prüft JSONL Logs auf Format & Felder              |
-| `export-snapshot.js` | YAML + mapping.json ZIP-Export für Archiv (🔜)    |
+| Herausforderung         | Lösung via GPT                  |
+|-------------------------|----------------------------------|
+| Rollenchaos             | 🎯 Märki GPT: Struktur & Klarheit |
+| Pricing-Schwierigkeit   | 💰 Honey GPT: Value statt Unsicherheit |
+| Ethik- & Fokusverlust   | 🌿 Gabriela GPT: Tiefe & Leadership |
+| Funnel-Überforderung    | 🧠 KaiJa GPT: Fokus & Contenterstellung |
+| CV & Positionierung     | 💼 KaiVio GPT: ATS & HumanFit |
+| Kein Raum für Pause     | 🧩 DailyJasmin: Impulse & Taktgeberin |
 
 ---
 
-## 📚 Struktur (Verzeichnislogik)
+## 🧩 Admin-Tooling (Vercel + GitHub Actions)
+
+| Datei              | Funktion                                     |
+|--------------------|----------------------------------------------|
+| `chat.js`          | Proxy, Sheet-Logging, Retry-Fallback         |
+| `logToSheet.js`    | Sheets-Anbindung via Make oder API           |
+| `gpt-preview.js`   | GPT Admin-Vorschau & Konfiguration           |
+| `gpt-tools.js`     | Prompt Editor + Testumgebung                 |
+| `log-gpt.js`       | JSONL-Logging lokal (nach GPT, Monat)        |
+| `kpi-summary.js`   | Cluster KPI Analyse (GPT, Tokens, ROI)       |
+| `export-csv.js`    | KPI Export als CSV (Sheets-kompatibel)       |
+| `export-snapshot.js` | YAML + Mapping ZIP für Archiv (geplant)    |
+
+---
+
+## 📚 Strukturübersicht
 
 ```bash
-├── api/                    # GPT-Proxies (chat.js, logToSheet.js)
-├── admin/                  # KPI-Tools & Logging (kpi-summary.js etc.)
-├── prompts/                # Markdown Prompts (*.md) je GPT
-├── api/config/             # mapping.json, fallback.yaml
-├── api/store/              # YAMLs für GPT Store
-├── logs/                   # Monatliche JSONL Usage Logs
-├── test.html               # DSGVO-sicherer Playground (optional)
-└── vercel.json             # Deployment Konfiguration
-🔐 Sicherheit & Compliance
-✅ DSGVO + nDSG-konform
-✅ Azure OpenAI mit Hosting in Zürich
-✅ Kein Cookie-Tracking / Kein Personenbezug
-✅ Admin geschützt mit ADMIN_SECRET_TOKEN
-✅ _fallback GPT immer aktiv
+├── api/                # GPT-Proxies & DSGVO-APIs
+├── prompts/            # Systemprompts (Markdown je GPT)
+├── admin/              # KPI-Tools, Logging, Exports
+├── api/config/         # mapping.json, fallback.yaml
+├── api/store/          # GPT Store YAMLs
+├── logs/               # JSONL Logs (monatsweise)
+├── public/             # test.html, robots.txt, sitemap.xml, 404.html
+└── vercel.json         # Rewrite, Security, Headers
+✅ Compliance & Sicherheit
+Punkt	Status
+DSGVO	✅ 100 % konform
+AI Act	✅ Swiss Hosting + Transparenz
+Cookie-Tracking	❌ deaktiviert
+Admin-Zugang	✅ gesichert via ADMIN_SECRET_TOKEN
+Fallback GPT	✅ aktiviert für Ausfallsicherheit
 
-🗓 Unicorn Roadmap (Stand: 28.05.2025)
- chat.js optimieren → Retry + Webhook Logging
+📍 Unicorn Roadmap (Stand 08.06.2025)
+ chat.js Retry + Make Logging
 
- logToSheet.js bereitstellen
+ DSGVO-Hinweis auf /test
 
- kpi-summary.js mit Score & GPTs
+ Testimonials (Rigerthof, V-ZUG)
 
- Dual Logging: JSONL + Google Sheets
+ Stripe Abo Flow + Auto-Renew aktiv
 
- mapping.json konsistent mit Clustern
+ GPT Store Submission: Honey, Gabriela, KaiJa
 
- Vercel Deploy + Environment Variables setzen
+ Smoke-Test + Monitoring via Make
 
- Admin UI mit Preview, Export & Test
+ Sitemap + Robots automatisiert
 
- export-snapshot.js für YAML ZIP-Archiv
+ export-snapshot.js (ZIP YAML Mapping)
 
- GPT Store: YAML-Export + Submission (Honey, Gabriela, KaiJa)
+ FLiP!N, CBA, HUK Partner-Onboarding
 
- test.html DSGVO-konform reaktivieren
-
- Webhook-Sync für GPT Score / KPI Heatmap aktivieren
-
- Partner-Onboarding FLiP!N, CBA, Daniela HUK automatisieren
+💡 KaiJa DNA
+KaiJa Marketing! steht für Klarheit, Integrität, Automatisierung & Wirkung.
+Wir verbinden Ethik, Effizienz & Empathie zu einer neuen Form unternehmerischer KI.
 
 © 2025 Daniel Betschart / KaiJa Marketing!
-Swiss Made Unicorn Intelligence
-Brücken bauen zwischen Herz, Hightech & Handlungskraft.
+Swiss Made Unicorn Intelligence – gebaut mit Herz, Hirn & Hightech 🦄
