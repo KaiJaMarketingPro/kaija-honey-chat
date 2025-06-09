@@ -24,7 +24,7 @@
         <input type="checkbox" id="optin" required />
         <label for="optin" class="text-sm">
           Ich stimme der DSGVO-konformen Verarbeitung meiner Eingabe zu.
-          (<a href="/DSGVO_FLOW.md" class="underline text-blue-600">Details einsehen</a>)
+          (<a href="/DSGVO.pdf" class="underline text-blue-600" target="_blank">Details einsehen</a>)
         </label>
       </div>
 
@@ -51,23 +51,28 @@
       responseDiv.textContent = '⏳ Anfrage wird gesendet ...';
       responseDiv.classList.remove('hidden');
 
-      const res = await fetch('/api/chat.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          gpt: 'honey',
-          user: 'webtest',
-          message,
-          optin,
-          log: true
-        })
-      });
+      try {
+        const res = await fetch('/api/chat.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            gpt: 'honey',
+            user: 'webtest',
+            message,
+            optin,
+            log: true
+          })
+        });
 
-      const data = await res.json();
-      if (res.status !== 200) {
-        responseDiv.textContent = `⚠️ Fehler: ${data.error || 'Unbekannter Fehler'}`;
-      } else {
-        responseDiv.textContent = data.choices?.[0]?.message?.content || 'Keine Antwort erhalten.';
+        const data = await res.json();
+        if (res.status !== 200) {
+          responseDiv.textContent = `⚠️ Fehler: ${data.error || 'Unbekannter Fehler'}`;
+        } else {
+          responseDiv.textContent = data.choices?.[0]?.message?.content || 'Keine Antwort erhalten.';
+        }
+
+      } catch (err) {
+        responseDiv.textContent = '❌ Netzwerkfehler oder API nicht erreichbar.';
       }
     });
   </script>
