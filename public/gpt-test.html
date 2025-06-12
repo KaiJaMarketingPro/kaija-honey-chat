@@ -5,15 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Honey GPT Test – DSGVO konform</title>
   <meta name="robots" content="noindex, nofollow" />
-
-  <!-- Open Graph Meta -->
   <meta property="og:title" content="Honey GPT – Klarheit für Coaches & Heiler:innen" />
   <meta property="og:description" content="Teste Honey GPT 7 Tage kostenlos. DSGVO-konform. Swiss Hosted." />
   <meta property="og:image" content="https://www.kaija-marketing.pro/_files/og-honey.png" />
   <meta property="og:url" content="https://gpt.kaija-marketing.pro/gpt-test.html" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
-
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
@@ -152,12 +149,15 @@
           signal: controller.signal
         });
 
-        if (!response.ok) throw new Error("Serverproblem");
+        if (!response.ok) {
+          feedback.innerHTML = "❌ Der Server hat unerwartet geantwortet. Bitte versuche es in wenigen Minuten erneut.";
+          return;
+        }
 
         feedback.innerHTML = "✅ Danke! Deine Einwilligung wurde gespeichert.<br><br><strong>Honey GPT wird geladen…</strong>";
         setTimeout(() => window.location.href = "https://gpt.kaija-marketing.pro/gpt.html", 2000);
       } catch (err) {
-        feedback.textContent = "❌ Es gab ein Problem beim Starten. Bitte versuche es später erneut.";
+        feedback.textContent = "❌ Netzwerkfehler oder Timeout. Bitte versuche es später erneut.";
       }
     });
 
