@@ -11,15 +11,11 @@
   ],
   "rewrites": [
     { "source": "/test", "destination": "/gpt-test.html" },
-    { "source": "/gpt-test", "destination": "/gpt-test.html" },
     { "source": "/start", "destination": "/gpt-test.html" },
     { "source": "/__debug", "destination": "/gpt-test.html" },
     { "source": "/onboarding", "destination": "/onboarding.html" },
     { "source": "/admin-abo", "destination": "/admin-abo.html" },
     { "source": "/gpt", "destination": "/gpt.html" }
-  ],
-  "redirects": [
-    { "source": "/gpt-test", "destination": "/test", "permanent": true }
   ],
   "headers": [
     {
