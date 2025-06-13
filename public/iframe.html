@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Honey GPT – Klarheitsdialog</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+  <script defer src="https://unpkg.com/htmx.org@1.9.2"></script>
+</head>
+<body class="bg-white text-gray-800">
+
+  <div class="max-w-xl mx-auto mt-10 p-4 rounded-lg shadow-lg border bg-white">
+    <h1 class="text-2xl font-bold mb-4">🐝 Honey GPT – dein Klarheitsdialog</h1>
+
+    <form id="gpt-form" class="space-y-4">
+      <textarea
+        id="user-message"
+        class="w-full border p-2 rounded resize-none"
+        rows="4"
+        placeholder="Stell deine Preisfrage, deine Positionierungsidee oder dein Abo-Modell …"
+        required
+      ></textarea>
+
+      <div class="flex items-center space-x-2">
+        <input type="checkbox" id="optin" required />
+        <label for="optin" class="text-sm">
+          Ich stimme der DSGVO-konformen Verarbeitung zu.
+        </label>
+      </div>
+
+      <button
+        type="submit"
+        class="w-full bg-purple-700 text-white py-2 px-4 rounded hover:bg-purple-800"
+      >
+        🧠 Klarheit starten
+      </button>
+    </form>
+
+    <div id="response" class="mt-6 whitespace-pre-line hidden text-gray-800"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById("gpt-form");
+    const responseDiv = document.getElementById("response");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const optin = document.getElementById("optin").checked;
+      const message = document.getElementById("user-message").value;
+
+      responseDiv.textContent = '⏳ Honey GPT denkt nach …';
+      responseDiv.classList.remove("hidden");
+
+      try {
+        const res = await fetch("/api/chat.js", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            gpt: "pricing-honey-gpt",
+            user: "iframe",
+            message,
+            optin,
+            log: true
+          })
+        });
+
+        const data = await res.json();
+        if (res.status !== 200) {
+          responseDiv.textContent = `❌ Fehler: ${data.error || "Unbekannt"}`;
+        } else {
+          responseDiv.textContent = data.choices?.[0]?.message?.content || "⚠️ Keine Antwort erhalten.";
+        }
+
+      } catch (err) {
+        responseDiv.textContent = "❌ Netzwerkfehler oder API nicht erreichbar.";
+      }
+    });
+  </script>
+</body>
+</html>
