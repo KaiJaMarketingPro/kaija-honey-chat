@@ -14,7 +14,7 @@ jobs:
       - name: 🧪 Smoke-Test
         id: test
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://gpt.kaija-marketing.pro/test)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://gpt.kaija-marketing.pro/gpt-test.html)
           echo "HTTP_STATUS=$STATUS" >> $GITHUB_ENV
           if [ "$STATUS" -ne 200 ]; then
             echo "❌ Fehler – Status $STATUS"
