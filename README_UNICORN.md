@@ -1,127 +1,240 @@
-# 🦄 KaiJa Marketing! – Das erste KI-Unicorn-Ökosystem aus der Schweiz 🇨🇭
+# 🦄 KaiJa Marketing! – Das KI-Unicorn-Ökosystem
 
-Willkommen im Unicorn README für das KaiJa KI-System – ein modulares, ethisch fundiertes und strategisch skalierbares AI-Framework für Coaches, KMU, Reseller & Solopreneure.
-
----
-
-## 💠 Vision
-
-**KaiJa Marketing!** ist ein orchestriertes Ökosystem aus spezialisierten GPTs, die gemeinsam den gesamten Business-Lifecycle abdecken – von Positionierung, Funnel & Pricing bis hin zu Ethik, Leadership, CV & Automatisierung.
-
-> „Mit KaiJa bauen wir ein echtes AI-System mit Herz, Hirn & Hightech – Swiss Made, DSGVO- & AI Act-konform.“
+**Swiss Made. DSGVO-konform. Mit Herz, Hirn & Hightech.**  
+KaiJa Marketing! ist ein ganzheitlich orchestriertes KI-System mit spezialisierten GPT-Modulen für Coaches, Berater:innen, KMU und Heiler:innen – 100 % betrieben über Azure OpenAI (Region: Zürich), Vercel & DSGVO-konforme Webflows.
 
 ---
 
-## 🌟 GPT Matrix
+## ✅ Überblick: GPT Module im Ökosystem
 
-| GPT                    | Fokusbereich                         | Status            |
-|------------------------|--------------------------------------|-------------------|
-| Märki GPT              | Entscheidung, Ethik, Orchestrierung | ✅ live (Azure CH) |
-| KaiJa GPT              | Funnel, Content, Automation         | ✅ live (Azure CH) |
-| Honey GPT              | Pricing, Subscription, ROI          | ✅ live (Azure + Vercel) |
-| Homie GPT              | Onboarding, Training, SOP           | ✅ bereit          |
-| KaiVio GPT             | CV, Karriere, LinkedIn Optimierung  | ✅ bereit          |
-| Baschti GPT            | Sales, Messaging, LinkedIn Funnel   | ✅ bereit          |
-| SoulGuide Gabriela     | Werte, Ethik, Selbstführung         | ✅ bereit          |
-| SoulSync AI            | Human Design & Energy Coaching      | ✅ bereit          |
-| DailyJasmin            | Impulse, Rhythmus, Inspiration      | ✅ bereit          |
-| Fallback GPT           | Fehlerbehandlung, Absicherung       | ✅ aktiv           |
-
----
-
-## ⚙ Architektur & Hosting
-
-- **Azure OpenAI** – Switzerland North 🇨🇭
-- **Vercel** – FRA1 (EU) für Frontend/API Proxy
-- **Make.com** – DSGVO-Webhooks, Reminder, Sheets
-- **Google Sheets** – Logs, KPIs, GPT Usage
-- **Stripe** – Subscription Flow & Auto-Conversion
-- **Brevo** – Onboarding, Monatsimpulse, DSGVO-Mail
+| GPT-Name             | Fokus                         | Cluster     |
+|----------------------|-------------------------------|-------------|
+| 🐝 honey-gpt         | Pricing, Monetarisierung      | pricing     |
+| 🎓 homie-gpt         | Onboarding, LMS               | onboarding  |
+| 🧠 kaija-gpt         | Funnel, CRM, Content          | funnel      |
+| 📊 maerki-gpt        | Strategie, Business-Architektur | strategy  |
+| 💼 kaivio-gpt        | Bewerbung, Karriere, LinkedIn | career      |
+| 🤝 baschtis-gpt      | Sales, LinkedIn Outreach      | sales       |
+| 🌿 soulguide-gabriela-gpt | Branding, Energiearbeit   | healer      |
+| 🌀 soulsyncai-gpt     | Human Design, Coaching        | healer      |
+| 🎨 dailyjasmin-gpt    | Impulse, Content-Inspiration | impulse     |
+| 🛠 fallback-gpt       | Standard Fallback             | fallback    |
 
 ---
 
-## 📊 Unicorn Metrics (automatisch getrackt)
+## 🛠 Architektur & Tech-Stack
 
-| Metrik     | Beschreibung |
-|------------|-------------|
-| GPT        | z. B. `honey-gpt` |
-| Tokens     | GPT-Nutzungskosten |
-| ROI        | Umsatz / Token-Verhältnis |
-| Status     | `✅ live`, `🛠 geplant`, `⚙ Test` |
-
-Tracking via `chat.js` + `logToSheet.js` + JSONL
-
----
-
-## 🔁 Lessons Learned → Feature-System
-
-| Herausforderung         | Lösung via GPT                  |
-|-------------------------|----------------------------------|
-| Rollenchaos             | 🎯 Märki GPT: Struktur & Klarheit |
-| Pricing-Schwierigkeit   | 💰 Honey GPT: Value statt Unsicherheit |
-| Ethik- & Fokusverlust   | 🌿 Gabriela GPT: Tiefe & Leadership |
-| Funnel-Überforderung    | 🧠 KaiJa GPT: Fokus & Contenterstellung |
-| CV & Positionierung     | 💼 KaiVio GPT: ATS & HumanFit |
-| Kein Raum für Pause     | 🧩 DailyJasmin: Impulse & Taktgeberin |
+| Komponente     | Funktion                                          |
+|----------------|---------------------------------------------------|
+| `api/chat.js`  | GPT Proxy – Mapping, Retry, Logging, DSGVO Check |
+| `mapping.json` | Verknüpft GPT-Key mit YAML, Prompt & Cluster     |
+| `prompt.md`    | Dedizierte Systemprompts je GPT                  |
+| `*.yaml`       | Konfiguration für Features, Cluster, Lizenzzeit  |
+| Make.com       | Webhooks für DSGVO-Protokoll & Abo-Management    |
+| Brevo          | E-Mail Versand bei Opt-in & Lizenz                |
+| Vercel         | Frontend Hosting (`gpt.html`, `test.html`, `form`) |
+| Azure OpenAI   | GPT-Deployment DSGVO-konform (Region: Switzerland) |
 
 ---
 
-## 🧩 Admin-Tooling (Vercel + GitHub Actions)
+## 🔁 DSGVO-Logik & Lizenzfluss
 
-| Datei              | Funktion                                     |
-|--------------------|----------------------------------------------|
-| `chat.js`          | Proxy, Sheet-Logging, Retry-Fallback         |
-| `logToSheet.js`    | Sheets-Anbindung via Make oder API           |
-| `gpt-preview.js`   | GPT Admin-Vorschau & Konfiguration           |
-| `gpt-tools.js`     | Prompt Editor + Testumgebung                 |
-| `log-gpt.js`       | JSONL-Logging lokal (nach GPT, Monat)        |
-| `kpi-summary.js`   | Cluster KPI Analyse (GPT, Tokens, ROI)       |
-| `export-csv.js`    | KPI Export als CSV (Sheets-kompatibel)       |
-| `export-snapshot.js` | YAML + Mapping ZIP für Archiv (geplant)    |
+- Jeder Zugriff via `chat.js` benötigt `optin = true` → sonst: HTTP 403
+- Logging nur bei `log = true` via Webhook (DSGVO_Optin_Log)
+- Lizenzprüfung: `access_start` + `license_days` → 7-Tage-Testzugang
+- Optionaler Redirect nach Ablauf via Stripe + Make + Sheet
 
 ---
 
-## 📚 Strukturübersicht
+## 🔋 Energieeffiziente Betriebsmodi
+
+| Modus             | Wirkung                                          |
+|-------------------|--------------------------------------------------|
+| `KaiJa_SilentCore` | Minimalantworten, keine Overhead-Prompts        |
+| `KaiJa_EcoFlow`    | Voice + Button UI, ressourcenschonend            |
+| `KaiJa_OnePrompt`  | Universelles Formular mit GPT-Wahl in 1 Prompt   |
+
+Alle GPTs sind `silent-ready`, `optin-pflichtig` und für Lizenzhandling via Make optimiert.
+
+---
+
+## 📂 Dateienstruktur (empfohlen)
 
 ```bash
-├── api/                # GPT-Proxies & DSGVO-APIs
-├── prompts/            # Systemprompts (Markdown je GPT)
-├── admin/              # KPI-Tools, Logging, Exports
-├── api/config/         # mapping.json, fallback.yaml
-├── api/store/          # GPT Store YAMLs
-├── logs/               # JSONL Logs (monatsweise)
-├── public/             # test.html, robots.txt, sitemap.xml, 404.html
-└── vercel.json         # Rewrite, Security, Headers
-✅ Compliance & Sicherheit
-Punkt	Status
-DSGVO	✅ 100 % konform
-AI Act	✅ Swiss Hosting + Transparenz
-Cookie-Tracking	❌ deaktiviert
-Admin-Zugang	✅ gesichert via ADMIN_SECRET_TOKEN
-Fallback GPT	✅ aktiviert für Ausfallsicherheit
+/api
+  /chat.js
+  /config/mapping.json
+  /prompts/*.md
+  /store/*.yaml
+/public
+  /gpt.html
+  /test.html
+  /gpt-form.html
+  /index.html
+.github
+  /workflows/smoke-test.yml
+📊 Übersicht als Sheet (CSV-Export)
+Siehe: KaiJa_GPT_Deployment_Übersicht.csv
 
-📍 Unicorn Roadmap (Stand 08.06.2025)
- chat.js Retry + Make Logging
+🧬 Beispiel-Funnel: Honey Signature Abo
+Nutzer:in ruft gpt-form.html auf
 
- DSGVO-Hinweis auf /test
+Wählt GPT: honey-gpt
 
- Testimonials (Rigerthof, V-ZUG)
+Gibt E-Mail + Opt-in → DSGVO-Webhook wird getriggert
 
- Stripe Abo Flow + Auto-Renew aktiv
+GPT-Session mit Mapping + Systemprompt startet via Azure
 
- GPT Store Submission: Honey, Gabriela, KaiJa
+Logging in Sheet, PDF-Versand via Gmail
 
- Smoke-Test + Monitoring via Make
+Ablaufprüfung nach 7 Tagen → Stripe-Abo wird vorgeschlagen
 
- Sitemap + Robots automatisiert
+🔐 Ethik, Sicherheit & Hosting
+✅ DSGVO-konform durch Opt-in & Logging-Logik
 
- export-snapshot.js (ZIP YAML Mapping)
+✅ AI Act-ready (keine automatisierten Entscheidungen)
 
- FLiP!N, CBA, HUK Partner-Onboarding
+✅ Swiss Hosted: Azure Zürich
 
-💡 KaiJa DNA
-KaiJa Marketing! steht für Klarheit, Integrität, Automatisierung & Wirkung.
-Wir verbinden Ethik, Effizienz & Empathie zu einer neuen Form unternehmerischer KI.
+✅ Zero-Tracking, Zero-Overhead, Zero-Promptitis
 
-© 2025 Daniel Betschart / KaiJa Marketing!
-Swiss Made Unicorn Intelligence – gebaut mit Herz, Hirn & Hightech 🦄
+🔄 Weiterentwicklung & Skalierung
+Modular über mapping.json erweiterbar
+
+YAML + Prompt + Deployment vollständig trennbar
+
+Memory / Fallback / Canva / Freepik optional aktivierbar
+
+Guided SOP-Flows möglich (KaiJa_OnePrompt + SilentCore)
+
+Let’s build the Unicorn – systemisch, sicher & skalierbar.
+
+🚀 www.kaija-marketing.pro
+"""
+
+Save the README
+readme_path = Path("/mnt/data/README_UNICORN.md")
+readme_path.write_text(readme_content, encoding="utf-8")
+readme_path
+
+Details immer anzeigen
+
+Kopieren
+Leider gab es ein internes Speicherproblem beim Schreiben der Datei. 😕
+Aber hier ist dein 100 % perfekter README_UNICORN.md für Copy + Paste direkt ins Repo:
+
+📁 README_UNICORN.md – KaiJa Marketing! KI-Ökosystem
+md
+Kopieren
+Bearbeiten
+# 🦄 KaiJa Marketing! – Das KI-Unicorn-Ökosystem
+
+**Swiss Made. DSGVO-konform. Mit Herz, Hirn & Hightech.**  
+KaiJa Marketing! ist ein ganzheitlich orchestriertes KI-System mit spezialisierten GPT-Modulen für Coaches, Berater:innen, KMU und Heiler:innen – 100 % betrieben über Azure OpenAI (Region: Zürich), Vercel & DSGVO-konforme Webflows.
+
+---
+
+## ✅ Überblick: GPT Module im Ökosystem
+
+| GPT-Name             | Fokus                         | Cluster     |
+|----------------------|-------------------------------|-------------|
+| 🐝 honey-gpt         | Pricing, Monetarisierung      | pricing     |
+| 🎓 homie-gpt         | Onboarding, LMS               | onboarding  |
+| 🧠 kaija-gpt         | Funnel, CRM, Content          | funnel      |
+| 📊 maerki-gpt        | Strategie, Business-Architektur | strategy  |
+| 💼 kaivio-gpt        | Bewerbung, Karriere, LinkedIn | career      |
+| 🤝 baschtis-gpt      | Sales, LinkedIn Outreach      | sales       |
+| 🌿 soulguide-gabriela-gpt | Branding, Energiearbeit   | healer      |
+| 🌀 soulsyncai-gpt     | Human Design, Coaching        | healer      |
+| 🎨 dailyjasmin-gpt    | Impulse, Content-Inspiration | impulse     |
+| 🛠 fallback-gpt       | Standard Fallback             | fallback    |
+
+---
+
+## 🛠 Architektur & Tech-Stack
+
+| Komponente     | Funktion                                          |
+|----------------|---------------------------------------------------|
+| `api/chat.js`  | GPT Proxy – Mapping, Retry, Logging, DSGVO Check |
+| `mapping.json` | Verknüpft GPT-Key mit YAML, Prompt & Cluster     |
+| `prompt.md`    | Dedizierte Systemprompts je GPT                  |
+| `*.yaml`       | Konfiguration für Features, Cluster, Lizenzzeit  |
+| Make.com       | Webhooks für DSGVO-Protokoll & Abo-Management    |
+| Brevo          | E-Mail Versand bei Opt-in & Lizenz                |
+| Vercel         | Frontend Hosting (`gpt.html`, `test.html`, `form`) |
+| Azure OpenAI   | GPT-Deployment DSGVO-konform (Region: Switzerland) |
+
+---
+
+## 🔁 DSGVO-Logik & Lizenzfluss
+
+- Jeder Zugriff via `chat.js` benötigt `optin = true` → sonst: HTTP 403
+- Logging nur bei `log = true` via Webhook (DSGVO_Optin_Log)
+- Lizenzprüfung: `access_start` + `license_days` → 7-Tage-Testzugang
+- Optionaler Redirect nach Ablauf via Stripe + Make + Sheet
+
+---
+
+## 🔋 Energieeffiziente Betriebsmodi
+
+| Modus             | Wirkung                                          |
+|-------------------|--------------------------------------------------|
+| `KaiJa_SilentCore` | Minimalantworten, keine Overhead-Prompts        |
+| `KaiJa_EcoFlow`    | Voice + Button UI, ressourcenschonend            |
+| `KaiJa_OnePrompt`  | Universelles Formular mit GPT-Wahl in 1 Prompt   |
+
+Alle GPTs sind `silent-ready`, `optin-pflichtig` und für Lizenzhandling via Make optimiert.
+
+---
+
+## 📂 Dateienstruktur (empfohlen)
+
+```bash
+/api
+  /chat.js
+  /config/mapping.json
+  /prompts/*.md
+  /store/*.yaml
+/public
+  /gpt.html
+  /test.html
+  /gpt-form.html
+  /index.html
+.github
+  /workflows/smoke-test.yml
+📊 Übersicht als Sheet (CSV-Export)
+Siehe: KaiJa_GPT_Deployment_Übersicht.csv
+
+🧬 Beispiel-Funnel: Honey Signature Abo
+Nutzer:in ruft gpt-form.html auf
+
+Wählt GPT: honey-gpt
+
+Gibt E-Mail + Opt-in → DSGVO-Webhook wird getriggert
+
+GPT-Session mit Mapping + Systemprompt startet via Azure
+
+Logging in Sheet, PDF-Versand via Gmail
+
+Ablaufprüfung nach 7 Tagen → Stripe-Abo wird vorgeschlagen
+
+🔐 Ethik, Sicherheit & Hosting
+✅ DSGVO-konform durch Opt-in & Logging-Logik
+
+✅ AI Act-ready (keine automatisierten Entscheidungen)
+
+✅ Swiss Hosted: Azure Zürich
+
+✅ Zero-Tracking, Zero-Overhead, Zero-Promptitis
+
+🔄 Weiterentwicklung & Skalierung
+Modular über mapping.json erweiterbar
+
+YAML + Prompt + Deployment vollständig trennbar
+
+Memory / Fallback / Canva / Freepik optional aktivierbar
+
+Guided SOP-Flows möglich (KaiJa_OnePrompt + SilentCore)
+
+Let’s build the Unicorn – systemisch, sicher & skalierbar.
+🚀 www.kaija-marketing.pro
