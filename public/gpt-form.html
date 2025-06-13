@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GPT Universelles Formular</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 text-gray-900">
+  <div class="max-w-xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
+    <h1 class="text-xl font-semibold mb-4">🧬 GPT Formular – 7 Tage Testzugang</h1>
+    <form action="/api/chat.js" method="POST" class="space-y-4">
+      <label class="block">
+        <span class="text-sm">GPT auswählen</span>
+        <select name="deploymentId" required class="w-full p-2 border rounded">
+          <option value="honey-gpt">🐝 Honey GPT</option>
+          <option value="kaija-gpt">🧠 KaiJa Marketing</option>
+          <option value="maerki-gpt">📊 Märki Strategie</option>
+          <option value="homie-gpt">🎓 Homie Lernbot</option>
+          <option value="kaivio-gpt">💼 KaiVio Career</option>
+          <option value="soulgabriela-gpt">🌿 SoulGuide Gabriela</option>
+          <option value="baschis-gpt">🤝 Baschi Sales</option>
+          <option value="soulsyncai-gpt">🌀 InnerPilot AI</option>
+        </select>
+      </label>
+      <label class="block">
+        <span class="text-sm">Dein Anliegen</span>
+        <textarea name="prompt" rows="4" placeholder="Beschreibe dein Ziel..." class="w-full p-2 border rounded" required></textarea>
+      </label>
+      <input type="hidden" name="access_start" value="<%= new Date().toISOString().slice(0,10) %>" />
+      <input type="hidden" name="access_days" value="7" />
+      <label class="flex items-start space-x-2 text-sm">
+        <input type="checkbox" required>
+        <span>Ich stimme der <a href="/datenschutzrichtlinie" class="underline text-blue-600" target="_blank">DSGVO-konformen Nutzung</a> für 7 Tage Testdauer zu.</span>
+      </label>
+      <input type="hidden" name="systemPrompt" value="gpt-store" />
+      <button type="submit" class="w-full bg-purple-700 text-white p-2 rounded hover:bg-purple-800">🧠 GPT starten</button>
+    </form>
+  </div>
+</body>
+</html>
