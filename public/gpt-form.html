@@ -3,15 +3,18 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>GPT Universelles Formular</title>
+  <title>🧬 GPT Universalformular – DSGVO Test</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 </head>
 <body class="bg-gray-100 text-gray-900">
   <div class="max-w-xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h1 class="text-xl font-semibold mb-4">🧬 GPT Formular – 7 Tage Testzugang</h1>
-    <form action="/api/chat.js" method="POST" class="space-y-4">
+    <h1 class="text-xl font-semibold mb-2">🧬 Starte deinen 7-Tage Test mit dem GPT deiner Wahl</h1>
+    <p class="text-sm text-gray-600 mb-4">DSGVO-konform · Swiss Hosted über Azure Zürich · Lizenzpflicht nach 7 Tagen</p>
+
+    <form id="gptForm" class="space-y-4">
+      <!-- GPT-Auswahl -->
       <label class="block">
-        <span class="text-sm">GPT auswählen</span>
+        <span class="text-sm">Welchen GPT möchtest du testen?</span>
         <select name="deploymentId" required class="w-full p-2 border rounded">
           <option value="honey-gpt">🐝 Honey GPT</option>
           <option value="kaija-gpt">🧠 KaiJa Marketing</option>
@@ -20,22 +23,78 @@
           <option value="kaivio-gpt">💼 KaiVio Career</option>
           <option value="soulgabriela-gpt">🌿 SoulGuide Gabriela</option>
           <option value="baschis-gpt">🤝 Baschi Sales</option>
-          <option value="soulsyncai-gpt">🌀 InnerPilot AI</option>
+          <option value="soulsyncai-gpt">🌀 InnerPilot AI (DASOMA)</option>
         </select>
       </label>
+
+      <!-- Anliegen -->
       <label class="block">
-        <span class="text-sm">Dein Anliegen</span>
-        <textarea name="prompt" rows="4" placeholder="Beschreibe dein Ziel..." class="w-full p-2 border rounded" required></textarea>
+        <span class="text-sm">Was möchtest du klären?</span>
+        <textarea name="prompt" rows="4" placeholder="Mein Ziel ist …" class="w-full p-2 border rounded" required></textarea>
       </label>
-      <input type="hidden" name="access_start" value="<%= new Date().toISOString().slice(0,10) %>" />
-      <input type="hidden" name="access_days" value="7" />
+
+      <!-- E-Mail -->
+      <label class="block">
+        <span class="text-sm">Deine E-Mail-Adresse (für PDF, Lizenz, Follow-up)</span>
+        <input type="email" name="email" required class="w-full p-2 border rounded" placeholder="deine@email.ch" autocomplete="email" />
+      </label>
+
+      <!-- Opt-in -->
       <label class="flex items-start space-x-2 text-sm">
         <input type="checkbox" required>
-        <span>Ich stimme der <a href="/datenschutzrichtlinie" class="underline text-blue-600" target="_blank">DSGVO-konformen Nutzung</a> für 7 Tage Testdauer zu.</span>
+        <span>Ich stimme der <a href="/datenschutzrichtlinie" class="underline text-blue-600" target="_blank">DSGVO-konformen Nutzung</a> meiner Daten zu. Das GPT kann 7 Tage lang getestet werden. Danach ist ein Abo nötig.</span>
       </label>
-      <input type="hidden" name="systemPrompt" value="gpt-store" />
-      <button type="submit" class="w-full bg-purple-700 text-white p-2 rounded hover:bg-purple-800">🧠 GPT starten</button>
+
+      <button type="submit" class="w-full bg-purple-700 text-white p-2 rounded hover:bg-purple-800">✅ GPT starten</button>
     </form>
+
+    <div id="feedback" class="mt-4 text-sm text-gray-800 whitespace-pre-line hidden"></div>
+    <p class="mt-6 text-xs text-gray-500">📍 Hosted in Switzerland · Datenschutz geprüft · Lizenzmodell aktivierbar via Stripe</p>
   </div>
+
+  <script>
+    const form = document.getElementById('gptForm');
+    const feedback = document.getElementById('feedback');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      feedback.classList.remove('hidden');
+      feedback.textContent = '⏳ Anfrage wird übermittelt ...';
+
+      const formData = new FormData(form);
+      const deploymentId = formData.get('deploymentId');
+      const prompt = formData.get('prompt');
+      const email = formData.get('email');
+      const access_start = new Date().toISOString().slice(0, 10);
+      const access_days = 7;
+
+      try {
+        const res = await fetch('https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            email,
+            deploymentId,
+            prompt,
+            access_start,
+            access_days,
+            consent: true,
+            source: 'gpt-form.html',
+            brevo_triggered: true
+          })
+        });
+
+        if (!res.ok) throw new Error('Serverproblem');
+
+        feedback.innerHTML = '✅ Danke für deine Einwilligung.<br><br><strong>Honey GPT wird geladen…</strong>';
+        setTimeout(() => {
+          window.location.href = `/gpt.html?gpt=${deploymentId}&email=${encodeURIComponent(email)}`;
+        }, 2000);
+      } catch (err) {
+        feedback.textContent = '❌ Es gab ein Problem beim Starten. Bitte versuche es später erneut.';
+      }
+    });
+  </script>
 </body>
 </html>
