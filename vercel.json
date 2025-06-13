@@ -4,19 +4,25 @@
   "regions": ["fra1"],
   "cleanUrls": true,
   "trailingSlash": false,
+
   "builds": [
     { "src": "api/**/*.js", "use": "@vercel/node" },
     { "src": "admin/gptPreview.js", "use": "@vercel/node" },
     { "src": "public/**/*", "use": "@vercel/static" }
   ],
+
   "rewrites": [
-    { "source": "/", "destination": "/test.html" },
+    { "source": "/", "destination": "/index.html" },
     { "source": "/test", "destination": "/test.html" },
     { "source": "/start", "destination": "/test.html" },
     { "source": "/gpt", "destination": "/gpt.html" },
+    { "source": "/gpt-test", "destination": "/gpt-test.html" },
+    { "source": "/gpt-form", "destination": "/gpt-form.html" },
+    { "source": "/form", "destination": "/gpt-form.html" },
     { "source": "/onboarding", "destination": "/onboarding.html" },
     { "source": "/admin-abo", "destination": "/admin-abo.html" }
   ],
+
   "headers": [
     {
       "source": "/api/(.*)",
