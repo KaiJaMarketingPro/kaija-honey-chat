@@ -14,7 +14,7 @@ jobs:
       - name: 🧪 Smoke-Test
         id: test
         run: |
-          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://gpt.kaija-marketing.pro/gpt-test.html)
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://gpt.kaija-marketing.pro/test)
           echo "HTTP_STATUS=$STATUS" >> $GITHUB_ENV
           if [ "$STATUS" -ne 200 ]; then
             echo "❌ Fehler – Status $STATUS"
@@ -32,5 +32,5 @@ jobs:
                 "status": "'${{ env.HTTP_STATUS }}'",
                 "timestamp": "'$(date -Iseconds)'",
                 "source": "GitHub Smoke Test",
-                "message": "🚨 Honey GPT ist aktuell nicht erreichbar.\n\nDer automatische Smoke-Test aus GitHub hat eine Fehlerantwort erhalten:\n\nURL: https://gpt.kaija-marketing.pro/test\nHTTP Status: '${{ env.HTTP_STATUS }}'\nZeitstempel: '$(date -Iseconds)'\nQuelle: GitHub Smoke Test\n\nBitte prüfe die GPT-Verfügbarkeit, das Vercel Deployment oder den DNS-Status.\n\n--\nKaiJa Monitoring System\nAutomatischer Alert via GitHub + Make"
+                "message": "🚨 Honey GPT ist aktuell nicht erreichbar.\n\nDer automatische Smoke-Test aus GitHub hat eine Fehlerantwort erhalten:\n\nURL: https://gpt.kaija-marketing.pro/test\nHTTP Status: '${{ env.HTTP_STATUS }}'\nZeitstempel: '$(date -Iseconds)'\nQuelle: GitHub Smoke Test\n\nBitte prüfe:\n• GPT-Verfügbarkeit\n• Vercel Deployment\n• DNS-Status\n\n--\nKaiJa Monitoring System\nAutomatischer Alert via GitHub + Make"
               }'
