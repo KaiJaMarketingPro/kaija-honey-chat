@@ -116,7 +116,10 @@ export default async function handler(req, res) {
               canva_prompt: req.body?.canvaPrompt || '',
               freepik_used: !!req.body?.freepikMarkdown,
               mail_sent: req.body?.mailSent || false,
-              source: 'chat.js → webhook log'
+              source: 'chat.js → webhook log',
+              session_id: req.body?.sessionId || null,
+              license_days: req.body?.access_days || 7,
+              access_start: req.body?.access_start || null
             })
           });
         }
