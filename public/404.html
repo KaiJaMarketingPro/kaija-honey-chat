@@ -6,60 +6,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <link rel="icon" href="/favicon.ico" />
-
   <style>
+    :root {
+      --orange: #f16a00;
+      --violett: #7c3aed;
+      --blau: #1a4d6e;
+      --grau: #999;
+      --bg: #fffaf4;
+    }
+
     body {
-      background-color: #f9f9fb;
-      font-family: "Segoe UI", sans-serif;
-      color: #1a1a1a;
       margin: 0;
       padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+      background: var(--bg);
+      font-family: "Segoe UI", sans-serif;
+      color: var(--blau);
       text-align: center;
     }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
+    }
+
     h1 {
       font-size: 3rem;
-      margin-bottom: 0.5rem;
-      color: #f16a00;
+      color: var(--orange);
+      margin-bottom: 1rem;
     }
+
     p {
-      max-width: 520px;
       font-size: 1.1rem;
-      line-height: 1.5;
+      color: #333;
     }
-    a {
-      margin-top: 2rem;
+
+    a.button {
       display: inline-block;
-      background: #7c3aed;
+      margin-top: 2rem;
+      padding: 1rem 2rem;
+      background: var(--violett);
       color: white;
-      padding: 0.9rem 1.7rem;
+      font-weight: bold;
       text-decoration: none;
       border-radius: 10px;
-      font-weight: bold;
+      transition: background 0.3s ease;
     }
-    a:hover {
-      background-color: #5b21b6;
+
+    a.button:hover {
+      background: #5b21b6;
     }
-    .subtle {
-      font-size: 0.85rem;
-      color: #777;
+
+    .footer {
       margin-top: 3rem;
+      font-size: 0.8rem;
+      color: var(--grau);
     }
   </style>
 </head>
 <body>
-  <h1>404 – Seite nicht gefunden</h1>
-  <p>
-    Diese Seite existiert leider nicht (mehr) oder der Link wurde nicht korrekt aufgerufen.<br />
-    Kein Problem – hier kannst du direkt in dein GPT-Erlebnis starten.
-  </p>
-
-  <a href="/onboarding.html">🚀 Starte Honey GPT jetzt</a>
-
-  <p class="subtle">
-    KaiJa Marketing! · DSGVO-konform · Swiss Hosted · Klartext Only
-  </p>
+  <div class="container">
+    <h1>404 – Seite nicht gefunden</h1>
+    <p>
+      Diese Seite existiert nicht mehr oder der Link war falsch.<br />
+      Kein Problem – hier geht’s direkt zum GPT-Start.
+    </p>
+    <a href="/onboarding.html" class="button">🚀 Starte Honey GPT</a>
+    <div class="footer">
+      DSGVO-konform · Swiss Hosted · Klartext Only · KaiJa Marketing!
+    </div>
+  </div>
 </body>
 </html>
