@@ -11,15 +11,41 @@
       padding: 0;
       height: 100%;
       overflow: hidden;
+      background: #fffaf4;
     }
+
     iframe {
       width: 100%;
-      height: 100%;
+      height: 100vh;
       border: none;
+    }
+
+    @media (max-width: 768px) {
+      iframe {
+        height: 100dvh;
+      }
     }
   </style>
 </head>
 <body>
-  <iframe src="/index.html" allowfullscreen loading="lazy" title="Honey GPT Startseite"></iframe>
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const product = params.get("product");
+    const email = params.get("email");
+
+    let target = "/index.html"; // Default
+
+    if (product === "core") {
+      target = "/signature_core.html";
+    } else if (product === "coaching") {
+      target = "/signature_coaching.html";
+    }
+
+    if (email) {
+      target += `?email=${encodeURIComponent(email)}`;
+    }
+
+    document.write(`<iframe src="${target}" allowfullscreen loading="lazy" title="Honey GPT Zugang"></iframe>`);
+  </script>
 </body>
 </html>
