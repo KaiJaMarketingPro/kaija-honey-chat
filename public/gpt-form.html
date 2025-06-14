@@ -3,19 +3,108 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🧬 GPT Universalformular – DSGVO Test</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-</head>
-<body class="bg-gray-100 text-gray-900">
-  <div class="max-w-xl mx-auto mt-10 p-6 bg-white shadow-lg rounded-lg">
-    <h1 class="text-xl font-semibold mb-2">🧬 Starte deinen 7-Tage Test mit dem GPT deiner Wahl</h1>
-    <p class="text-sm text-gray-600 mb-4">DSGVO-konform · Swiss Hosted über Azure Zürich · Lizenzpflicht nach 7 Tagen</p>
+  <title>🧠 GPT Auswahl · KaiJa Honey</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <style>
+    :root {
+      --bg: #fffaf4;
+      --violett: #7c3aed;
+      --violett-dark: #5b21b6;
+      --orange: #f16a00;
+      --grau: #777;
+    }
 
-    <form id="gptForm" class="space-y-4">
-      <!-- GPT-Auswahl -->
-      <label class="block">
-        <span class="text-sm">Welchen GPT möchtest du testen?</span>
-        <select name="deploymentId" required class="w-full p-2 border rounded">
+    body {
+      background: var(--bg);
+      font-family: "Segoe UI", sans-serif;
+      color: #1a1a1a;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 580px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      color: var(--orange);
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    label span {
+      display: block;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      margin-bottom: 0.2rem;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      background: var(--violett);
+      color: white;
+      padding: 1rem;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: var(--violett-dark);
+    }
+
+    .checkbox-label {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      margin-top: 1rem;
+    }
+
+    .feedback {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      color: #333;
+      white-space: pre-line;
+    }
+
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: var(--grau);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧬 GPT deiner Wahl testen</h1>
+    <p>7 Tage kostenlos · DSGVO-konform · Swiss Hosted</p>
+
+    <form id="gptForm">
+      <label>
+        <span>Welchen GPT möchtest du testen?</span>
+        <select name="deploymentId" required>
           <option value="honey-gpt">🐝 Honey GPT</option>
           <option value="kaija-gpt">🧠 KaiJa Marketing</option>
           <option value="maerki-gpt">📊 Märki Strategie</option>
@@ -27,29 +116,29 @@
         </select>
       </label>
 
-      <!-- Anliegen -->
-      <label class="block">
-        <span class="text-sm">Was möchtest du klären?</span>
-        <textarea name="prompt" rows="4" placeholder="Mein Ziel ist …" class="w-full p-2 border rounded" required></textarea>
+      <label>
+        <span>Was möchtest du klären?</span>
+        <textarea name="prompt" rows="4" placeholder="Mein Ziel ist …" required></textarea>
       </label>
 
-      <!-- E-Mail -->
-      <label class="block">
-        <span class="text-sm">Deine E-Mail-Adresse (für PDF, Lizenz, Follow-up)</span>
-        <input type="email" name="email" required class="w-full p-2 border rounded" placeholder="deine@email.ch" autocomplete="email" />
+      <label>
+        <span>Deine E-Mail-Adresse</span>
+        <input type="email" name="email" required placeholder="deine@email.ch" />
       </label>
 
-      <!-- Opt-in -->
-      <label class="flex items-start space-x-2 text-sm">
-        <input type="checkbox" required>
-        <span>Ich stimme der <a href="/datenschutzrichtlinie" class="underline text-blue-600" target="_blank">DSGVO-konformen Nutzung</a> meiner Daten zu. Das GPT kann 7 Tage lang getestet werden. Danach ist ein Abo nötig.</span>
+      <label class="checkbox-label">
+        <input type="checkbox" required />
+        <span>Ich stimme der <a href="/datenschutz.html" target="_blank">Datenschutzerklärung</a> zu. Nach 7 Tagen endet der freie Zugriff automatisch.</span>
       </label>
 
-      <button type="submit" class="w-full bg-purple-700 text-white p-2 rounded hover:bg-purple-800">✅ GPT starten</button>
+      <button type="submit">✅ GPT starten</button>
     </form>
 
-    <div id="feedback" class="mt-4 text-sm text-gray-800 whitespace-pre-line hidden"></div>
-    <p class="mt-6 text-xs text-gray-500">📍 Hosted in Switzerland · Datenschutz geprüft · Lizenzmodell aktivierbar via Stripe</p>
+    <div id="feedback" class="feedback"></div>
+
+    <p class="footer">
+      📍 DSGVO-konform · Swiss Hosted · Lizenz via Stripe · Kontakt: hello@kaija-marketing.pro
+    </p>
   </div>
 
   <script>
@@ -58,8 +147,7 @@
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      feedback.classList.remove('hidden');
-      feedback.textContent = '⏳ Anfrage wird übermittelt ...';
+      feedback.textContent = '⏳ Anfrage wird übermittelt …';
 
       const formData = new FormData(form);
       const deploymentId = formData.get('deploymentId');
@@ -85,14 +173,14 @@
           })
         });
 
-        if (!res.ok) throw new Error('Serverproblem');
+        if (!res.ok) throw new Error('Webhook Error');
 
-        feedback.innerHTML = '✅ Danke für deine Einwilligung.<br><br><strong>Honey GPT wird geladen…</strong>';
+        feedback.innerHTML = `✅ Danke für deine Einwilligung.<br><br><strong>${deploymentId} wird geladen …</strong>`;
         setTimeout(() => {
-          window.location.href = `/gpt.html?gpt=${deploymentId}&email=${encodeURIComponent(email)}`;
+          window.location.href = `/gpt-test.html?gpt=${deploymentId}&email=${encodeURIComponent(email)}`;
         }, 2000);
       } catch (err) {
-        feedback.textContent = '❌ Es gab ein Problem beim Starten. Bitte versuche es später erneut.';
+        feedback.textContent = '❌ Es gab ein Problem beim Starten. Bitte versuche es erneut.';
       }
     });
   </script>
