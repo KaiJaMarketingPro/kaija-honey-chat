@@ -2,51 +2,68 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>Willkommen bei Honey Signature Core</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🔐 DSGVO-Start – Honey GPT</title>
   <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:title" content="Honey GPT – Klarheit für Coaches & Solopreneure" />
+  <meta property="og:description" content="Starte DSGVO-konform mit Honey GPT. 7 Tage kostenlos. Danach Abo nötig." />
+  <meta property="og:image" content="https://www.kaija-marketing.pro/_files/og-honey.png" />
+  <meta property="og:url" content="https://gpt.kaija-marketing.pro/onboarding.html" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary_large_image" />
+
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      background: #fffaf4;
+      background: #f6f9fc;
       margin: 0;
       padding: 2rem;
-      color: #1a1a1a;
+      color: #333;
     }
     .container {
-      max-width: 560px;
+      max-width: 540px;
       margin: auto;
-      background: #ffffff;
+      background: white;
       padding: 2rem;
-      border-radius: 16px;
-      box-shadow: 0 0 32px rgba(0, 0, 0, 0.05);
+      border-radius: 14px;
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.04);
       text-align: center;
     }
     h1 {
-      color: #f16a00;
+      color: #7c3aed;
       font-size: 1.8rem;
-      margin-bottom: 1rem;
+      margin-bottom: 0.5rem;
     }
     p {
       font-size: 1rem;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1.2rem;
     }
-    a.button {
-      display: block;
-      margin: 1rem 0;
-      padding: 0.9rem;
-      background: #1a4d6e;
+    input, button {
+      width: 100%;
+      font-size: 1rem;
+      padding: 0.8rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+    button {
+      background-color: #7c3aed;
       color: white;
-      border-radius: 10px;
-      text-decoration: none;
       font-weight: bold;
-      transition: background 0.3s ease;
+      border: none;
+      cursor: pointer;
     }
-    a.button:hover {
-      background: #143c53;
+    button:hover {
+      background-color: #5b21b6;
     }
-    .footer-note {
-      font-size: 0.8rem;
+    .checkbox-label {
+      font-size: 0.9rem;
+      margin-top: 1rem;
+      text-align: left;
+    }
+    .footer {
+      font-size: 0.75rem;
       color: #999;
       margin-top: 2rem;
     }
@@ -54,11 +71,66 @@
 </head>
 <body>
   <div class="container">
-    <h1>🥳 Willkommen bei Honey Signature Core</h1>
-    <p>Grossartig, dass du da bist! Dein Zugang zu Klarheit, GPT & Pricing ist aktiviert.</p>
-    <a class="button" href="https://da9aa57e-c3b8-4eae-ae59-1234bf99eee8.usrfiles.com/ugd/da9aa5_30a85a07f43545be8f4839470297babd.pdf" target="_blank">📄 Workshop PDF öffnen</a>
-    <a class="button" href="https://gpt.kaija-marketing.pro/gpt-test.html" target="_blank">🧠 Jetzt mit Honey GPT starten</a>
-    <p class="footer-note">DSGVO-konform · Swiss Hosted (bald auf KaiJa NAS Luzern) · Kein Tracking · 100 % Klarheit</p>
+    <h1>🔐 DSGVO-Start – Honey GPT</h1>
+    <p>Starte hier deinen 7-Tage-Test mit Honey GPT.<br />
+    DSGVO-konform · Swiss Hosted · Kein Spam · Abo erforderlich nach Testphase.</p>
+
+    <form id="onboardingForm">
+      <input type="email" id="email" placeholder="deine@email.ch" required autocomplete="email" />
+      <label class="checkbox-label">
+        <input type="checkbox" id="consent" required />
+        Ich stimme der <a href="/datenschutz.html" target="_blank">Datenschutzerklärung</a> zu. 
+        Meine Daten werden für GPT-Zugriff & Follow-up verwendet.
+      </label>
+      <button type="submit">✅ GPT jetzt starten</button>
+    </form>
+
+    <div id="feedback" class="footer"></div>
+    <p class="footer">
+      📍 DSGVO-konform · Swiss Hosted · Kontakt: hello@kaija-marketing.pro
+    </p>
   </div>
+
+  <script>
+    const form = document.getElementById("onboardingForm");
+    const feedback = document.getElementById("feedback");
+
+    form.addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const email = document.getElementById("email").value.trim();
+      const consent = document.getElementById("consent").checked;
+
+      if (!email || !consent) {
+        feedback.textContent = "❌ Bitte E-Mail und Einwilligung bestätigen.";
+        return;
+      }
+
+      feedback.textContent = "⏳ Deine Einwilligung wird verarbeitet …";
+
+      try {
+        await fetch("https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            timestamp: new Date().toISOString(),
+            email,
+            source: "onboarding.html",
+            consent: true,
+            brevo_triggered: true,
+            access_start: new Date().toISOString().slice(0, 10),
+            access_days: 7
+          })
+        });
+
+        feedback.innerHTML = "✅ Danke! Du wirst jetzt weitergeleitet …";
+        setTimeout(() => {
+          window.location.href = `/gpt-test.html?email=${encodeURIComponent(email)}`;
+        }, 2000);
+      } catch (err) {
+        feedback.textContent = "❌ Netzwerkfehler. Bitte versuche es erneut.";
+      }
+    });
+  </script>
 </body>
 </html>
