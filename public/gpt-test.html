@@ -2,11 +2,11 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
+  <title>Honey GPT Test – DSGVO-konform & Klarheit</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🐝 Honey GPT Test – DSGVO & Klarheit</title>
   <meta name="robots" content="noindex, nofollow" />
-  <meta property="og:title" content="Honey GPT – Klarheit für Coaches & Solopreneure" />
-  <meta property="og:description" content="Teste Honey GPT 7 Tage kostenlos. DSGVO-konform. Swiss Hosted." />
+  <meta property="og:title" content="Honey GPT – Test starten" />
+  <meta property="og:description" content="Dein DSGVO-konformer Testzugang für 7 Tage. Klarheit, Positionierung, Pricing." />
   <meta property="og:image" content="https://www.kaija-marketing.pro/_files/og-honey.png" />
   <meta property="og:url" content="https://gpt.kaija-marketing.pro/gpt-test.html" />
   <meta property="og:type" content="website" />
@@ -14,134 +14,123 @@
 
   <style>
     body {
+      background-color: #fffaf4;
       font-family: "Segoe UI", sans-serif;
-      background: #f6f9fc;
+      color: #1a1a1a;
       padding: 2rem;
-      margin: 0;
-      color: #333;
     }
-    .box {
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+
+    .container {
       max-width: 560px;
       margin: auto;
-      text-align: center;
+      background: white;
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
     }
-    h2 {
-      color: #7c3aed;
-      font-size: 1.6rem;
-      margin-bottom: 0.5rem;
+
+    h1 {
+      font-size: 1.8rem;
+      color: #f16a00;
+      margin-bottom: 1rem;
     }
+
     p {
       font-size: 1rem;
       margin-bottom: 1rem;
     }
-    .footer-note {
-      font-size: 0.75rem;
-      margin-top: 2rem;
-      color: #999;
-      text-align: center;
-    }
-    #responseBox {
-      margin-top: 2rem;
-      white-space: pre-line;
-      text-align: left;
-    }
-    textarea, button, input {
+
+    textarea, input, button {
       width: 100%;
       font-size: 1rem;
       padding: 0.8rem;
       margin-top: 1rem;
-      border-radius: 6px;
+      border-radius: 8px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
     }
+
     button {
-      background: #7c3aed;
+      background-color: #7c3aed;
       color: white;
-      border: none;
       font-weight: bold;
+      border: none;
       cursor: pointer;
     }
+
     button:hover {
-      background: #5b21b6;
+      background-color: #5b21b6;
     }
+
+    .feedback {
+      margin-top: 1.5rem;
+      font-size: 0.9rem;
+      white-space: pre-line;
+      color: #333;
+    }
+
+    .footer {
+      font-size: 0.8rem;
+      color: #888;
+      margin-top: 2rem;
+      text-align: center;
+    }
+
     .checkbox-label {
-      display: flex;
-      align-items: center;
       font-size: 0.9rem;
       margin-top: 1rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
       text-align: left;
     }
+
     .checkbox-label input {
-      margin-right: 0.5rem;
+      margin-top: 0.2rem;
     }
   </style>
 </head>
 <body>
-  <div class="box">
-    <h2>🎤 Starte deinen Honey GPT Test</h2>
-    <p>🧠 DSGVO-konform · 7 Tage Test · Swiss Hosted</p>
+  <div class="container">
+    <h1>🎯 Honey GPT Test starten</h1>
+    <p>7 Tage kostenlos. DSGVO-konform. Swiss Hosted. Danach optionales Abo.</p>
 
-    <form id="gptForm">
-      <textarea id="message" placeholder="Was möchtest du klären? z. B. Pricing, Positionierung, Klarheit …" required></textarea>
+    <form id="gptTestForm">
+      <textarea id="message" placeholder="Was möchtest du klären? z. B. Pricing, Fokus, Positionierung …" required></textarea>
       <input type="email" id="email" placeholder="deine@email.ch" required />
       <label class="checkbox-label">
         <input type="checkbox" id="consent" required />
         Ich stimme der <a href="/datenschutz.html" target="_blank">Datenschutzerklärung</a> zu.
       </label>
-      <button type="submit">✅ GPT starten</button>
+      <button type="submit">✅ GPT jetzt starten</button>
     </form>
 
-    <div id="responseBox"></div>
+    <div id="feedback" class="feedback"></div>
 
-    <p class="footer-note">
-      Fragen? hello@kaija-marketing.pro · DSGVO-konform · Hosted in Luzern
+    <p class="footer">
+      DSGVO-konform · Swiss Hosted · Klartext Only · KaiJa Marketing!
     </p>
   </div>
 
   <script>
-    const form = document.getElementById("gptForm");
-    const responseBox = document.getElementById("responseBox");
+    const form = document.getElementById("gptTestForm");
+    const feedback = document.getElementById("feedback");
 
     form.addEventListener("submit", async function (e) {
       e.preventDefault();
-      responseBox.textContent = "⏳ GPT denkt nach …";
 
-      const email = document.getElementById("email").value.trim();
       const message = document.getElementById("message").value.trim();
+      const email = document.getElementById("email").value.trim();
       const consent = document.getElementById("consent").checked;
 
-      if (!consent || !email || !message) {
-        responseBox.textContent = "❌ Bitte alle Felder korrekt ausfüllen.";
+      if (!message || !email || !consent) {
+        feedback.textContent = "❌ Bitte alle Felder korrekt ausfüllen.";
         return;
       }
 
+      feedback.textContent = "⏳ Deine Anfrage wird verarbeitet …";
+
       try {
-        const webhook = "https://hook.eu2.make.com/7byhdo41nn7j2tm8x1yn06euqtp7y4r2";
-        const response = await fetch(webhook, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            timestamp: new Date().toISOString(),
-            email,
-            prompt: message,
-            consent: true,
-            source: "gpt-test.html",
-            access_start: new Date().toISOString().slice(0, 10),
-            access_days: 7,
-            brevo_triggered: true
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error("Serverfehler bei Make oder Timeout");
-        }
-
-        // Jetzt GPT aufrufen
-        const gptResponse = await fetch("/api/chat.js", {
+        const res = await fetch("/api/chat.js", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -153,13 +142,22 @@
           })
         });
 
-        const data = await gptResponse.json();
-        responseBox.textContent = data.choices?.[0]?.message?.content || "⚠️ Keine Antwort erhalten.";
+        const data = await res.json();
+        const reply = data.choices?.[0]?.message?.content;
 
+        if (!reply) throw new Error("Keine GPT-Antwort erhalten.");
+
+        feedback.innerHTML = "✅ <strong>Antwort von Honey GPT:</strong><br><br>" + reply;
       } catch (err) {
-        responseBox.textContent = "❌ Fehler: " + err.message;
+        feedback.textContent = "❌ Fehler: " + err.message;
       }
     });
+
+    // URL Param autofill
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("email")) {
+      document.getElementById("email").value = params.get("email");
+    }
   </script>
 </body>
 </html>
