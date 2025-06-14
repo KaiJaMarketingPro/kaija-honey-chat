@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Honey Abo verwalten</title>
   <meta name="robots" content="noindex, nofollow" />
+
   <style>
     :root {
       --kaija-orange: #f16a00;
@@ -22,29 +23,29 @@
     }
 
     .container {
-      max-width: 500px;
+      max-width: 520px;
       margin: auto;
       background: var(--kaija-white);
       padding: 2rem;
       border-radius: 12px;
       box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
+      text-align: center;
     }
 
     h1 {
       color: var(--kaija-orange);
-      text-align: center;
       margin-bottom: 1rem;
     }
 
     p {
-      text-align: center;
       font-size: 1rem;
       color: #333;
+      margin-bottom: 1rem;
     }
 
     input, button {
       width: 100%;
-      font-size: 1em;
+      font-size: 1rem;
       padding: 0.75rem;
       border-radius: 8px;
       margin-top: 1rem;
@@ -61,7 +62,6 @@
       font-weight: bold;
       border: none;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
 
     button:hover {
@@ -72,13 +72,11 @@
       margin-top: 1rem;
       color: green;
       font-size: 0.95em;
-      text-align: center;
     }
 
     .footer {
       margin-top: 2rem;
-      font-size: 0.85em;
-      text-align: center;
+      font-size: 0.8rem;
       color: #666;
     }
 
@@ -94,8 +92,7 @@
 
   <script>
     async function openStripePortal() {
-      const emailInput = document.getElementById("email-input");
-      const email = emailInput.value.trim();
+      const email = document.getElementById("email-input").value.trim();
       const msg = document.getElementById("redirect-message");
 
       if (!email || !email.includes("@")) {
@@ -103,7 +100,7 @@
         return;
       }
 
-      msg.textContent = "⏳ Weiterleitung wird vorbereitet…";
+      msg.textContent = "⏳ Kundenportal wird geöffnet …";
 
       try {
         const res = await fetch("/api/create-stripe-portal-session", {
@@ -135,16 +132,16 @@
 <body>
   <div class="container">
     <h1>🔐 Abo verwalten</h1>
-    <p>Gib bitte deine E-Mail-Adresse ein, mit der du dein Abo gebucht hast:</p>
+    <p>Gib hier die E-Mail-Adresse ein, mit der du dein Honey-Abo gebucht hast:</p>
     <input type="email" id="email-input" placeholder="deine@email.ch" />
     <button onclick="openStripePortal()">➡️ Zum Kundenportal</button>
     <p id="redirect-message"></p>
   </div>
 
   <div class="footer">
-    🔙 <a href="/gpt.html">Zurück zu Honey GPT</a><br />
-    📬 <a href="mailto:hello@kaija-marketing.pro">Support kontaktieren</a><br /><br />
-    🇨🇭 DSGVO-konform · Swiss Hosted via Microsoft Azure
+    🔙 <a href="/index.html">Zurück zur Startseite</a><br />
+    📬 <a href="mailto:hello@kaija-marketing.pro">Support kontaktieren</a><br />
+    🇨🇭 DSGVO-konform · Swiss Hosted · Klartext Only
   </div>
 </body>
 </html>
