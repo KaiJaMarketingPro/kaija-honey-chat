@@ -1,0 +1,2 @@
+This file forces Vercel to rebuild the public directory including .html files.
+Triggered on 2025-06-15 at 18:45 CET.
