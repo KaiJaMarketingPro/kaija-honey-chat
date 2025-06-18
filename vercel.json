@@ -12,26 +12,26 @@
   ],
 
   "rewrites": [
-  {
-    "source": "/",
-    "has": [
-      {
-        "type": "host",
-        "value": "gpt.kaija-marketing.pro"
-      }
-    ],
-    "destination": "/gpt-test.html"
-  },
-  { "source": "/", "destination": "/index.html" },
-  { "source": "/test", "destination": "/test.html" },
-  { "source": "/start", "destination": "/test.html" },
-  { "source": "/gpt", "destination": "/gpt.html" },
-  { "source": "/gpt-test", "destination": "/gpt-test.html" },
-  { "source": "/gpt-form", "destination": "/gpt-form.html" },
-  { "source": "/form", "destination": "/gpt-form.html" },
-  { "source": "/onboarding", "destination": "/onboarding.html" },
-  { "source": "/admin-abo", "destination": "/admin-abo.html" }
-],
+    {
+      "source": "/",
+      "has": [
+        {
+          "type": "host",
+          "value": "gpt.kaija-marketing.pro"
+        }
+      ],
+      "destination": "/gpt-test.html"
+    },
+    { "source": "/", "destination": "/index.html" },
+    { "source": "/test", "destination": "/test.html" },
+    { "source": "/start", "destination": "/test.html" },
+    { "source": "/gpt", "destination": "/gpt.html" },
+    { "source": "/gpt-test", "destination": "/gpt-test.html" },
+    { "source": "/gpt-form", "destination": "/gpt-form.html" },
+    { "source": "/form", "destination": "/gpt-form.html" },
+    { "source": "/onboarding", "destination": "/onboarding.html" },
+    { "source": "/admin-abo", "destination": "/admin-abo.html" }
+  ],
 
   "headers": [
     {
@@ -40,6 +40,18 @@
         { "key": "Access-Control-Allow-Origin", "value": "*" },
         { "key": "Cache-Control", "value": "no-store" },
         { "key": "X-Content-Type-Options", "value": "nosniff" }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "has": [
+        { "type": "host", "value": "gpt.kaija-marketing.pro" }
+      ],
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow"
+        }
       ]
     },
     {
