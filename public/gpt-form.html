@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🧠 GPT Auswahl · KaiJa Honey Signature GPT </title>
+  <title>🧠 GPT Auswahl · KaiJa Honey Signature GPT</title>
   <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:title" content="GPT Auswahl · KaiJa Honey Signature GPT" />
+  <meta property="og:description" content="Wähle deinen DSGVO-konformen Swiss Hosted GPT für 7 Tage kostenlos." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" href="/favicon.ico" />
   <style>
     :root {
       --bg: #fffaf4;
@@ -97,7 +102,7 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <h1>🧬 GPT deiner Wahl testen</h1>
     <p>7 Tage kostenlos · DSGVO-konform · Swiss Hosted</p>
 
@@ -128,18 +133,18 @@
 
       <label class="checkbox-label">
         <input type="checkbox" required />
-        <span>Ich stimme der <a href="/datenschutz.html" target="_blank">Datenschutzerklärung</a> zu. Nach 7 Tagen endet der freie Zugriff automatisch.</span>
+        <span>Ich stimme der <a href="/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> zu. Nach 7 Tagen endet der freie Zugriff automatisch.</span>
       </label>
 
       <button type="submit">✅ GPT starten</button>
     </form>
 
-    <div id="feedback" class="feedback"></div>
+    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
 
     <p class="footer">
       📍 DSGVO-konform · Swiss Hosted · Lizenz via Stripe · Kontakt: hello@kaija-marketing.pro
     </p>
-  </div>
+  </main>
 
   <script>
     const form = document.getElementById('gptForm');
