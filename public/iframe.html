@@ -5,6 +5,11 @@
   <title>Honey GPT – Embed</title>
   <meta name="robots" content="noindex, nofollow" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta property="og:title" content="Honey GPT – Embed" />
+  <meta property="og:description" content="DSGVO-konformer GPT-Zugang im iFrame." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="icon" href="/favicon.ico" />
   <style>
     html, body {
       margin: 0;
@@ -33,7 +38,7 @@
     const product = params.get("product");
     const email = params.get("email");
 
-    let target = "/index.html"; // Default
+    let target = "/index.html";
 
     if (product === "core") {
       target = "/signature_core.html";
@@ -42,7 +47,8 @@
     }
 
     if (email) {
-      target += `?email=${encodeURIComponent(email)}`;
+      const connector = target.includes('?') ? '&' : '?';
+      target += `${connector}email=${encodeURIComponent(email)}`;
     }
 
     document.write(`<iframe src="${target}" allowfullscreen loading="lazy" title="Honey GPT Zugang"></iframe>`);
