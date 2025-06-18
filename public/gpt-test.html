@@ -11,15 +11,14 @@
   <meta property="og:url" content="https://gpt.kaija-marketing.pro/gpt-test.html" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
-
   <style>
     body {
       background-color: #fffaf4;
       font-family: "Segoe UI", sans-serif;
       color: #1a1a1a;
       padding: 2rem;
+      margin: 0;
     }
-
     .container {
       max-width: 560px;
       margin: auto;
@@ -28,18 +27,15 @@
       border-radius: 16px;
       box-shadow: 0 0 24px rgba(0, 0, 0, 0.05);
     }
-
     h1 {
       font-size: 1.8rem;
       color: #f16a00;
       margin-bottom: 1rem;
     }
-
     p {
       font-size: 1rem;
       margin-bottom: 1rem;
     }
-
     textarea, input, button {
       width: 100%;
       font-size: 1rem;
@@ -47,69 +43,64 @@
       margin-top: 1rem;
       border-radius: 8px;
       border: 1px solid #ccc;
+      box-sizing: border-box;
     }
-
     button {
       background-color: #7c3aed;
       color: white;
       font-weight: bold;
       border: none;
       cursor: pointer;
+      transition: background 0.2s ease;
     }
-
     button:hover {
       background-color: #5b21b6;
     }
-
     .feedback {
       margin-top: 1.5rem;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       white-space: pre-line;
       color: #333;
     }
-
     .footer {
       font-size: 0.8rem;
       color: #888;
       margin-top: 2rem;
       text-align: center;
     }
-
     .checkbox-label {
       font-size: 0.9rem;
       margin-top: 1rem;
       display: flex;
       align-items: flex-start;
       gap: 0.5rem;
-      text-align: left;
     }
-
     .checkbox-label input {
-      margin-top: 0.2rem;
+      margin-top: 0.25rem;
     }
   </style>
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <h1>🎯 Honey GPT Test starten</h1>
     <p>7 Tage kostenlos. DSGVO-konform. Swiss Hosted. Danach optionales Abo.</p>
 
-    <form id="gptTestForm">
-      <textarea id="message" placeholder="Was möchtest du klären? z. B. Pricing, Fokus, Positionierung …" required></textarea>
-      <input type="email" id="email" placeholder="deine@email.ch" required />
+    <form id="gptTestForm" aria-label="Honey GPT Test Formular">
+      <textarea id="message" placeholder="Was möchtest du klären? z. B. Pricing, Fokus, Positionierung …" required aria-required="true"></textarea>
+      <input type="email" id="email" placeholder="deine@email.ch" required aria-required="true" />
       <label class="checkbox-label">
-        <input type="checkbox" id="consent" required />
-        Ich stimme der <a href="/datenschutz.html" target="_blank">Datenschutzerklärung</a> zu.
+        <input type="checkbox" id="consent" required aria-required="true" />
+        Ich stimme der <a href="/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> zu.
       </label>
       <button type="submit">✅ GPT jetzt starten</button>
     </form>
 
-    <div id="feedback" class="feedback"></div>
+    <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
 
     <p class="footer">
-      DSGVO-konform · Swiss Hosted · Klartext Only · KaiJa Marketing!
+      DSGVO-konform · Swiss Hosted · Klartext Only · KaiJa Marketing
     </p>
-  </div>
+  </main>
 
   <script>
     const form = document.getElementById("gptTestForm");
@@ -153,7 +144,6 @@
       }
     });
 
-    // URL Param autofill
     const params = new URLSearchParams(window.location.search);
     if (params.get("email")) {
       document.getElementById("email").value = params.get("email");
