@@ -11,7 +11,7 @@
   <meta property="og:url" content="https://gpt.kaija-marketing.pro/onboarding.html" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary_large_image" />
-
+  <link rel="icon" href="/favicon.ico" />
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
@@ -79,13 +79,13 @@
       <input type="email" id="email" placeholder="deine@email.ch" required autocomplete="email" />
       <label class="checkbox-label">
         <input type="checkbox" id="consent" required />
-        Ich stimme der <a href="/datenschutz.html" target="_blank">Datenschutzerklärung</a> zu. 
+        Ich stimme der <a href="/datenschutz.html" target="_blank" rel="noopener noreferrer">Datenschutzerklärung</a> zu.
         Meine Daten werden für GPT-Zugriff & Follow-up verwendet.
       </label>
       <button type="submit">✅ GPT jetzt starten</button>
     </form>
 
-    <div id="feedback" class="footer"></div>
+    <div id="feedback" class="footer" role="status" aria-live="polite"></div>
     <p class="footer">
       📍 DSGVO-konform · Swiss Hosted · Kontakt: hello@kaija-marketing.pro
     </p>
