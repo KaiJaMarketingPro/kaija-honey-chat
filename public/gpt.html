@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Honey Signature GPT – Swiss Hosted Klarheits-Check 🐝</title>
+  <meta name="description" content="Starte deinen DSGVO-konformen Klarheits-Check mit Honey GPT – Swiss Hosted, AI Act Ready & sofort einsetzbar." />
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="icon" href="/favicon.ico" />
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background-color: #f7f7f7;
+      margin: 0;
+      padding: 2rem;
+      color: #222;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+    textarea {
+      width: 100%;
+      min-height: 140px;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid #ccc;
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      margin: 1rem 0 0.3rem;
+      font-weight: 600;
+    }
+    button {
+      background: #ffd700;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 0.5rem;
+      cursor: pointer;
+    }
+    .response {
+      white-space: pre-wrap;
+      background: #f0f0f0;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      margin-top: 1rem;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🐝 Honey Signature GPT – Klarheits-Check (Swiss Hosted)</h1>
+    <label for="message">Was möchtest du klären?</label>
+    <textarea id="message" placeholder="z. B. Was ist ein passender Preis für mein Coaching-Angebot?"></textarea>
+
+    <label><input type="checkbox" id="optin" /> Ich stimme der DSGVO-konformen Verarbeitung zu.</label>
+    <label><input type="checkbox" id="log" /> GPT-Interaktion zu Analysezwecken loggen (optional)</label>
+
+    <button onclick="send()">🟡 Klarheits-Check starten</button>
+
+    <div class="response" id="response"></div>
+  </div>
+
+  <script>
+    async function send() {
+      const responseEl = document.getElementById("response");
+      const input = document.getElementById("message").value.trim();
+      const optin = document.getElementById("optin").checked;
+      const log = document.getElementById("log").checked;
+
+      if (!optin) {
+        alert("Bitte bestätige die DSGVO-Einwilligung.");
+        return;
+      }
+      if (!input) {
+        alert("Bitte gib eine Nachricht ein.");
+        return;
+      }
+
+      responseEl.innerText = "⏳ GPT denkt nach...";
+
+      try {
+        const res = await fetch("/api/chat.js", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            gpt: "honey-gpt",
+            messages: [{ role: "user", content: input }],
+            optin,
+            log,
+            user: "test@kaija-gpt",
+            sessionId: "gpt.html-v1",
+            access_days: 7,
+            access_start: new Date().toISOString()
+          })
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          responseEl.innerText = result.choices?.[0]?.message?.content || "✅ GPT hat keine Antwort geliefert.";
+        } else {
+          responseEl.innerText = `❌ Fehler: ${result.error || "Unbekannter Fehler"}`;
+        }
+      } catch (e) {
+        responseEl.innerText = `❌ Netzwerkfehler: ${e.message}`;
+      }
+    }
+  </script>
+</body>
+</html>
