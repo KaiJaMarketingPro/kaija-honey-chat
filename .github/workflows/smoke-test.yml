@@ -8,19 +8,44 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
-    name: 🔍 /test prüfen + E-Mail bei Fehler
+    name: 🔍 /test + /chat.js prüfen + E-Mail bei Fehler
 
     steps:
-      - name: 🧪 Smoke-Test
+      - name: 🧪 Smoke-Test /test
         id: test
         run: |
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" https://gpt.kaija-marketing.pro/test)
           echo "HTTP_STATUS=$STATUS" >> $GITHUB_ENV
           if [ "$STATUS" -ne 200 ]; then
-            echo "❌ Fehler – Status $STATUS"
+            echo "❌ Fehler bei /test – Status $STATUS"
             exit 1
           else
             echo "✅ /test OK (200)"
+          fi
+
+      - name: 🧪 Smoke-Test /api/chat.js
+        id: gptproxy
+        run: |
+          STATUS_CHAT=$(curl -s -o /dev/null -w "%{http_code}" https://gpt.kaija-marketing.pro/api/chat.js \
+            -H "Content-Type: application/json" \
+            -d '{
+              "gpt": "honey-gpt",
+              "user": "smoke-test@kaija.pro",
+              "optin": true,
+              "log": false,
+              "messages": [
+                {
+                  "role": "user",
+                  "content": "Was ist mein Signature Angebot?"
+                }
+              ]
+            }')
+          echo "HTTP_STATUS_CHAT=$STATUS_CHAT" >> $GITHUB_ENV
+          if [ "$STATUS_CHAT" -ne 200 ]; then
+            echo "❌ Fehler bei /api/chat.js – Status $STATUS_CHAT"
+            exit 1
+          else
+            echo "✅ /api/chat.js OK (200)"
           fi
 
       - name: 📧 Sende Nur-Text-E-Mail via Make Webhook
@@ -29,8 +54,9 @@ jobs:
           curl -X POST https://hook.eu2.make.com/YOUR-MAKE-WEBHOOK-ID \
           -H "Content-Type: application/json" \
           -d '{
-                "status": "'${{ env.HTTP_STATUS }}'",
+                "status_test": "'${{ env.HTTP_STATUS }}'",
+                "status_chat": "'${{ env.HTTP_STATUS_CHAT }}'",
                 "timestamp": "'$(date -Iseconds)'",
                 "source": "GitHub Smoke Test",
-                "message": "🚨 Honey GPT ist aktuell nicht erreichbar.\n\nDer automatische Smoke-Test aus GitHub hat eine Fehlerantwort erhalten:\n\nURL: https://gpt.kaija-marketing.pro/test\nHTTP Status: '${{ env.HTTP_STATUS }}'\nZeitstempel: '$(date -Iseconds)'\nQuelle: GitHub Smoke Test\n\nBitte prüfe:\n• GPT-Verfügbarkeit\n• Vercel Deployment\n• DNS-Status\n\n--\nKaiJa Monitoring System\nAutomatischer Alert via GitHub + Make"
+                "message": "🚨 Honey GPT Smoke-Test-Alarm\n\n/test Status: '${{ env.HTTP_STATUS }}'\n/api/chat.js Status: '${{ env.HTTP_STATUS_CHAT }}'\nZeit: '$(date -Iseconds)'\nQuelle: GitHub Workflow\n\nBitte prüfen:\n• GPT Proxy (chat.js)\n• DSGVO/Opt-in Fehler\n• Vercel-Deployment\n\n--\nKaiJa Monitoring System"
               }'
