@@ -2,16 +2,21 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <title>404 – Seite nicht gefunden | KaiJa Marketing!</title>
+  <title>404 – Seite nicht gefunden | KaiJa Marketing</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
+  <meta property="og:title" content="404 – Nicht gefunden | KaiJa GPT" />
+  <meta property="og:description" content="Diese Seite existiert nicht. Starte hier deine DSGVO-konforme GPT-Session." />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
   <link rel="icon" href="/favicon.ico" />
   <style>
     :root {
       --orange: #f16a00;
       --violett: #7c3aed;
+      --violett-dark: #5b21b6;
+      --grau: #888;
       --blau: #1a4d6e;
-      --grau: #999;
       --bg: #fffaf4;
     }
 
@@ -42,6 +47,7 @@
     p {
       font-size: 1.1rem;
       color: #333;
+      line-height: 1.5;
     }
 
     a.button {
@@ -57,7 +63,7 @@
     }
 
     a.button:hover {
-      background: #5b21b6;
+      background: var(--violett-dark);
     }
 
     .footer {
@@ -68,16 +74,16 @@
   </style>
 </head>
 <body>
-  <div class="container">
+  <main class="container">
     <h1>404 – Seite nicht gefunden</h1>
     <p>
       Diese Seite existiert nicht mehr oder der Link war falsch.<br />
       Kein Problem – hier geht’s direkt zum GPT-Start.
     </p>
-    <a href="/onboarding.html" class="button">🚀 Starte Honey GPT</a>
+    <a href="/gpt-test.html" class="button">🚀 Starte Honey GPT</a>
     <div class="footer">
-      DSGVO-konform · Swiss Hosted · Klartext Only · KaiJa Marketing!
+      DSGVO-konform · Swiss Hosted · Klartext Only · KaiJa Marketing
     </div>
-  </div>
+  </main>
 </body>
 </html>
