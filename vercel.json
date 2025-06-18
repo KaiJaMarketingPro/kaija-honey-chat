@@ -7,24 +7,15 @@
 
   "builds": [
     { "src": "api/**/*.js", "use": "@vercel/node" },
-    { "src": "admin/gptPreview.js", "use": "@vercel/node" },
+    { "src": "admin/**/*.js", "use": "@vercel/node" },
     { "src": "public/**/*", "use": "@vercel/static" }
   ],
 
   "rewrites": [
-    {
-      "source": "/",
-      "has": [
-        {
-          "type": "host",
-          "value": "gpt.kaija-marketing.pro"
-        }
-      ],
-      "destination": "/gpt-test.html"
-    },
-    { "source": "/", "destination": "/index.html" },
+    { "source": "/", "destination": "/gpt.html" },
+    { "source": "/index", "destination": "/gpt.html" },
+    { "source": "/start", "destination": "/gpt.html" },
     { "source": "/test", "destination": "/test.html" },
-    { "source": "/start", "destination": "/test.html" },
     { "source": "/gpt", "destination": "/gpt.html" },
     { "source": "/gpt-test", "destination": "/gpt-test.html" },
     { "source": "/gpt-form", "destination": "/gpt-form.html" },
@@ -63,7 +54,7 @@
         },
         {
           "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
+          "value": "ALLOW-FROM https://kaija-marketing.pro"
         },
         {
           "key": "Referrer-Policy",
