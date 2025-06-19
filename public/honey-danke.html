@@ -1,98 +1,37 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>🥳 Honey Abo bestätigt – Jetzt starten</title>
-  <meta name="robots" content="noindex, nofollow" />
-  <meta property="og:title" content="Abo bestätigt | KaiJa GPT" />
-  <meta property="og:description" content="Danke für deine Buchung! Starte jetzt mit deinem DSGVO-konformen Signature Zugang." />
-  <meta property="og:type" content="website" />
-  <meta name="twitter:card" content="summary" />
-  <link rel="icon" href="/favicon.ico" />
-  <style>
-    body {
-      font-family: "Segoe UI", sans-serif;
-      background: #fffaf4;
-      color: #1a1a1a;
-      padding: 2rem;
-    }
-
-    .box {
-      max-width: 560px;
-      margin: auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-      text-align: center;
-    }
-
-    h1 {
-      color: #f16a00;
-      font-size: 1.8rem;
-    }
-
-    p {
-      font-size: 1rem;
-      margin-bottom: 1.2rem;
-    }
-
-    .button {
-      display: block;
-      margin: 1rem auto;
-      padding: 1rem;
-      background: #1a4d6e;
-      color: white;
-      font-weight: bold;
-      border-radius: 10px;
-      text-decoration: none;
-      width: 100%;
-      max-width: 320px;
-    }
-
-    .button:hover {
-      background: #143c53;
-    }
-
-    .footer {
-      font-size: 0.8rem;
-      color: #888;
-      margin-top: 2rem;
-    }
-  </style>
+  <meta name="robots" content="noindex, nofollow"/>
+  <meta property="og:title" content="Abo bestätigt | KaiJa GPT"/>
+  <meta property="og:description" content="Danke für deine Buchung! Starte jetzt mit deinem DSGVO-konformen Signature Zugang."/>
+  <style>/* Styles wie live Code */</style>
 </head>
 <body>
   <div class="box">
     <h1>🥳 Danke für deine Buchung!</h1>
     <p>Dein Zugang zum Honey Signature Abo ist aktiviert.</p>
     <div id="options"></div>
-    <p class="footer">DSGVO-konform · Swiss Hosted · Klartext Only · KaiJa Marketing</p>
+    <div id="chat-container"></div>
+    <p class="footer">DSGVO‑konform · Swiss Hosted · Klartext Only · KaiJa Marketing</p>
   </div>
 
   <script>
     const params = new URLSearchParams(window.location.search);
     const product = params.get("product");
-    const email = params.get("email") || "deine@email.ch";
-
+    const email = params.get("email") || "";
     const options = document.getElementById("options");
 
-    if (product === "coaching") {
-      options.innerHTML = `
-        <a class="button" href="/signature_coaching.html">🎓 Zum Coaching-Abo starten</a>
-      `;
-    } else if (product === "core") {
-      options.innerHTML = `
-        <a class="button" href="/signature_core.html">💎 Zum Signature Core starten</a>
-      `;
-    } else {
-      options.innerHTML = `
-        <a class="button" href="/signature_core.html">💎 Standardzugang starten</a>
-      `;
-    }
+    const coreLink = '<a class="button" href="/signature_core.html">💎 Signature Core starten</a>';
+    const coachingLink = '<a class="button" href="/signature_coaching.html">🎓 Coaching-Abo starten</a>';
+    options.innerHTML = product === "coaching" ? coachingLink : coreLink;
+    options.innerHTML += `<a class="button" href="https://checkout.kaija-marketing.pro/p/login/bIYeXr3Ep86l2VqfYY?prefilled_email=${encodeURIComponent(email)}" target="_blank">⚙️ Abo verwalten</a>`;
 
-    options.innerHTML += `
-      <a class="button" href="/admin-abo.html?email=${encodeURIComponent(email)}">⚙️ Abo verwalten</a>
+    // Chat-Container mit Honey GPT
+    document.getElementById("chat-container").innerHTML = `
+      <iframe src="/gpt.html" title="Honey GPT Chat" style="width:100%; height:700px; border:0;" sandbox="allow-scripts allow-same-origin" loading="lazy"></iframe>
     `;
   </script>
 </body>
