@@ -10,20 +10,22 @@
     { "src": "admin/**/*.js", "use": "@vercel/node" },
     { "src": "public/**/*", "use": "@vercel/static" }
   ],
-
-  "rewrites": [
-    { "source": "/", "destination": "/index.html" },
-    { "source": "/index", "destination": "/index.html" },
-    { "source": "/start", "destination": "/gpt.html" },
-    { "source": "/gpt", "destination": "/gpt.html" },
-    { "source": "/test", "destination": "/test.html" },
-    { "source": "/gpt-test", "destination": "/gpt-test.html" },
-    { "source": "/gpt-form", "destination": "/gpt-form.html" },
-    { "source": "/form", "destination": "/gpt-form.html" },
-    { "source": "/onboarding", "destination": "/onboarding.html" },
-    { "source": "/admin-abo", "destination": "/admin-abo.html" },
-    { "source": "/honey-danke", "destination": "/honey-danke.html" }
-  ],
+  
+"rewrites": [
+  { "source": "/", "destination": "/index.html" },
+  { "source": "/index", "destination": "/index.html" },
+  { "source": "/start", "destination": "/gpt.html" },
+  { "source": "/gpt", "destination": "/gpt.html" },
+  { "source": "/gpt.html", "destination": "/gpt.html" },
+  { "source": "/test", "destination": "/test.html" },
+  { "source": "/gpt-test", "destination": "/gpt-test.html" },
+  { "source": "/gpt-form", "destination": "/gpt-form.html" },
+  { "source": "/form", "destination": "/gpt-form.html" },
+  { "source": "/onboarding", "destination": "/onboarding.html" },
+  { "source": "/admin-abo", "destination": "/admin-abo.html" },
+  { "source": "/honey-danke", "destination": "/honey-danke.html" },
+  { "source": "/honey-danke.html", "destination": "/honey-danke.html" }
+],
 
   "headers": [
     {
